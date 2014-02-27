@@ -1,11 +1,15 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-class Item :  Carriable,  Movable
+class Item : public Carriable, public Movable
 {
 public:
-    Item();
-    ~Item();
+	Item();
+	
+	QString name() const;
+	
+private:
+	int type_;
 };
 
 #endif // ITEM_H

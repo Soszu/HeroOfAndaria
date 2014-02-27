@@ -4,7 +4,21 @@
 class Object
 {
 public:
-    Object();
+	Object();
+	
+	QPoint position();
+	void setPosition(QPoint position);
+	
+	int rotation() const;
+	void setRotation(QPoint rotation);
+	
+signals:
+	void positionSet();
+	void rotationSet();
+	
+private:
+	QPoint position_;
+	QPoint rotation_;
 };
 
 #endif // OBJECT_H

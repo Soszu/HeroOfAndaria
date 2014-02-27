@@ -1,5 +1,4 @@
-project(heroofandaria)
+project(HeroOfAndaria)
+cmake_minimum_required(VERSION 2.8)
 
-add_executable(heroofandaria main.cpp)
-
-install(TARGETS heroofandaria RUNTIME DESTINATION bin)
+include_directories(src)

@@ -4,7 +4,7 @@
 class Blacksmith :  Place,  EquipmentCarrier
 {
 public:
-    Blacksmith();
+	Blacksmith();
 };
 
 #endif // BLACKSMITH_H

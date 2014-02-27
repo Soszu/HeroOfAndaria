@@ -4,7 +4,17 @@
 class Grid
 {
 public:
-    Grid();
+	Grid(int width, int height);
+
+	int width() const;
+	int height() const;
+	
+protected:
+	QVector <Tile *> tiles_;
+	
+private:
+	int width_;
+	int height_;
 };
 
 #endif // GRID_H
