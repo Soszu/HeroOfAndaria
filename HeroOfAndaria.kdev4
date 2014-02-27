@@ -1,0 +1,4 @@
+[Project]
+Name=HeroOfAndaria
+Manager=KDevCMakeManager
+VersionControl=kdevgit
