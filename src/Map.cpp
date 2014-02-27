@@ -1,6 +1,7 @@
 #include "Map.h"
 
-Map::Map()
+Map::Map(int width, int height)
+	: Grid(width, height)
 {
 
 }

@@ -4,7 +4,7 @@
 class GraphicsPlace
 {
 public:
-    GraphicsPlace();
+	GraphicsPlace();
 };
 
 #endif // GRAPHICSPLACE_H

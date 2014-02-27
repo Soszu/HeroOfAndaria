@@ -1,10 +1,14 @@
 #ifndef GRAPHICSMAP_H
 #define GRAPHICSMAP_H
 
-class GraphicsMap
+#include <QtWidgets>
+
+class GraphicsMap : public QGraphicsScene
 {
+Q_OBJECT;
+
 public:
-    GraphicsMap();
+	GraphicsMap();
 };
 
 #endif // GRAPHICSMAP_H

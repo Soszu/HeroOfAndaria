@@ -1,7 +1,9 @@
 #ifndef GRAPHICSCREATURE_H
 #define GRAPHICSCREATURE_H
 
-class GraphicsCreature :  GraphicsObject
+#include "GraphicsObject.h"
+
+class GraphicsCreature : public GraphicsObject
 {
 public:
     GraphicsCreature();

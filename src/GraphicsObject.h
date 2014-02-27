@@ -1,10 +1,12 @@
 #ifndef GRAPHICSOBJECT_H
 #define GRAPHICSOBJECT_H
 
-class GraphicsObject :  QGraphicsObject
+#include <QtWidgets>
+
+class GraphicsObject : public QGraphicsObject
 {
 public:
-    GraphicsObject();
+	GraphicsObject();
 };
 
 #endif // GRAPHICSOBJECT_H

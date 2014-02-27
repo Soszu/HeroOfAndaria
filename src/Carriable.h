@@ -4,11 +4,11 @@
 class Carriable
 {
 public:
-	Carriable(int weight);
-	
+	Carriable(int weight, int price);
+
 	int weight() const;
 	int price() const;
-	
+
 private:
 	int weight_;
 	int price_;

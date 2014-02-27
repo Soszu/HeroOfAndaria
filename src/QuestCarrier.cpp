@@ -1,6 +1,6 @@
 #include "QuestCarrier.h"
 
-void QuestCarrier::()
+QuestCarrier::QuestCarrier()
 {
 
 }

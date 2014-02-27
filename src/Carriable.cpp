@@ -1,6 +1,5 @@
 #include "Carriable.h"
 
-Carriable::Carriable()
-{
-
-}
+Carriable::Carriable(int weight, int price)
+	: weight_(weight), price_(price)
+{}

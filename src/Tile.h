@@ -13,7 +13,7 @@ class Tile
 {
 public:
 	Tile(HOA::Terrain terrain, int height);
-	
+
 	HOA::Terrain terrain() const;
 	int height() const;
 

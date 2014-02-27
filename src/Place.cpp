@@ -1,6 +1,7 @@
 #include "Place.h"
 
-Place::Place()
+Place::Place(const QString &name)
+	: name_(name)
 {
 
 }

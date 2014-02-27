@@ -1,6 +1,9 @@
 #ifndef GRID_H
 #define GRID_H
 
+#include <QtCore>
+#include "Tile.h"
+
 class Grid
 {
 public:
@@ -8,10 +11,10 @@ public:
 
 	int width() const;
 	int height() const;
-	
+
 protected:
 	QVector <Tile *> tiles_;
-	
+
 private:
 	int width_;
 	int height_;

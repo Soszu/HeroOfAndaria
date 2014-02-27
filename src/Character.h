@@ -1,10 +1,13 @@
 #ifndef HUMANOID_H
 #define HUMANOID_H
 
-class Character :  Creature,  QuestCarrier
+#include "Creature.h"
+#include "QuestCarrier.h"
+
+class Character : public Creature
 {
 public:
-    Character();
+	Character();
 };
 
 #endif // HUMANOID_H

@@ -1,6 +1,8 @@
 #ifndef ATTACK_H
 #define ATTACK_H
 
+#include "Movable.h"
+
 namespace HOA {
 	enum class AttackType {
 		Melee,
@@ -9,14 +11,16 @@ namespace HOA {
 	};
 }
 
+class Creature;
+
 class Attack : public Movable
 {
 public:
 	Attack();
-	
+
 	HOA::AttackType type() const;
 	const Creature * attacker() const;
-	
+
 private:
 	HOA::AttackType type_;
 	const Creature *attacker_;

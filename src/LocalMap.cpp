@@ -1,6 +1,5 @@
 #include "LocalMap.h"
 
-LocalMap::LocalMap()
-{
-
-}
+LocalMap::LocalMap(int width, int height)
+	: Map(width, height)
+{}

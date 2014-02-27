@@ -1,6 +1,7 @@
 #include "Blacksmith.h"
 
-Blacksmith::Blacksmith()
+Blacksmith::Blacksmith(const QString &name)
+	: Place(name)
 {
 
 }

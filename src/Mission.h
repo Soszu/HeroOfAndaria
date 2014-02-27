@@ -4,7 +4,7 @@
 class Mission
 {
 public:
-    Mission();
+	Mission();
 };
 
 #endif // MISSION_H

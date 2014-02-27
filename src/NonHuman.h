@@ -1,12 +1,12 @@
 #ifndef NONHUMAN_H
 #define NONHUMAN_H
 
-#include <Character.h>
+#include "Character.h"
 
-class NonHuman :  Character
+class NonHuman : public Character
 {
 public:
-    NonHuman();
+	NonHuman();
 };
 
 #endif // NONHUMAN_H

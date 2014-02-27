@@ -1,10 +1,13 @@
 #ifndef BLACKSMITH_H
 #define BLACKSMITH_H
 
-class Blacksmith :  Place,  EquipmentCarrier
+#include "EquipmentCarrier.h"
+#include "Place.h"
+
+class Blacksmith : public Place, public EquipmentCarrier
 {
 public:
-	Blacksmith();
+	Blacksmith(const QString &name);
 };
 
 #endif // BLACKSMITH_H

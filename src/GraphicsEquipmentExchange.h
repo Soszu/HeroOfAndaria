@@ -4,7 +4,7 @@
 class GraphicsEquipmentExchange
 {
 public:
-    GraphicsEquipmentExchange();
+	GraphicsEquipmentExchange();
 };
 
 #endif // GRAPHICSEQUIPMENTEXCHANGE_H

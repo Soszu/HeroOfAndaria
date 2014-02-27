@@ -1,10 +1,13 @@
 #ifndef INN_H
 #define INN_H
 
-class Inn :  QuestCarrier,  Place
+#include "Place.h"
+#include "QuestCarrier.h"
+
+class Inn : public QuestCarrier, public Place
 {
 public:
-    Inn();
+	Inn(const QString &name);
 };
 
 #endif // INN_H

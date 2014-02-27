@@ -1,6 +1,5 @@
 #include "Inn.h"
 
-Inn::Inn()
-{
-
-}
+Inn::Inn(const QString &name)
+	: Place(name)
+{}

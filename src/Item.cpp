@@ -1,11 +1,6 @@
 #include "Item.h"
 
-Item::Item()
-{
-
-}
-
-Item::~Item()
-{
-
-}
+// Carriable->fly weight ?
+Item::Item(int type)
+	: Carriable(5, 4), type_(type)
+{}

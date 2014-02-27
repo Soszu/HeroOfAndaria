@@ -3,6 +3,8 @@
 
 class QuestCarrier
 {
+public:
+	QuestCarrier();
 };
 
 #endif // QUESTCARRIER_H

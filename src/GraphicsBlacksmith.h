@@ -1,10 +1,13 @@
 #ifndef GRAPHICSBLACKSMITH_H
 #define GRAPHICSBLACKSMITH_H
 
-class GraphicsBlacksmith :  GraphicsPlace,  GraphicsEquipmentExchange
+#include "GraphicsEquipmentExchange.h"
+#include "GraphicsPlace.h"
+
+class GraphicsBlacksmith : public GraphicsPlace, public GraphicsEquipmentExchange
 {
 public:
-    GraphicsBlacksmith();
+	GraphicsBlacksmith();
 };
 
 #endif // GRAPHICSBLACKSMITH_H

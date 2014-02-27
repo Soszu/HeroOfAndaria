@@ -4,7 +4,7 @@
 class Menu
 {
 public:
-    Menu();
+	Menu();
 };
 
 #endif // MENU_H

@@ -1,6 +1,4 @@
-#include "Humanoid.h"
+#include "Character.h"
 
 Character::Character()
-{
-
-}
+{}

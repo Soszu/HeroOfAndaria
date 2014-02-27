@@ -1,10 +1,12 @@
 #ifndef LOCALMAP_H
 #define LOCALMAP_H
 
-class LocalMap :  Map
+#include "Map.h"
+
+class LocalMap : public Map
 {
 public:
-    LocalMap();
+	LocalMap(int width, int height);
 };
 
 #endif // LOCALMAP_H
