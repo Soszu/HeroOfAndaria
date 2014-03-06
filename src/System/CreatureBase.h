@@ -6,22 +6,24 @@ class CreatureBase
 public:
 	CreatureBase();
 	
-	int healthPoints() const;
-	int magicPoints() const;
+	int baseHitPoints() const;
+	int baseMagicPoints() const;
 	
 	int strength() const;
 	int endurance() const;
 	int agility() const;
+	int intelligence() const;
 
 private:
-	int uid;
+	int uid_;
 	
-	int healthPoints_;
-	int magicPoints_;
+	int baseHitPoints_;
+	int baseMagicPoints_;
 	
 	int strength_;
 	int endurance_;
 	int agility_;
+	int intelligence_;
 };
 
 #endif // CREATUREBASE_H
