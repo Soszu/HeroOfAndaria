@@ -7,13 +7,16 @@
 namespace HOA {
 	enum class Direction {
 		Front      = 0,
-		RightFront = 1,
-		RightRear  = 2,
-		Rear       = 3,
-		LeftRear   = 4,
-		LeftFront  = 5,
+		LeftFront  = 1,
+		Left       = 2,
+		LeftRear   = 3,
+		Rear       = 4,
+		RightRear  = 5,
+		Right      = 6,
+		RightFront = 7
 	};
 }
+
 
 class Movable : public Object
 {
@@ -29,7 +32,7 @@ public:
 private:
 	QPoint speed_;
 
-	void advance();
+	void advance(double dt);
 };
 
 #endif // MOVABLE_H

@@ -10,10 +10,10 @@ Q_OBJECT;
 public:
 	Object();
 
-	QPoint position();
+	QPoint position() const;
 	void setPosition(QPoint position);
-
-	int rotation() const;
+	
+	QPoint rotation() const;
 	void setRotation(QPoint rotation);
 
 signals:
