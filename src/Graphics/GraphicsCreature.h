@@ -2,11 +2,12 @@
 #define GRAPHICSCREATURE_H
 
 #include "Graphics/GraphicsObject.h"
+#include "System/Creature.h"
 
 class GraphicsCreature : public GraphicsObject
 {
 public:
-	GraphicsCreature();
+	GraphicsCreature(Creature *creature);
 };
 
 #endif // GRAPHICSCREATURE_H

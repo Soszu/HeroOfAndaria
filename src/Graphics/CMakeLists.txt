@@ -1,15 +1,16 @@
 set (HOAGraphics_SRCS
-	GraphicsBlacksmith.cpp
+# 	GraphicsBlacksmith.cpp
 	GraphicsCreature.cpp
-	GraphicsEquipmentExchange.cpp
-	GraphicsGlobalMap.cpp
-	GraphicsInn.cpp
+# 	GraphicsEquipmentExchange.cpp
+# 	GraphicsGlobalMap.cpp
+	GraphicsFactory.cpp
+# 	GraphicsInn.cpp
 	GraphicsItem.cpp
-	GraphicsLocalMap.cpp
-	GraphicsMap.cpp
+# 	GraphicsLocalMap.cpp
+# 	GraphicsMap.cpp
 	GraphicsObject.cpp
-	GraphicsPlace.cpp
-	GraphicsTown.cpp
+# 	GraphicsPlace.cpp
+# 	GraphicsTown.cpp
 )
 
 set (HOAGraphics_HDRS

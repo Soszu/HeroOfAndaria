@@ -11,6 +11,8 @@ class Creature : public EquipmentCarrier, public Movable
 public:
 	Creature();
 
+	virtual HOA::ObjectType objectType() const;
+
 	void attack(const Attack &attack) const;
 	void receiveAttack(const Attack &attack);
 

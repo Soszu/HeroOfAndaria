@@ -1,28 +1,28 @@
 set (HOASystem_SRCS
-	Attack.cpp
+# 	Attack.cpp
 	Carriable.cpp
 	Creature.cpp
-	EquipmentCarrier.cpp
-	Grid.cpp
-	Inn.cpp
-	LocalMap.cpp
-	Mission.cpp
+# 	EquipmentCarrier.cpp
+# 	Grid.cpp
+# 	Inn.cpp
+# 	LocalMap.cpp
+# 	Mission.cpp
 	Movable.cpp
 	Object.cpp
-	Quest.cpp
-	Tile.cpp
-	Blacksmith.cpp
-	Character.cpp
-	CreatureBase.cpp
-	GlobalMap.cpp
-	Human.cpp
-	Item.cpp
-	Map.cpp
-	Monster.cpp
-	NonHuman.cpp
-	Place.cpp
-	QuestCarrier.cpp
-	Town.cpp
+# 	Quest.cpp
+# 	Tile.cpp
+# 	Blacksmith.cpp
+# 	Character.cpp
+# 	CreatureBase.cpp
+# 	GlobalMap.cpp
+# 	Human.cpp
+# 	Item.cpp
+# 	Map.cpp
+# 	Monster.cpp
+# 	NonHuman.cpp
+# 	Place.cpp
+# 	QuestCarrier.cpp
+# 	Town.cpp
 )
 
 set (HOASystem_HDRS

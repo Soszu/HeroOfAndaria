@@ -4,3 +4,8 @@ Creature::Creature()
 {
 
 }
+
+HOA::ObjectType Creature::objectType() const
+{
+	return HOA::ObjectType::Creature;
+}

@@ -1,6 +1,5 @@
 #include "Graphics/GraphicsItem.h"
 
-GraphicsItem::GraphicsItem()
-{
-
-}
+GraphicsItem::GraphicsItem(Item *item)
+	: GraphicsObject((Object *)item)
+{}

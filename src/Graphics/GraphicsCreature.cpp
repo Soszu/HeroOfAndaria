@@ -1,6 +1,5 @@
 #include "Graphics/GraphicsCreature.h"
 
-GraphicsCreature::GraphicsCreature()
-{
-
-}
+GraphicsCreature::GraphicsCreature(Creature *creature)
+	: GraphicsObject((Object *)creature)
+{}
