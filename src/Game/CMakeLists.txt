@@ -6,6 +6,7 @@ set (HOAGame_SRCS
 
 set (HOAGame_HDRS
 	MainWindow.h
+	Menu.h
 )
 
 qt5_wrap_cpp (HOAGame_SRCS ${HOAGame_HDRS})
