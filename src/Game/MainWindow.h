@@ -12,12 +12,16 @@ Q_OBJECT;
 public:
 	MainWindow();
 	~MainWindow();
-	
+
 private:
-	Menu *menu;
-	GraphicsGlobalMap *globalMap;
-	GraphicsLocalMap *localMap;
+	GlobalMap *globalMap_;
+	Menu *menu_;
+	GraphicsGlobalMap *graphicsGlobalMap_;
+	GraphicsLocalMap *graphicsLocalMap_;
+
+	void initActions();
+	void initCursor();
+	void updateCursor();
 };
 
 #endif // MAINWINDOW_H
-

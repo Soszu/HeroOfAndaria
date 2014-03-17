@@ -5,7 +5,8 @@
 #include "System/Object.h"
 
 namespace HOA {
-	enum class Direction {
+	/** Numbers are important */
+	enum class Direction : quint8 {
 		Front      = 0,
 		LeftFront  = 1,
 		Left       = 2,
@@ -13,10 +14,10 @@ namespace HOA {
 		Rear       = 4,
 		RightRear  = 5,
 		Right      = 6,
-		RightFront = 7
+		RightFront = 7,
+		None       = 8,
 	};
 }
-
 
 class Movable : public Object
 {
@@ -29,10 +30,12 @@ public:
 	void move(HOA::Direction direction);
 	void stop();
 
+protected:
+	void advance();
+
 private:
 	QPoint speed_;
-
-	void advance(double dt);
+	HOA::Direction moveDirection_;
 };
 
 #endif // MOVABLE_H

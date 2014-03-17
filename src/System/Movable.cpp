@@ -1,23 +1,23 @@
 #include "System/Movable.h"
 #include <cmath>
 
-static QPoint rotateVector(QPoint const & vector, double angle)
+static QPoint rotateVector(QPoint const &vector, qreal angle)
 {
-	double x = vector.x();
-	double y = vector.y();
+	qreal x = vector.x();
+	qreal y = vector.y();
 
-	double px = x * cos(angle) + y * sin(angle);
-	double py = x * sin(angle) + y * cos(angle);
+	qreal px = x * cos(angle) - y * sin(angle);
+	qreal py = x * sin(angle) + y * cos(angle);
 
 	return QPoint((int)px, (int)py);
 }
 
 static QPoint vectorLength(QPoint const &vector, int length)
 {
-	double x = vector.x();
-	double y = vector.y();
+	qreal x = vector.x();
+	qreal y = vector.y();
 
-	double curLength = sqrt(pow(x, 2) + pow(y,2));
+	qreal curLength = sqrt(pow(x, 2) + pow(y, 2));
 
 	x /= curLength;
 	y /= curLength;
@@ -29,28 +29,31 @@ static QPoint vectorLength(QPoint const &vector, int length)
 }
 
 Movable::Movable()
-	: speed_(QPoint(0,0))
+	: speed_(QPoint(0,0)), moveDirection_(HOA::Direction::None)
 {}
 
 QPoint Movable::speed() const
 {
-	return this->speed_;
+	return speed_;
 }
 
 void Movable::stop()
 {
-	this->speed_ = QPoint(0,0);
+	moveDirection_ = HOA::Direction::None;
 }
 
 void Movable::move(HOA::Direction direction)
 {
-	QPoint dir = rotateVector(this->rotation(), ((double)direction) * (M_PI / 4));
-	this->speed_ = std::move(vectorLength(dir, this->maxSpeed()));
+	moveDirection_ = direction;
 }
 
-void Movable::advance(double dt) {
-	this->setPosition(this->position() + this->speed() * dt);
+void Movable::advance()
+{
+	if (moveDirection_ != HOA::Direction::None) {
+		QPoint dir = rotateVector(rotation() - position(), ((qreal)moveDirection_) * (-M_PI / 4));
+		speed_ = std::move(vectorLength(dir, maxSpeed()));
+
+		setPosition(position() + speed() * REAL_ADVANCE_TIMEOUT);
+	}
+	Object::advance();
 }
-
-
-

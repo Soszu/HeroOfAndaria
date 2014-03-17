@@ -13,7 +13,9 @@ public:
 
 	virtual HOA::ObjectType objectType() const;
 
-	void attack(const Attack &attack) const;
+	int maxSpeed() const;
+
+	void attack(const Attack &attack);
 	void receiveAttack(const Attack &attack);
 
 private:

@@ -12,7 +12,7 @@ namespace HOA {
 class Tile
 {
 public:
-	Tile(HOA::Terrain terrain, int height);
+	Tile(HOA::Terrain terrain = HOA::Terrain::Grass, int height = 0);
 
 	HOA::Terrain terrain() const;
 	int height() const;
