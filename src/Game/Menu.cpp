@@ -4,30 +4,30 @@
 
 Menu::Menu(QWidget *parent) :
 	QWidget(parent),
-	backgroundImage("img/menuBackground.png")
+	backgroundImage(Data::Images::MenuBackground)
 {
 	stackLayout = new QStackedLayout;
 	QVBoxLayout *layout = new QVBoxLayout;
 
 	// default submenu
 	defaultSubmenu = new DefaultSubmenu;
-	connect(defaultSubmenu, SIGNAL(newGamePressed()), this, SLOT(setNewGameSubmenu()));
-	connect(defaultSubmenu, SIGNAL(saveGamePressed()), this, SLOT(setSaveGameSubmenu()));
-	connect(defaultSubmenu, SIGNAL(loadGamePressed()), this, SLOT(setLoadGameSubmenu()));
-	connect(defaultSubmenu, SIGNAL(quitPressed()), this, SIGNAL(quitActivated()));
+	connect(defaultSubmenu, &DefaultSubmenu::newGamePressed,  this, &Menu::setNewGameSubmenu);
+	connect(defaultSubmenu, &DefaultSubmenu::saveGamePressed, this, &Menu::setSaveGameSubmenu);
+	connect(defaultSubmenu, &DefaultSubmenu::loadGamePressed, this, &Menu::setLoadGameSubmenu);
+	connect(defaultSubmenu, &DefaultSubmenu::quitPressed,     this, &Menu::quitActivated);
 	stackLayout->addWidget(defaultSubmenu);
 
 	// new game submenu
 	newGameSubmenu = new NewGameSubmenu;
-	connect(newGameSubmenu, SIGNAL(returnButtonPressed()), this, SLOT(setDefaultSubmenu()));
-	connect(newGameSubmenu, SIGNAL(newGameActivated()), this, SIGNAL(newGameActivated()));
+	connect(newGameSubmenu, &NewGameSubmenu::returnButtonPressed, this, &Menu::setDefaultSubmenu);
+	connect(newGameSubmenu, &NewGameSubmenu::newGameActivated,    this, &Menu::newGameActivated);
 	stackLayout->addWidget(newGameSubmenu);
 
 	// save / load game submenu
 	saveGameSubmenu = new SaveGameSubmenu;
-	connect(saveGameSubmenu, SIGNAL(returnButtonPressed()), this, SLOT(setDefaultSubmenu()));
-	connect(saveGameSubmenu, SIGNAL(saveGameActivated()), this, SIGNAL(saveGameActivated()));
-	connect(saveGameSubmenu, SIGNAL(loadGameActivated()), this, SIGNAL(loadGameActivated()));
+	connect(saveGameSubmenu, &SaveGameSubmenu::returnButtonPressed, this, &Menu::setDefaultSubmenu);
+	connect(saveGameSubmenu, &SaveGameSubmenu::saveGameActivated, this, &Menu::saveGameActivated);
+	connect(saveGameSubmenu, &SaveGameSubmenu::loadGameActivated, this, &Menu::loadGameActivated);
 	stackLayout->addWidget(saveGameSubmenu);
 
 	layout->addSpacerItem(new QSpacerItem(backgroundImage.width(), backgroundImage.height()));
@@ -93,24 +93,24 @@ ImageButton::ImageButton(ImageButtonType type, QString text, QWidget *parent) :
 {
 	switch (type) {
 		case MENU_BUTTON:
-			normalImage_.load("img/menuButtonsNormal.png");
-			darkImage_.load("img/menuButtonsDark.png");
+			normalImage_.load(Data::Images::MenuButtonsNormal);
+			darkImage_.load(Data::Images::MenuButtonsDark);
 			break;
 		case NEXT_ARROW_BUTTON:
-			normalImage_.load("img/nextButtonNormal.png");
-			darkImage_.load("img/nextButtonDark.png");
+			normalImage_.load(Data::Images::NextButtonNormal);
+			darkImage_.load(Data::Images::NextButtonDark);
 			break;
 		case PREV_ARROW_BUTTON:
-			normalImage_.load("img/prevButtonNormal.png");
-			darkImage_.load("img/prevButtonDark.png");
+			normalImage_.load(Data::Images::PrevButtonNormal);
+			darkImage_.load(Data::Images::PrevButtonDark);
 			break;
 		case UP_MENU_BUTTON:
-			normalImage_.load("img/upButtonNormal.png");
-			darkImage_.load("img/upButtonDark.png");
+			normalImage_.load(Data::Images::UpButtonNormal);
+			darkImage_.load(Data::Images::UpButtonDark);
 			break;
 		case DOWN_MENU_BUTTON:
-			normalImage_.load("img/downButtonNormal.png");
-			darkImage_.load("img/downButtonDark.png");
+			normalImage_.load(Data::Images::DownButtonNormal);
+			darkImage_.load(Data::Images::DownButtonDark);
 			break;
 	}
 	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -129,17 +129,15 @@ QSize ImageButton::sizeHint() const
 void ImageButton::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
-	if (isDown() || !isEnabled()) {
+	if (isDown() || !isEnabled())
 		painter.drawPixmap(rect(), darkImage_);
-	} else {
+	else
 		painter.drawPixmap(rect(), normalImage_);
-	}
 
 	QFont font = QApplication::font();
 	font.setPointSize(fontPointSize_);
-	if (hasFocus()) {
+	if (hasFocus())
 		font.setBold(true);
-	}
 
 	QPen pen(Qt::black);
 	painter.setPen(pen);
@@ -156,9 +154,9 @@ OptionsListWidget::OptionsListWidget(QWidget *parent) :
 	QHBoxLayout *layout = new QHBoxLayout;
 
 	prevButton = new ImageButton(ImageButton::PREV_ARROW_BUTTON);
-	connect(prevButton, SIGNAL(clicked()), this, SLOT(prevOption()));
+	connect(prevButton, &ImageButton::clicked, this, &OptionsListWidget::prevOption);
 	nextButton = new ImageButton(ImageButton::NEXT_ARROW_BUTTON);
-	connect(nextButton, SIGNAL(clicked()), this, SLOT(nextOption()));
+	connect(nextButton, &ImageButton::clicked, this, &OptionsListWidget::nextOption);
 
 	label = new QLabel();
 	label->setAlignment(Qt::AlignCenter);
@@ -177,9 +175,8 @@ QSize OptionsListWidget::sizeHint() const
 void OptionsListWidget::addOption(QString option)
 {
 	options.append(option);
-	if (options.size() == 1) {
+	if (options.size() == 1)
 		label->setText(option);
-	}
 }
 
 QString OptionsListWidget::getOption() const
@@ -219,13 +216,13 @@ MenuDialogWidget::MenuDialogWidget(QWidget *parent) :
 	layout->setAlignment(messageLabel, Qt::AlignCenter);
 
 	yesButton = new ImageButton(ImageButton::MENU_BUTTON, tr("Yes"));
-	noButton = new ImageButton(ImageButton::MENU_BUTTON, tr("No"));
-	connect(yesButton, SIGNAL(clicked()), this, SIGNAL(yesPressed()));
-	connect(noButton, SIGNAL(clicked()), this, SIGNAL(noPressed()));
+	noButton  = new ImageButton(ImageButton::MENU_BUTTON, tr("No"));
+	connect(yesButton, &ImageButton::clicked, this, &MenuDialogWidget::yesPressed);
+	connect(noButton,  &ImageButton::clicked, this, &MenuDialogWidget::noPressed);
 	buttonsLayout->addWidget(noButton);
 	buttonsLayout->addWidget(yesButton);
 	buttonsLayout->setAlignment(yesButton, Qt::AlignCenter);
-	buttonsLayout->setAlignment(noButton, Qt::AlignCenter);
+	buttonsLayout->setAlignment(noButton,  Qt::AlignCenter);
 
 	layout->addLayout(buttonsLayout);
 	setLayout(layout);
@@ -302,22 +299,22 @@ GameSavesWidget::GameSavesWidget(int rows, QVector<QString> &saves, QWidget *par
 	QVBoxLayout *layout = new QVBoxLayout();
 
 	saveInput = new MenuInputWidget();
-	connect(saveInput, SIGNAL(textChanged(QString)), this, SLOT(updateSlots()));
-	connect(saveInput, SIGNAL(textChanged(QString)), saveInput, SLOT(unhighlight()));
+	connect(saveInput, &MenuInputWidget::textChanged, this, &GameSavesWidget::updateSlots);
+	connect(saveInput, &MenuInputWidget::textChanged, saveInput, &MenuInputWidget::unhighlight);
 	layout->addWidget(saveInput);
 	layout->setAlignment(saveInput, Qt::AlignCenter);
 
 	upButton = new ImageButton(ImageButton::UP_MENU_BUTTON);
 	downButton = new ImageButton(ImageButton::DOWN_MENU_BUTTON);
-	connect(upButton, SIGNAL(clicked()), this, SLOT(upButtonClicked()));
-	connect(downButton, SIGNAL(clicked()), this, SLOT(downButtonClicked()));
+	connect(upButton,   &ImageButton::clicked,   this, &GameSavesWidget::upButtonClicked);
+	connect(downButton, &ImageButton::clicked,   this, &GameSavesWidget::downButtonClicked);
 
 	layout->addWidget(upButton);
 	layout->setAlignment(upButton, Qt::AlignCenter);
 
 	for (int i = 0; i < visibleRows; i++) {
 		GameSavesSlot *slot = new GameSavesSlot(i);
-		connect(slot, SIGNAL(clicked(int)), this, SLOT(saveSlotClicked(int)));
+		connect(slot, &GameSavesSlot::clicked, this, &GameSavesWidget::saveSlotClicked);
 		savesSlots.append(slot);
 
 		layout->addWidget(slot);
@@ -358,11 +355,10 @@ void GameSavesWidget::updateSlots()
 	for (int i = 0; i < visibleRows; i++) {
 		if (firstIndex + i < saves.size()) {
 			savesSlots[i]->setText(saves[firstIndex + i]);
-			if (saveInput->text() == savesSlots[i]->text()) {
+			if (saveInput->text() == savesSlots[i]->text())
 				savesSlots[i]->highlight();
-			} else {
+			else
 				savesSlots[i]->unhighlight();
-			}
 		} else {
 			savesSlots[i]->setText("");
 		}
@@ -416,9 +412,8 @@ NewGameSubmenu::NewGameSubmenu(QWidget *parent) :
 	// race option
 	QLabel *raceLabel = new QLabel(tr("Character race: "));
 	raceOption = new OptionsListWidget;
-	for (QString option : {tr("Human"), tr("Elf"), tr("Orc")}) {
+	for (QString option : {tr("Human"), tr("Elf"), tr("Orc")})
 		raceOption->addOption(option);
-	}
 	layout->addWidget(raceLabel);
 	layout->setAlignment(raceLabel, Qt::AlignCenter);
 	layout->addWidget(raceOption);
@@ -427,18 +422,17 @@ NewGameSubmenu::NewGameSubmenu(QWidget *parent) :
 	// difficulty option
 	QLabel *difficultyLabel = new QLabel(tr("Game difficulty: "));
 	difficultyOption = new OptionsListWidget;
-	for (QString option : {tr("Easy"), tr("Medium"), tr("Hard")}) {
+	for (QString option : {tr("Easy"), tr("Medium"), tr("Hard")})
 		difficultyOption->addOption(option);
-	}
 	layout->addWidget(difficultyLabel);
 	layout->setAlignment(difficultyLabel, Qt::AlignCenter);
 	layout->addWidget(difficultyOption);
 	layout->setAlignment(difficultyOption, Qt::AlignCenter);
 
 	startButton = new ImageButton(ImageButton::MENU_BUTTON, tr("Start"));
-	connect(startButton, SIGNAL(clicked()), this, SLOT(startButtonPressed()));
+	connect(startButton, &ImageButton::clicked, this, &NewGameSubmenu::startButtonPressed);
 	returnButton = new ImageButton(ImageButton::MENU_BUTTON, tr("Retrurn"));
-	connect(returnButton, SIGNAL(clicked()), this, SIGNAL(returnButtonPressed()));
+	connect(returnButton, &ImageButton::clicked, this, &NewGameSubmenu::returnButtonPressed);
 
 	layout->addWidget(startButton);
 	layout->setAlignment(startButton, Qt::AlignCenter);
@@ -474,9 +468,8 @@ SaveGameSubmenu::SaveGameSubmenu(QWidget *parent) :
 	this->setStyleSheet("QLabel {color: #94e4fc; }" );
 
 	// for testing only
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 10; i++)
 		saves.append("save number " + QString::number(i + 1));
-	}
 
 	layout = new QStackedLayout;
 
@@ -491,15 +484,15 @@ SaveGameSubmenu::SaveGameSubmenu(QWidget *parent) :
 
 	saveButton = new ImageButton(ImageButton::MENU_BUTTON, tr("Save game"));
 	loadButton = new ImageButton(ImageButton::MENU_BUTTON, tr("Load Game"));
-	connect(saveButton, SIGNAL(clicked()), this, SLOT(trySaveGame()));
-	connect(loadButton, SIGNAL(clicked()), this, SLOT(tryLoadGame()));
+	connect(saveButton, &ImageButton::clicked, this, &SaveGameSubmenu::trySaveGame);
+	connect(loadButton, &ImageButton::clicked, this, &SaveGameSubmenu::tryLoadGame);
 	mainWidgetLayout->addWidget(saveButton);
 	mainWidgetLayout->setAlignment(saveButton, Qt::AlignCenter);
 	mainWidgetLayout->addWidget(loadButton);
 	mainWidgetLayout->setAlignment(loadButton, Qt::AlignCenter);
 
 	returnButton = new ImageButton(ImageButton::MENU_BUTTON, tr("Return"));
-	connect(returnButton, SIGNAL(clicked()), this, SIGNAL(returnButtonPressed()));
+	connect(returnButton, &ImageButton::clicked, this, &SaveGameSubmenu::returnButtonPressed);
 	mainWidgetLayout->addWidget(returnButton);
 	mainWidgetLayout->setAlignment(returnButton, Qt::AlignCenter);
 
@@ -508,8 +501,8 @@ SaveGameSubmenu::SaveGameSubmenu(QWidget *parent) :
 	// -------------- Dialog widget
 	dialog = new MenuDialogWidget;
 	dialog->setMessage(tr("File alredy exists. Do you want to replace it?"));
-	connect(dialog, SIGNAL(yesPressed()), this, SLOT(yesDialogAnswer()));
-	connect(dialog, SIGNAL(noPressed()), this, SLOT(noDialogAnswer()));
+	connect(dialog, &MenuDialogWidget::yesPressed, this, &SaveGameSubmenu::yesDialogAnswer);
+	connect(dialog, &MenuDialogWidget::noPressed,  this, &SaveGameSubmenu::noDialogAnswer);
 
 	layout->addWidget(mainWidget);
 	layout->addWidget(dialog);
@@ -542,22 +535,20 @@ void SaveGameSubmenu::trySaveGame()
 	if (name.isEmpty()) {
 		gameSavesWidget->highlightInput();
 	} else {
-		if (saves.contains(name)) {
+		if (saves.contains(name))
 			layout->setCurrentIndex(1);
-		} else {
+		else
 			emit saveGameActivated();
-		}
 	}
 }
 
 void SaveGameSubmenu::tryLoadGame()
 {
 	QString name = gameSavesWidget->getSaveName();
-	if (!saves.contains(name)) {
+	if (!saves.contains(name))
 		gameSavesWidget->highlightInput();
-	} else {
+	else
 		emit loadGameActivated();
-	}
 }
 
 void SaveGameSubmenu::noDialogAnswer()
@@ -577,21 +568,27 @@ DefaultSubmenu::DefaultSubmenu(QWidget *parent) :
 	QWidget(parent)
 {
 	continueBtn = new ImageButton(ImageButton::MENU_BUTTON, tr("Continue"));
-	connect(continueBtn, SIGNAL(clicked()), this, SIGNAL(continuePressed()));
-	newGameBtn = new ImageButton(ImageButton::MENU_BUTTON, tr("New game"));
-	connect(newGameBtn, SIGNAL(clicked()), this, SIGNAL(newGamePressed()));
+	connect(continueBtn, &ImageButton::clicked, this, &DefaultSubmenu::continuePressed);
+
+	newGameBtn  = new ImageButton(ImageButton::MENU_BUTTON, tr("New game"));
+	connect(newGameBtn, &ImageButton::clicked, this, &DefaultSubmenu::newGamePressed);
+
 	loadGameBtn = new ImageButton(ImageButton::MENU_BUTTON, tr("Load game"));
-	connect(loadGameBtn, SIGNAL(clicked()), this, SIGNAL(loadGamePressed()));
+	connect(loadGameBtn, &ImageButton::clicked, this, &DefaultSubmenu::loadGamePressed);
+
 	saveGameBtn = new ImageButton(ImageButton::MENU_BUTTON, tr("Save game"));
-	connect(saveGameBtn, SIGNAL(clicked()), this, SIGNAL(saveGamePressed()));
-	optionsBtn = new ImageButton(ImageButton::MENU_BUTTON, tr("Options"));
-	creditsBtn = new ImageButton(ImageButton::MENU_BUTTON, tr("Credits"));
-	quitBtn = new ImageButton(ImageButton::MENU_BUTTON, tr("Quit"));
-	connect(quitBtn, SIGNAL(clicked()), this, SIGNAL(quitPressed()));
+	connect(saveGameBtn, &ImageButton::clicked, this, &DefaultSubmenu::saveGamePressed);
+
+	optionsBtn  = new ImageButton(ImageButton::MENU_BUTTON, tr("Options"));
+
+	creditsBtn  = new ImageButton(ImageButton::MENU_BUTTON, tr("Credits"));
+
+	quitBtn     = new ImageButton(ImageButton::MENU_BUTTON, tr("Quit"));
+	connect(quitBtn, &ImageButton::clicked, this, &DefaultSubmenu::quitPressed);
 
 	QVBoxLayout *layout = new QVBoxLayout;
 	for (ImageButton *btn : {continueBtn, newGameBtn, loadGameBtn,
-		 saveGameBtn, optionsBtn, creditsBtn, quitBtn}) {
+		saveGameBtn, optionsBtn, creditsBtn, quitBtn}) {
 		layout->addWidget(btn);
 		layout->setAlignment(btn, Qt::AlignCenter);
 	}

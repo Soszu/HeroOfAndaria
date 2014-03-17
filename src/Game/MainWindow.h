@@ -12,11 +12,23 @@ Q_OBJECT;
 public:
 	MainWindow();
 	~MainWindow();
-	
+
 private:
 	Menu *menu;
 	GraphicsGlobalMap *globalMap;
 	GraphicsLocalMap *localMap;
+
+	QAction *actionQuit;
+
+	void initMenu();
+	void initActions();
+
+private slots:
+	void onContinueActivated();
+	void onNewGameActivated();
+	void onLoadGameActivated();
+	void onSaveGameActivated();
+	void onQuitActivated();
 };
 
 #endif // MAINWINDOW_H

@@ -11,8 +11,7 @@ class DefaultSubmenu;
 
 class Menu : public QWidget
 {
-	Q_OBJECT
-
+Q_OBJECT;
 public:
 	Menu(QWidget *parent = 0);
 
@@ -48,17 +47,17 @@ public slots:
 
 class ImageButton : public QPushButton
 {
-	Q_OBJECT
+Q_OBJECT;
 public:
-	enum ImageButtonType
-	{
+	enum ImageButtonType : quint8 {
 		MENU_BUTTON,
 		NEXT_ARROW_BUTTON,
 		PREV_ARROW_BUTTON,
 		UP_MENU_BUTTON,
 		DOWN_MENU_BUTTON
 	};
-	ImageButton(QPixmap normalImage, QPixmap darkImage,	QString text = "", QWidget *parent = 0);
+
+	ImageButton(QPixmap normalImage, QPixmap darkImage, QString text = "", QWidget *parent = 0);
 	ImageButton(ImageButtonType type, QString text = "", QWidget *parent = 0);
 	void setFontPointSize(int value);
 	QSize sizeHint() const;
@@ -78,7 +77,7 @@ protected:
 
 class OptionsListWidget : public QWidget
 {
-	Q_OBJECT
+Q_OBJECT;
 public:
 	OptionsListWidget(QWidget *parent = 0);
 
@@ -86,13 +85,14 @@ public:
 	QString getOption() const;
 
 	QSize sizeHint() const;
+
 private:
 	static const int WIDTH = 200;
 
 	ImageButton *prevButton;
 	ImageButton *nextButton;
 	QLabel *label;
-	QVector<QString> options;
+	QVector <QString> options;
 
 	int currentOption;
 
@@ -108,7 +108,7 @@ public slots:
 
 class MenuDialogWidget : public QWidget
 {
-	Q_OBJECT
+Q_OBJECT;
 public:
 	MenuDialogWidget(QWidget *parent = 0);
 
@@ -128,7 +128,7 @@ signals:
 
 class MenuInputWidget : public QLineEdit
 {
-	Q_OBJECT
+Q_OBJECT;
 public:
 	MenuInputWidget(int maxLength = 16, QWidget *parent = 0);
 
@@ -146,7 +146,7 @@ public slots:
 
 class GameSavesSlot : public QLabel
 {
-	Q_OBJECT
+Q_OBJECT;
 public:
 	GameSavesSlot(int index, QWidget *parent = 0);
 	QSize sizeHint() const;
@@ -175,7 +175,7 @@ public slots:
 
 class GameSavesWidget : public QWidget
 {
-	Q_OBJECT
+Q_OBJECT;
 public:
 	GameSavesWidget(int rows, QVector<QString> &saves, QWidget *parent = 0);
 	void clearContent();
@@ -209,10 +209,11 @@ public slots:
 
 class NewGameSubmenu : public QWidget
 {
-	Q_OBJECT
+Q_OBJECT;
 public:
 	NewGameSubmenu(QWidget *parent = 0);
 	void clearContent();
+
 private:
 	MenuInputWidget *nameField;
 	OptionsListWidget *raceOption;
@@ -233,9 +234,9 @@ public slots:
 
 class SaveGameSubmenu : public QWidget
 {
-	Q_OBJECT
+Q_OBJECT;
 public:
-	enum MenuType {
+	enum MenuType : quint8 {
 		SAVE_MENU,
 		LOAD_MENU
 	};
@@ -257,6 +258,7 @@ private:
 	MenuDialogWidget *dialog;
 
 	QVector<QString> saves;
+
 signals:
 	void returnButtonPressed();
 	void saveGameActivated();
@@ -270,13 +272,14 @@ public slots:
 
 };
 
-/* ---------------  DefaultSubmenu class -------------------------- */
+/* ---------------  DefaultSubmenu class --------------------------- */
 
 class DefaultSubmenu : public QWidget
 {
-	Q_OBJECT
+Q_OBJECT;
 public:
 	DefaultSubmenu(QWidget *parent = 0);
+
 private:
 	ImageButton *continueBtn;
 	ImageButton *newGameBtn;
@@ -292,7 +295,25 @@ signals:
 	void saveGamePressed();
 	void loadGamePressed();
 	void quitPressed();
-
 };
+
+/* ---------------  Data::Images namespace ------------------------- */
+
+namespace Data {
+	namespace Images {
+		const QString Preffix           = "img";
+		const QString MenuBackground    = Preffix + "/menuBackground.png";
+		const QString MenuButtonsNormal = Preffix + "/menuButtonsNormal.png";
+		const QString MenuButtonsDark   = Preffix + "/menuButtonsDark.png";
+		const QString NextButtonNormal  = Preffix + "/nextButtonNormal.png";
+		const QString NextButtonDark    = Preffix + "/nextButtonDark.png";
+		const QString PrevButtonNormal  = Preffix + "/prevButtonNormal.png";
+		const QString PrevButtonDark    = Preffix + "/prevButtonDark.png";
+		const QString UpButtonNormal    = Preffix + "/upButtonNormal.png";
+		const QString UpButtonDark      = Preffix + "/upButtonDark.png";
+		const QString DownButtonNormal  = Preffix + "/downButtonNormal.png";
+		const QString DownButtonDark    = Preffix + "/downButtonDark.png";
+	}
+}
 
 #endif // MENU_H
