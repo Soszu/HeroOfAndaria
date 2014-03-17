@@ -14,14 +14,24 @@ public:
 	~MainWindow();
 
 private:
-	Menu *menu;
-	GraphicsGlobalMap *globalMap;
-	GraphicsLocalMap *localMap;
+	GlobalMap *globalMap_;
+
+	static const int MENU_INDEX       = 0;
+	static const int GLOBAL_MAP_INDEX = 1;
+
+	QStackedWidget *stackedWidget_;
+	Menu *menu_;
+	GraphicsGlobalMap *graphicsGlobalMap_;
+	GraphicsLocalMap *graphicsLocalMap_;
 
 	QAction *actionQuit;
 
-	void initMenu();
 	void initActions();
+	void initMenu();
+	void initGlobalMap();
+	void initCursor();
+	void initLayout();
+	void initWindow();
 
 private slots:
 	void onContinueActivated();
@@ -29,7 +39,11 @@ private slots:
 	void onLoadGameActivated();
 	void onSaveGameActivated();
 	void onQuitActivated();
+
+	void onMenuActivated();
+	void onGlobalMapActivated();
+
+	void updateCursor();
 };
 
 #endif // MAINWINDOW_H
-

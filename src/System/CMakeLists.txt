@@ -1,32 +1,33 @@
 set (HOASystem_SRCS
 # 	Attack.cpp
-	Carriable.cpp
-	Creature.cpp
-# 	EquipmentCarrier.cpp
-# 	Grid.cpp
-# 	Inn.cpp
-# 	LocalMap.cpp
-# 	Mission.cpp
-	Movable.cpp
-	Object.cpp
-# 	Quest.cpp
-# 	Tile.cpp
 # 	Blacksmith.cpp
-# 	Character.cpp
-# 	CreatureBase.cpp
-# 	GlobalMap.cpp
-# 	Human.cpp
+	Carriable.cpp
+	Character.cpp
+	Creature.cpp
+	CreatureBase.cpp
+	EquipmentCarrier.cpp
+	GlobalMap.cpp
+	Grid.cpp
+	Human.cpp
+# 	Inn.cpp
 # 	Item.cpp
-# 	Map.cpp
+# 	LocalMap.cpp
+	Map.cpp
+# 	Mission.cpp
 # 	Monster.cpp
+	Movable.cpp
 # 	NonHuman.cpp
+	Object.cpp
 # 	Place.cpp
-# 	QuestCarrier.cpp
+# 	Quest.cpp
+	QuestCarrier.cpp
+	Tile.cpp
 # 	Town.cpp
 )
 
 set (HOASystem_HDRS
 	Object.h
+	Map.h
 )
 
 qt5_wrap_cpp (HOASystem_SRCS ${HOASystem_HDRS})

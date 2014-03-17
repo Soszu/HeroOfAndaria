@@ -21,6 +21,7 @@ Menu::Menu(QWidget *parent) :
 	newGameSubmenu = new NewGameSubmenu;
 	connect(newGameSubmenu, &NewGameSubmenu::returnButtonPressed, this, &Menu::setDefaultSubmenu);
 	connect(newGameSubmenu, &NewGameSubmenu::newGameActivated,    this, &Menu::newGameActivated);
+	connect(newGameSubmenu, &NewGameSubmenu::newGameActivated,    this, &Menu::setDefaultSubmenu);
 	stackLayout->addWidget(newGameSubmenu);
 
 	// save / load game submenu
@@ -431,7 +432,7 @@ NewGameSubmenu::NewGameSubmenu(QWidget *parent) :
 
 	startButton = new ImageButton(ImageButton::MENU_BUTTON, tr("Start"));
 	connect(startButton, &ImageButton::clicked, this, &NewGameSubmenu::startButtonPressed);
-	returnButton = new ImageButton(ImageButton::MENU_BUTTON, tr("Retrurn"));
+	returnButton = new ImageButton(ImageButton::MENU_BUTTON, tr("Return"));
 	connect(returnButton, &ImageButton::clicked, this, &NewGameSubmenu::returnButtonPressed);
 
 	layout->addWidget(startButton);

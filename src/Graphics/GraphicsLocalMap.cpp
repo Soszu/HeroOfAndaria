@@ -1,6 +1,5 @@
 #include "Graphics/GraphicsLocalMap.h"
 
-GraphicsLocalMap::GraphicsLocalMap()
-{
-
-}
+GraphicsLocalMap::GraphicsLocalMap(LocalMap *map)
+	: GraphicsMap(map)
+{}

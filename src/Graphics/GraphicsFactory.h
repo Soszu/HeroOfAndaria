@@ -8,8 +8,8 @@
 class GraphicsFactory
 {
 public:
-	GraphicsObject * get(Object *object);
-	GraphicsObject * get(const Object *object);
+	static GraphicsObject * get(Object *object);
+	static GraphicsObject * get(const Object *object);
 
 private:
 	GraphicsFactory() = delete;

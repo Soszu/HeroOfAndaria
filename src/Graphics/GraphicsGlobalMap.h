@@ -3,11 +3,12 @@
 
 #include <QtWidgets>
 #include "Graphics/GraphicsMap.h"
+#include "System/GlobalMap.h"
 
 class GraphicsGlobalMap : public GraphicsMap
 {
 public:
-	GraphicsGlobalMap();
+	GraphicsGlobalMap(GlobalMap *map);
 };
 
 #endif // GRAPHICSGLOBALMAP_H

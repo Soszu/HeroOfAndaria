@@ -1,6 +1,5 @@
 #include "Graphics/GraphicsGlobalMap.h"
 
-GraphicsGlobalMap::GraphicsGlobalMap()
-{
-
-}
+GraphicsGlobalMap::GraphicsGlobalMap(GlobalMap *map)
+	: GraphicsMap(map)
+{}

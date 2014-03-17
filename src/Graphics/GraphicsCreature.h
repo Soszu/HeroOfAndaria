@@ -8,6 +8,11 @@ class GraphicsCreature : public GraphicsObject
 {
 public:
 	GraphicsCreature(Creature *creature);
+
+private:
+	QRectF boundingRect() const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
+	void advance();
 };
 
 #endif // GRAPHICSCREATURE_H
