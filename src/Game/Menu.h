@@ -139,7 +139,6 @@ private:
 public slots:
 	void highlight();
 	void unhighlight();
-
 };
 
 /* ---------------  GameSavesSlot class -------------------------- */
@@ -227,7 +226,6 @@ signals:
 
 public slots:
 	void startButtonPressed();
-
 };
 
 /* ---------------  SaveGameSubmenu class -------------------------- */
@@ -269,7 +267,6 @@ public slots:
 	void tryLoadGame();
 	void noDialogAnswer();
 	void yesDialogAnswer();
-
 };
 
 /* ---------------  DefaultSubmenu class --------------------------- */

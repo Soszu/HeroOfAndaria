@@ -11,6 +11,7 @@ Menu::Menu(QWidget *parent) :
 
 	// default submenu
 	defaultSubmenu = new DefaultSubmenu;
+	connect(defaultSubmenu, &DefaultSubmenu::continuePressed, this, &Menu::continueActivated);
 	connect(defaultSubmenu, &DefaultSubmenu::newGamePressed,  this, &Menu::setNewGameSubmenu);
 	connect(defaultSubmenu, &DefaultSubmenu::saveGamePressed, this, &Menu::setSaveGameSubmenu);
 	connect(defaultSubmenu, &DefaultSubmenu::loadGamePressed, this, &Menu::setLoadGameSubmenu);

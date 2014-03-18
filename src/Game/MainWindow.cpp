@@ -27,10 +27,10 @@ void MainWindow::initMenu()
 
 void MainWindow::initActions()
 {
-	actionQuit = new QAction(this);
-	actionQuit->setShortcut(tr("Ctrl+Q"));
-	connect(actionQuit, &QAction::triggered, this, &MainWindow::onQuitActivated);
-	addAction(actionQuit);
+	actionQuit_ = new QAction(this);
+	actionQuit_->setShortcut(tr("Ctrl+Q"));
+	connect(actionQuit_, &QAction::triggered, this, &MainWindow::onQuitActivated);
+	addAction(actionQuit_);
 }
 
 void MainWindow::initGlobalMap()

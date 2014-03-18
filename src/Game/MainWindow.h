@@ -24,7 +24,7 @@ private:
 	GraphicsGlobalMap *graphicsGlobalMap_;
 	GraphicsLocalMap *graphicsLocalMap_;
 
-	QAction *actionQuit;
+	QAction *actionQuit_;
 
 	void initActions();
 	void initMenu();
