@@ -9,8 +9,8 @@ set (HOAGraphics_SRCS
 	GraphicsLocalMap.cpp
 	GraphicsMap.cpp
 	GraphicsObject.cpp
-# 	GraphicsPlace.cpp
-# 	GraphicsTown.cpp
+ 	GraphicsPlace.cpp
+ 	GraphicsTown.cpp
 )
 
 set (HOAGraphics_HDRS

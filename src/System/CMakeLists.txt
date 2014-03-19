@@ -18,11 +18,11 @@ set (HOASystem_SRCS
 	Movable.cpp
 # 	NonHuman.cpp
 	Object.cpp
-# 	Place.cpp
+ 	Place.cpp
 # 	Quest.cpp
 	QuestCarrier.cpp
 	Tile.cpp
-# 	Town.cpp
+ 	Town.cpp
 )
 
 set (HOASystem_HDRS

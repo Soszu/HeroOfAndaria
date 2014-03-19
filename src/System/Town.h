@@ -11,7 +11,7 @@ public:
 	Town();
 
 	const QVector <Place *> & places() const;
-
+	void visitPlace(Place * p);
 private:
 	QVector <Place *> places_;
 };

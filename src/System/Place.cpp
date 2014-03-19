@@ -5,3 +5,8 @@ Place::Place(const QString &name)
 {
 
 }
+
+QString Place::name() const
+{
+	return this->name_;
+}
