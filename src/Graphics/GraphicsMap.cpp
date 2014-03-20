@@ -1,5 +1,6 @@
 #include "Graphics/GraphicsFactory.h"
 #include "Graphics/GraphicsMap.h"
+#include "System/Paths.h"
 
 /**
  * \class GraphicsMap
@@ -14,8 +15,8 @@ GraphicsMap::GraphicsMap(Map *map)
 	initMapActions();
 	initMap();
 
-	//TODO scaling
-	//scale(1.2, 1.2);
+	//TODO scaling && resolution (from menu/settings -> mainwindow)
+	scale(1.2, 1.2);
 }
 
 void GraphicsMap::updateCursor()
@@ -169,29 +170,45 @@ QHash <int, HOA::MapAction> GraphicsMap::keyToMapAction_ {
 TileScene::TileScene(Map *map)
 	: map_(map)
 {
-	QGraphicsScene::setSceneRect({0., 0., (qreal)map_->width(), (qreal)map_->height()});
+	QGraphicsScene::setSceneRect({
+		0.,
+		0.,
+		(qreal)map_->width()  * Grid::tileSize(),
+		(qreal)map_->height() * Grid::tileSize()
+	});
+
+	initBackground();
 }
 
 TileScene::~TileScene()
+{}
+
+int TileScene::bigTileMultiplier()
 {
-	qDeleteAll(tiles_);
+	static const int BIG_TILE_MULTIPLIER = 2;
+	return BIG_TILE_MULTIPLIER;
+}
+
+int TileScene::bigTileSize()
+{
+	return bigTileMultiplier() * Grid::tileSize();
 }
 
 void TileScene::initBackground()
 {
-	tiles_.clear();
+	bigTiles_.clear();
+	qDebug() << map_->tiles().size();
 	for (const Tile &tile : map_->tiles())
-		addTile(newTile(tile));
+		addTile(tile);
 }
 
 //TODO prepare some samples for tiles + generating tiles (?)
-
+//TODO Change the function signature. New big tile for specific tile set, or something. // DataManager
 const QPixmap * TileScene::newTile(const Tile &tile) const
 {
 	//TODO
-	//static const QPixmap samplePixmap("../../data/tiles/grass.png");
-	//return &samplePixmap;
-	return new const QPixmap(Data::Image::TileGrass);
+	static const QPixmap samplePixmap(Data::Images::TileGrass);
+	return &samplePixmap;
 }
 
 /** From Qt documentation */
@@ -199,56 +216,55 @@ const QPixmap * TileScene::newTile(const Tile &tile) const
 QRectF TileScene::rectForTile(int x, int y) const
 {
 	// Return the rectangle for the tile at position (x, y).
-	return QRectF(x * BIG_TILE_SIZE, y * BIG_TILE_SIZE, BIG_TILE_SIZE, BIG_TILE_SIZE);
+	return QRectF(x * bigTileSize(),
+	              y * bigTileSize(),
+	              bigTileSize(),
+	              bigTileSize());
 }
 
-void TileScene::addTile(const QPixmap *pixmap)
+void TileScene::addTile(const Tile &tile)
 {
-	tiles_.append(pixmap);
-	if (bigTiles_.last().second == BIG_TILE_MULTIPLIER)
+	static const QPixmap pixmap(Data::Images::TileGrass);
+
+	if (bigTiles_.isEmpty() || bigTiles_.last().second == bigTileMultiplier() * bigTileMultiplier()) {
 		bigTiles_.append({
-			QPixmap(BIG_TILE_SIZE,
-		                BIG_TILE_SIZE),
+			QPixmap(bigTileSize(),
+		                bigTileSize()),
 			0});
+		bigTiles_.last().first.fill(Qt::black);
+	}
 
 	int currentNumber = bigTiles_.last().second;
 
 	QPainter painter(&bigTiles_.last().first);
-	painter.drawPixmap(QPoint(currentNumber % BIG_TILE_MULTIPLIER * TILE_SIZE,
-	                          currentNumber / BIG_TILE_MULTIPLIER * TILE_SIZE),
-	                   *pixmap);
+	if (bigTiles_.size() == 1)
+	qDebug() << "drawing tile:"
+		<< QPoint(currentNumber % bigTileMultiplier() * Grid::tileSize(), currentNumber / bigTileMultiplier() * Grid::tileSize());
+	painter.drawPixmap(QPoint(currentNumber % bigTileMultiplier() * Grid::tileSize(),
+	                          currentNumber / bigTileMultiplier() * Grid::tileSize()),
+	                   pixmap);
 
 	bigTiles_.last().second++;
-}
 
-void TileScene::setTile(int x, int y, const QPixmap *pixmap)
-{
-	// Sets or replaces the tile at position (x, y) with pixmap.
-	if (x >= 0 && x < map_->width() && y >= 0 && y < map_->height()) {
-		tiles_[x + y * map_->width()] = pixmap;
-		invalidate(rectForTile(x, y), QGraphicsScene::BackgroundLayer);
+	if (bigTiles_.last().second == bigTileMultiplier() * bigTileMultiplier()) {
+		int lastIndex = bigTiles_.size() - 1;
+		invalidate(rectForTile(lastIndex % map_->width(), lastIndex / map_->width()),
+		           QGraphicsScene::BackgroundLayer);
 	}
 }
 
 void TileScene::drawBackground(QPainter *painter, const QRectF &exposed)
 {
-	int height = map_->height() / BIG_TILE_MULTIPLIER;
-	int width  = map_->width() / BIG_TILE_MULTIPLIER;
+	int height = map_->height() / bigTileMultiplier();
+	int width  = map_->width()  / bigTileMultiplier();
 
-	static const QPixmap samplePixmap(Data::Image::TileGrass);
-	QPixmap bigSamplePixmap(BIG_TILE_SIZE, BIG_TILE_SIZE);
-	QPainter bigTilePainter(&bigSamplePixmap);
-	for (int y = 0; y < BIG_TILE_MULTIPLIER; ++y)
-		for (int x = 0; x < BIG_TILE_MULTIPLIER; ++x)
-			bigTilePainter.drawPixmap(QPoint(x * TILE_SIZE, y * TILE_SIZE), samplePixmap);
-
-	// Draws all tiles that intersect the exposed area.
+	/** Draws all tiles that intersect the exposed area. */
 	for (int y = 0; y < height; ++y) {
 		for (int x = 0; x < width; ++x) {
-			//TODO optimize this further. And find that damn segfault. And this funny effect.
+			//TODO optimize this further.
 			QRectF rect = rectForTile(x, y);
 			if (exposed.intersects(rect))
-				painter->drawPixmap(rect.topLeft(), bigSamplePixmap);//bigTiles_[x + width * y].first);
+				painter->drawPixmap(rect.topLeft(), bigTiles_[x + width * y].first);
 		}
 	}
 }

@@ -3,10 +3,16 @@
 Grid::Grid(int width, int height)
 	: width_(width), height_(height)
 {
-	tiles_.reserve(width * height);
+	tiles_.resize(width * height);
 	for (int w = 0; w < width; ++w)
 		for (int h = 0; h < height; ++h)
 			tiles_[w + h * width] = Tile();
+}
+
+int Grid::tileSize()
+{
+	static const int TILE_SIZE = 10;
+	return TILE_SIZE;
 }
 
 int Grid::width() const

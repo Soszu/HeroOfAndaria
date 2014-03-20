@@ -19,19 +19,16 @@ public:
 private:
 	Map *map_;
 
-	static const int TILE_SIZE           = 2;
-	static const int BIG_TILE_MULTIPLIER = 15;
-	static const int BIG_TILE_SIZE       = TILE_SIZE * BIG_TILE_MULTIPLIER;
+	static int bigTileMultiplier();
+	static int bigTileSize();
 
-	QVector <const QPixmap *> tiles_;
 	QVector <QPair <QPixmap, int> > bigTiles_;
 
 	void initBackground();
 
 	const QPixmap * newTile(const Tile &tile) const;
 	QRectF rectForTile(int x, int y) const;
-	void addTile(const QPixmap *pixmap);
-	void setTile(int x, int y, const QPixmap *pixmap);
+	void addTile(const Tile &tile);
 
 	void drawBackground(QPainter *painter, const QRectF &exposed);
 };
@@ -96,16 +93,5 @@ private:
 
 	HOA::Direction mapActionDirection() const;
 };
-
-/**
- * \namespace Data::Image
- */
-namespace Data {
-	namespace Image {
-		//TODO put it all in data/img
-		const QString Preffix = "data/tiles";
-		const QString TileGrass = Preffix + "grass.png";
-	}
-}
 
 #endif // GRAPHICSMAP_H
