@@ -1,10 +1,18 @@
 #include "System/Creature.h"
 
-/* ---------------  Creature class -------------------------- */
+/**
+ * \class Creature
+ */
 
-Creature::Creature(const CreatureBase * base) : base(base), hitPoints_(base->fullHitPoints())
+Creature::Creature(const CreatureBase * base) : base(base), hitPoints_(0)
 {
+	initStats();
+}
 
+void Creature::initStats()
+{
+	if (base != nullptr)
+		hitPoints_ = base->fullHitPoints();
 }
 
 void Creature::setBase(const CreatureBase* base)
@@ -13,6 +21,8 @@ void Creature::setBase(const CreatureBase* base)
 
 	if (base == nullptr)
 		return;
+
+	initStats();
 }
 
 HOA::ObjectType Creature::objectType() const

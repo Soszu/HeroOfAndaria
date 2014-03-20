@@ -6,8 +6,9 @@
 #include "System/Uid.h"
 #include "System/CommonStrings.h"
 
-/* ---------------  CreatureBase class -------------------------- */
-
+/**
+ * \class CreatureBase
+ */
 class CreatureBase
 {
 
@@ -55,7 +56,10 @@ private:
 	int endurance_;
 };
 
-/* ---------------  CreatureModel class -------------------------- */
+/**
+ * \class CreatureModel
+ * * Data model for storing \ref Creature "Creatures"
+ */
 
 class CreatureModel : public QAbstractTableModel
 {

@@ -1,6 +1,8 @@
 #include "System/CreatureBase.h"
 
-/* ---------------  CreatureBase class -------------------------- */
+/**
+ * \class CreatureBase
+ */
 
 CreatureBase::CreatureBase() : uid_(EmptyUid), name_(QString()), fullHitPoints_(0),
                              strength_(0), agility_(0), intelligence_(0), endurance_(0)
@@ -70,7 +72,7 @@ void CreatureBase::setAgility(int agility)
 
 int CreatureBase::intelligence() const
 {
-	return endurance_;
+	return intelligence_;
 }
 
 void CreatureBase::setIntelligence(int intelligence)
@@ -110,7 +112,10 @@ QDataStream & operator >> (QDataStream &in, CreatureBase &creature)
 	return in;
 }
 
-/* ---------------  CreatureModel class -------------------------- */
+/**
+ * \class CreatureModel
+ * * Data model for storing \ref Creature "Creatures"
+ */
 
 QList <CreatureBase *> CreatureModel::creatures_;
 QHash <UID, CreatureBase *> CreatureModel::uidToCreature;

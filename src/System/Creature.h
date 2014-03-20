@@ -5,12 +5,6 @@
  * EQCarrier setter?
  * rethink Effects stuff
  */
-
-/*
- * why const EQCarrier & CreatureBase setters works?
- * can we add utils just like that, licence stuff...
- */
-
 #ifndef CREATURE_H
 #define CREATURE_H
 
@@ -33,7 +27,10 @@ namespace HOA {
 		//int armor;
 	};
 }
-/* ---------------  Creature class -------------------------- */
+
+/**
+ * \class Creature
+ */
 
 class Creature : public EquipmentCarrier, public Movable
 {
@@ -42,6 +39,7 @@ public:
 
 	virtual HOA::ObjectType objectType() const;
 
+	void initStats();
 	void setBase(const CreatureBase *base);
 
 	int maxSpeed() const;
@@ -59,6 +57,7 @@ public:
 	int agility() const;
 	int intelligence() const;
 	int endurance() const;
+
 
 	void attack(const Attack &attack);
 	void receiveAttack(const Attack &attack);
