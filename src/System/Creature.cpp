@@ -1,7 +1,19 @@
 #include "System/Creature.h"
 
-Creature::Creature()
-{}
+/* ---------------  Creature class -------------------------- */
+
+Creature::Creature(const CreatureBase * base) : base(base), hitPoints_(base->fullHitPoints())
+{
+
+}
+
+void Creature::setBase(const CreatureBase* base)
+{
+	this->base = base;
+
+	if (base == nullptr)
+		return;
+}
 
 HOA::ObjectType Creature::objectType() const
 {
@@ -20,4 +32,71 @@ void Creature::attack(const Attack &attack)
 
 void Creature::receiveAttack(const Attack &attack)
 {
+}
+
+UID Creature::uid() const
+{
+	return base->uid();
+}
+
+QString Creature::name() const
+{
+	return base->name();
+}
+
+int Creature::hitPoints() const
+{
+	return hitPoints_;
+}
+
+void Creature::setHitPoints(int hitPoints)
+{
+	hitPoints_ = hitPoints;
+}
+
+int Creature::fullHitPoints() const
+{
+	return base->fullHitPoints();
+}
+
+int Creature::agility() const
+{
+	return base->agility();
+}
+
+int Creature::strength() const
+{
+	return base->strength();
+}
+
+int Creature::intelligence() const
+{
+	return base->intelligence();
+}
+
+int Creature::endurance() const
+{
+	return base->endurance();
+}
+
+/*
+const EquipmentCarrier * Creature::equipmentCarrier() const
+{
+	return equipmentCarrier_;
+}
+*/
+
+QDataStream & operator << (QDataStream &out, const Creature &creature)
+{
+	out << creature.base->uid();
+	return out;
+}
+
+QDataStream & operator >> (QDataStream &in, Creature &creature)
+{
+	UID uid;
+	in >> uid;
+	creature.setBase(CreatureModel::creature(uid));
+
+	return in;
 }

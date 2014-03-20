@@ -28,6 +28,7 @@ set (HOASystem_SRCS
 set (HOASystem_HDRS
 	Object.h
 	Map.h
+	CreatureBase.h
 )
 
 qt5_wrap_cpp (HOASystem_SRCS ${HOASystem_HDRS})
