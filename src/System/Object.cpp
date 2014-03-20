@@ -17,6 +17,11 @@ Object::~Object()
 	emit destroyed();
 }
 
+bool Object::isMovable() const
+{
+	return false;
+}
+
 QPoint Object::position() const
 {
 	return position_;

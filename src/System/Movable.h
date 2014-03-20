@@ -19,10 +19,19 @@ namespace HOA {
 	};
 }
 
+class MovementManager;
+
+/**
+ * \class Movable
+ */
 class Movable : public Object
 {
 public:
 	Movable();
+
+	virtual bool isMovable() const;
+
+	void setMovementManager(const MovementManager *movement);
 
 	QPoint speed() const;
 	virtual int maxSpeed() const = 0;
@@ -34,8 +43,20 @@ protected:
 	void advance();
 
 private:
+	const MovementManager *movementManager_;
 	QPoint speed_;
 	HOA::Direction moveDirection_;
+};
+
+/**
+ * \class MovementManager
+ * Analyses the move and checks if it is possible given present state.
+ * TODO perhaps something more...?
+ */
+class MovementManager
+{
+public:
+	virtual bool canMakeMove(const Movable *object, const QPoint &vector) const = 0;
 };
 
 #endif // MOVABLE_H

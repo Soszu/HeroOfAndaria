@@ -11,6 +11,7 @@ public:
 
 private:
 	QRectF boundingRect() const;
+	QPainterPath shape() const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
 	void advance();
 };

@@ -7,7 +7,8 @@ namespace HOA {
 	//TODO more when the time comes
 	enum class ObjectType : quint8 {
 		Creature,
-		Item
+		Item,
+		Town
 	};
 }
 
@@ -20,6 +21,7 @@ public:
 	virtual ~Object();
 
 	virtual HOA::ObjectType objectType() const = 0;
+	virtual bool isMovable() const;
 
 	QPoint position() const;
 	void setPosition(const QPoint &position);

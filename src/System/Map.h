@@ -18,6 +18,8 @@ public:
 
 	Human * player();
 
+	void onCollision(Object *object, const QVector <Object *> &collisions);
+
 protected:
 	QVector <Object *> objects_;
 	Human *player_;

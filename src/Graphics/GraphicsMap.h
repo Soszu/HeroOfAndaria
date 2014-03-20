@@ -50,7 +50,7 @@ namespace HOA {
  * \class GraphicsMap
  * Graphical representation of a Map.
  */
-class GraphicsMap : public QGraphicsView
+class GraphicsMap : public QGraphicsView, public MovementManager
 {
 Q_OBJECT;
 
@@ -59,13 +59,15 @@ public:
 
 	void updateCursor();
 
+	virtual bool canMakeMove(const Movable *object, const QPoint &vector) const;
+
 signals:
 	void menuActivated();
 
 protected:
 	Map *map_;
 
-	void addGraphicsObject(GraphicsObject *object);
+	void addGraphicsObject(GraphicsObject *graphicsObject);
 
 	struct {
 		HOA::MapAction horizontalDirection;
@@ -92,6 +94,9 @@ private:
 	void initMap();
 
 	HOA::Direction mapActionDirection() const;
+
+private slots:
+	void onCollision();
 };
 
 #endif // GRAPHICSMAP_H

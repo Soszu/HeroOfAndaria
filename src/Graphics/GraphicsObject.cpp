@@ -14,6 +14,25 @@ GraphicsObject::GraphicsObject(Object *object)
 GraphicsObject::~GraphicsObject()
 {}
 
+Object * GraphicsObject::object()
+{
+	return object_;
+}
+
+QVector <GraphicsObject *> GraphicsObject::collisions(const QPoint &vector)
+{
+	QVector <GraphicsObject *> collisions;
+
+	QPainterPath shp = shape();
+	shp.moveTo(vector);
+
+	QList <QGraphicsItem *> cs = scene()->items(mapToScene(shp));
+	for (QGraphicsItem *item : cs)
+		if (item != this)
+			collisions.append(static_cast<GraphicsObject *>(item));
+	return collisions;
+}
+
 qreal GraphicsObject::vectorAngle(const QPoint &middle, const QPoint &vector)
 {
 	if (vector == middle)
@@ -35,6 +54,14 @@ void GraphicsObject::advance()
 {
 	adjustPosition();
 	adjustRotation();
+	checkCollisions();
+	QGraphicsItem::advance(1);
+}
+
+void GraphicsObject::checkCollisions()
+{
+	if (!collisions().isEmpty())
+		emit collided();
 }
 
 void GraphicsObject::adjustPosition()

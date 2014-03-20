@@ -10,6 +10,8 @@ class Town : public Object
 public:
 	Town();
 
+	virtual HOA::ObjectType objectType() const;
+
 	const QVector <Place *> & places() const;
 	void visitPlace(Place *p);
 

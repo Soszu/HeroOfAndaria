@@ -14,7 +14,14 @@ public:
 	GraphicsObject(Object *object);
 	virtual ~GraphicsObject();
 
+	Object * object();
+
+	QVector <GraphicsObject *> collisions(const QPoint &vector = QPoint(0, 0));
+
 	static qreal vectorAngle(const QPoint &middle, const QPoint &vector);
+
+signals:
+	void collided();
 
 protected:
 	Object *object_;
@@ -24,6 +31,11 @@ protected:
 
 protected slots:
 	virtual void advance();
+
+private:
+	QVector <GraphicsObject *> collisions_;
+
+	void checkCollisions();
 
 private slots:
 	void adjustPosition();

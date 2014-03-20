@@ -1,8 +1,11 @@
 #include "System/Town.h"
 
 Town::Town()
-{
+{}
 
+HOA::ObjectType Town::objectType() const
+{
+	return HOA::ObjectType::Town;
 }
 
 /**

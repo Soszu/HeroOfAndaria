@@ -1,6 +1,10 @@
 #include "System/Movable.h"
 #include <cmath>
 
+/**
+ * \class Movable
+ */
+
 static QPoint rotateVector(QPoint const &vector, qreal angle)
 {
 	qreal x = vector.x();
@@ -28,9 +32,19 @@ static QPoint vectorLength(QPoint const &vector, int length)
 	return QPoint(x, y);
 }
 
-Movable::Movable()
-	: speed_(QPoint(0,0)), moveDirection_(HOA::Direction::None)
+Movable::Movable() :
+	movementManager_(nullptr), speed_(QPoint(0,0)), moveDirection_(HOA::Direction::None)
 {}
+
+bool Movable::isMovable() const
+{
+	return true;
+}
+
+void Movable::setMovementManager(const MovementManager *movementManager)
+{
+	movementManager_ = movementManager;
+}
 
 QPoint Movable::speed() const
 {
@@ -50,10 +64,14 @@ void Movable::move(HOA::Direction direction)
 void Movable::advance()
 {
 	if (moveDirection_ != HOA::Direction::None) {
+		//TODO make some height difference check + effects (awww, this damn rocky terrain, my feet hurt) - virtual function?
 		QPoint dir = rotateVector(rotation() - position(), ((qreal)moveDirection_) * (-M_PI / 4));
 		speed_ = std::move(vectorLength(dir, maxSpeed()));
 
-		setPosition(position() + speed() * REAL_ADVANCE_TIMEOUT);
+		Q_ASSERT(movementManager_ != nullptr);
+		QPoint vector = speed() * REAL_ADVANCE_TIMEOUT;
+		if (movementManager_->canMakeMove(this, vector))
+			setPosition(position() + vector);
 	}
 	Object::advance();
 }

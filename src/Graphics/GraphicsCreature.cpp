@@ -5,12 +5,24 @@ GraphicsCreature::GraphicsCreature(Creature *creature)
 {}
 
 //TODO everything here
+
 static int CREATURE_SIZE = 30;
 
 QRectF GraphicsCreature::boundingRect() const
 {
-	return QRectF(-CREATURE_SIZE / 2, -CREATURE_SIZE / 2,
-	              CREATURE_SIZE, CREATURE_SIZE);
+	return {
+		qreal(-CREATURE_SIZE / 2),
+		qreal(-CREATURE_SIZE / 2),
+		qreal(CREATURE_SIZE),
+		qreal(CREATURE_SIZE)
+	};
+}
+
+QPainterPath GraphicsCreature::shape() const
+{
+	QPainterPath path;
+	path.addEllipse(boundingRect());
+	return path;
 }
 
 void GraphicsCreature::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
@@ -20,7 +32,7 @@ void GraphicsCreature::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 	//TODO no, it's not the final version in this program
 
 	painter->setBrush(Qt::yellow);
-	painter->drawEllipse(boundingRect());
+	painter->drawPath(shape());
 
 	QPolygon polygon;
 	polygon << QPoint(-CREATURE_SIZE / 5, 0)
@@ -36,4 +48,6 @@ void GraphicsCreature::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 }
 
 void GraphicsCreature::advance()
-{}
+{
+	GraphicsObject::advance();
+}

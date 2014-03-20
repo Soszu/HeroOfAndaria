@@ -25,9 +25,21 @@ void GraphicsMap::updateCursor()
 	map_->player()->setRotation(cursorPosition_);
 }
 
-void GraphicsMap::addGraphicsObject(GraphicsObject *object)
+bool GraphicsMap::canMakeMove(const Movable *object, const QPoint &vector) const
 {
-	tileScene_.addItem(object);
+	GraphicsObject *graphicsObject = GraphicsFactory::get(object);
+	return graphicsObject->collisions(vector).isEmpty();
+}
+
+void GraphicsMap::addGraphicsObject(GraphicsObject *graphicsObject)
+{
+	connect(graphicsObject, &GraphicsObject::collided, this, &GraphicsMap::onCollision);
+
+	Object *object = graphicsObject->object();
+
+	if (object->isMovable())
+		((Movable *)object)->setMovementManager(this);
+	tileScene_.addItem(graphicsObject);
 }
 
 void GraphicsMap::keyPressEvent(QKeyEvent *event)
@@ -52,7 +64,7 @@ void GraphicsMap::keyPressEvent(QKeyEvent *event)
 	/** Windows */
 	case HOA::MapAction::Menu:
 		emit menuActivated();
-		//TODO pause
+		//TODO pause (global timer?)
 		break;
 
 	default:
@@ -152,6 +164,13 @@ HOA::Direction GraphicsMap::mapActionDirection() const
 		default: Q_ASSERT(false);
 	}
 	return HOA::Direction::None;
+}
+
+void GraphicsMap::onCollision()
+{
+	//TODO Will be useful. Yes. Trigger the relevant function in Map and here you go.
+	//GraphicsObject *object = static_cast<GraphicsObject *>(sender());
+	//QVector <GraphicsObject *> collisions = objectA->collisions();
 }
 
 //TODO modifiable by options in menu
