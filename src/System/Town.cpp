@@ -9,7 +9,7 @@ Town::Town()
  * @brief Town::visitPlace(Place *) - players enters place
  * @param p - entered place
  */
-void Town::visitPlace(Place * p)
+void Town::visitPlace(Place *p)
 {
 	/* TODO
 		tu bedzie to co sie dzieje
@@ -17,7 +17,7 @@ void Town::visitPlace(Place * p)
 	*/
 }
 
-const QVector <Place * > & Town::places() const
+const QVector <Place *> & Town::places() const
 {
 	return this->places_;
 }

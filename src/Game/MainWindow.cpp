@@ -35,7 +35,7 @@ void MainWindow::initActions()
 
 void MainWindow::initGlobalMap()
 {
-	globalMap_ = new GlobalMap(2000, 1400);
+	globalMap_ = new GlobalMap(150, 100);
 	graphicsGlobalMap_ = new GraphicsGlobalMap(globalMap_);
 
 	connect(graphicsGlobalMap_, &GraphicsGlobalMap::menuActivated, this, &MainWindow::onMenuActivated);
@@ -43,10 +43,12 @@ void MainWindow::initGlobalMap()
 
 void MainWindow::initCursor()
 {
+	static int CURSOR_TIMEOUT = 20;
+
 	//TODO graphical pretties
 	QTimer *cursorTimer = new QTimer(this);
 	connect(cursorTimer, &QTimer::timeout, this, &MainWindow::updateCursor);
-	cursorTimer->start(20);
+	cursorTimer->start(CURSOR_TIMEOUT);
 }
 
 void MainWindow::initLayout()

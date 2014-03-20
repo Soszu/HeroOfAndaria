@@ -9,6 +9,8 @@ class Grid : public QObject
 public:
 	Grid(int width, int height);
 
+	static int tileSize();
+
 	int width() const;
 	int height() const;
 

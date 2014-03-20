@@ -1,4 +1,5 @@
 #include "Game/Menu.h"
+#include "System/Paths.h"
 
 /* ---------------  Menu class -------------------------- */
 
