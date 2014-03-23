@@ -1,6 +1,8 @@
 #include "Graphics/GraphicsCreature.h"
 #include "Graphics/GraphicsFactory.h"
 #include "Graphics/GraphicsItem.h"
+#include "Graphics/GraphicsBlacksmith.h"
+#include "Graphics/GraphicsInn.h"
 
 QHash <const Object *, GraphicsObject *> GraphicsFactory::map_;
 
@@ -30,4 +32,20 @@ GraphicsObject * GraphicsFactory::get(const Object *object)
 {
 	Q_ASSERT(map_.contains(object));
 	return map_[object];
+}
+
+GraphicsPlace * GraphicsFactory::get(Place* place)
+{
+	GraphicsPlace * graphicsPlace = 0;
+	switch (place->type()) {
+		case HOA::PlaceType::Blacksmith:
+			graphicsPlace = new GraphicsBlacksmith((Blacksmith *)place);
+			break;
+		case HOA::PlaceType::Inn:
+			graphicsPlace = new GraphicsInn((Inn *)place);
+			break;
+		default:
+			Q_ASSERT(false);
+	}
+	return graphicsPlace;
 }

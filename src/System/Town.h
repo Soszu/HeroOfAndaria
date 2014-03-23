@@ -14,7 +14,7 @@ public:
 
 	const QVector <Place *> & places() const;
 	void visitPlace(Place *p);
-
+	void addPlace(Place * p);
 private:
 	QVector <Place *> places_;
 };

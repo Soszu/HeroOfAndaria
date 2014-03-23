@@ -6,6 +6,7 @@ MainWindow::MainWindow()
 	initActions();
 	initGlobalMap();
 	initCursor();
+	initTown(); //Only for testing GraphicsTown
 	initLayout();
 	initWindow();
 }
@@ -31,6 +32,12 @@ void MainWindow::initActions()
 	actionQuit_->setShortcut(tr("Ctrl+Q"));
 	connect(actionQuit_, &QAction::triggered, this, &MainWindow::onQuitActivated);
 	addAction(actionQuit_);
+	
+	// Just for graphicsTown testing
+	actionTown_ = new QAction(this);
+	actionTown_->setShortcut(tr("Ctrl+T"));
+	connect(actionTown_, &QAction::triggered, this, &MainWindow::onShowTown);
+	addAction(actionTown_);
 }
 
 void MainWindow::initGlobalMap()
@@ -57,9 +64,19 @@ void MainWindow::initLayout()
 
 	stackedWidget_->addWidget(menu_);
 	stackedWidget_->addWidget(graphicsGlobalMap_);
-
+	
+	stackedWidget_->addWidget(graphicsTown_);
+	
 	setCentralWidget(stackedWidget_);
 }
+
+void MainWindow::initTown() //Only for testing GraphicsTown
+{
+	this->graphicsTown_ = getExample();
+	connect(graphicsTown_, &GraphicsTown::leaveTown, this, &MainWindow::onHideTown);
+	
+}
+
 
 void MainWindow::initWindow()
 {
@@ -101,4 +118,15 @@ void MainWindow::onGlobalMapActivated()
 void MainWindow::updateCursor()
 {
 	graphicsGlobalMap_->updateCursor();
+}
+
+
+void MainWindow::onHideTown()//Only for testing GraphicsTown
+{
+	stackedWidget_->setCurrentIndex(GLOBAL_MAP_INDEX);
+}
+
+void MainWindow::onShowTown()//Only for testing GraphicsTown
+{
+	stackedWidget_->setCurrentIndex(TOWN_INDEX);
 }

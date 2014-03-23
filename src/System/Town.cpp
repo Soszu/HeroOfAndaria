@@ -24,3 +24,8 @@ const QVector <Place *> & Town::places() const
 {
 	return this->places_;
 }
+
+void Town::addPlace(Place* p)
+{
+	this->places_.append(p);
+}

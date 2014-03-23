@@ -1,6 +1,6 @@
 set (HOASystem_SRCS
 # 	Attack.cpp
-# 	Blacksmith.cpp
+	Blacksmith.cpp
 	Carriable.cpp
 	Character.cpp
 	Creature.cpp
@@ -9,7 +9,7 @@ set (HOASystem_SRCS
 	GlobalMap.cpp
 	Grid.cpp
 	Human.cpp
-# 	Inn.cpp
+	Inn.cpp
 # 	Item.cpp
 # 	LocalMap.cpp
 	Map.cpp

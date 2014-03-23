@@ -1,10 +1,10 @@
 set (HOAGraphics_SRCS
-# 	GraphicsBlacksmith.cpp
+	GraphicsBlacksmith.cpp
 	GraphicsCreature.cpp
-# 	GraphicsEquipmentExchange.cpp
+	GraphicsEquipmentExchange.cpp
 	GraphicsGlobalMap.cpp
 	GraphicsFactory.cpp
-# 	GraphicsInn.cpp
+	GraphicsInn.cpp
 	GraphicsItem.cpp
 	GraphicsLocalMap.cpp
 	GraphicsMap.cpp
@@ -16,6 +16,10 @@ set (HOAGraphics_SRCS
 set (HOAGraphics_HDRS
 	GraphicsMap.h
 	GraphicsObject.h
+	GraphicsPlace.h
+	GraphicsInn.h
+	GraphicsBlacksmith.h
+	GraphicsTown.h
 )
 
 qt5_wrap_cpp (HOAGraphics_SRCS ${HOAGraphics_HDRS})

@@ -5,3 +5,7 @@ Blacksmith::Blacksmith(const QString &name)
 {
 
 }
+HOA::PlaceType Blacksmith::type() const
+{
+	return HOA::PlaceType::Blacksmith;
+}
