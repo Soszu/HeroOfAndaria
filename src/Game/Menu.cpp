@@ -16,6 +16,7 @@ Menu::Menu(QWidget *parent) :
 	connect(defaultSubmenu, &DefaultSubmenu::newGamePressed,  this, &Menu::setNewGameSubmenu);
 	connect(defaultSubmenu, &DefaultSubmenu::saveGamePressed, this, &Menu::setSaveGameSubmenu);
 	connect(defaultSubmenu, &DefaultSubmenu::loadGamePressed, this, &Menu::setLoadGameSubmenu);
+	connect(defaultSubmenu, &DefaultSubmenu::optionsPressed,  this, &Menu::setOptionsSubmenu);
 	connect(defaultSubmenu, &DefaultSubmenu::quitPressed,     this, &Menu::quitActivated);
 	stackLayout->addWidget(defaultSubmenu);
 
@@ -29,9 +30,21 @@ Menu::Menu(QWidget *parent) :
 	// save / load game submenu
 	saveGameSubmenu = new SaveGameSubmenu;
 	connect(saveGameSubmenu, &SaveGameSubmenu::returnButtonPressed, this, &Menu::setDefaultSubmenu);
-	connect(saveGameSubmenu, &SaveGameSubmenu::saveGameActivated, this, &Menu::saveGameActivated);
-	connect(saveGameSubmenu, &SaveGameSubmenu::loadGameActivated, this, &Menu::loadGameActivated);
+	connect(saveGameSubmenu, &SaveGameSubmenu::saveGameActivated,   this, &Menu::saveGameActivated);
+	connect(saveGameSubmenu, &SaveGameSubmenu::loadGameActivated,   this, &Menu::loadGameActivated);
 	stackLayout->addWidget(saveGameSubmenu);
+
+	// options submenu
+	optionsSubmenu = new OptionsSubmenu;
+	connect(optionsSubmenu, &OptionsSubmenu::returnButtonPressed,    this, &Menu::setDefaultSubmenu);
+	connect(optionsSubmenu, &OptionsSubmenu::controlsSubmenuPressed, this, &Menu::setControlsSubmenu);
+	stackLayout->addWidget(optionsSubmenu);
+
+	// controls submenu
+	controlsSubmenu = new ControlsSubmenu;
+	connect(controlsSubmenu, &ControlsSubmenu::returnButtonPressed, this, &Menu::setOptionsSubmenu);
+	connect(controlsSubmenu, &ControlsSubmenu::controlsChanged, this, &Menu::controlsChanged);
+	stackLayout->addWidget(controlsSubmenu);
 
 	layout->addSpacerItem(new QSpacerItem(backgroundImage.width(), backgroundImage.height()));
 	layout->addLayout(stackLayout);
@@ -56,27 +69,42 @@ QString Menu::getSaveFileName() const
 	return saveGameSubmenu->getFileName();
 }
 
+int Menu::getControlKey(HOA::KeyFunction function) const
+{
+	return controlsSubmenu->getKey(function);
+}
+
 void Menu::setDefaultSubmenu()
 {
-	stackLayout->setCurrentIndex(0);
+	stackLayout->setCurrentIndex(DEFAULT_SUBMENU_INDEX);
 }
 
 void Menu::setNewGameSubmenu()
 {
 	newGameSubmenu->clearContent();
-	stackLayout->setCurrentIndex(1);
+	stackLayout->setCurrentIndex(NEW_GAME_SUBMENU_INDEX);
 }
 
 void Menu::setSaveGameSubmenu()
 {
 	saveGameSubmenu->clearContent(SaveGameSubmenu::SAVE_MENU);
-	stackLayout->setCurrentIndex(2);
+	stackLayout->setCurrentIndex(SAVE_GAME_SUBMENU_INDEX);
 }
 
 void Menu::setLoadGameSubmenu()
 {
 	saveGameSubmenu->clearContent(SaveGameSubmenu::LOAD_MENU);
-	stackLayout->setCurrentIndex(2);
+	stackLayout->setCurrentIndex(SAVE_GAME_SUBMENU_INDEX);
+}
+
+void Menu::setOptionsSubmenu()
+{
+	stackLayout->setCurrentIndex(OPTIONS_SUBMENU_INDEX);
+}
+
+void Menu::setControlsSubmenu()
+{
+	stackLayout->setCurrentIndex(CONTROLS_SUBMENU_INDEX);
 }
 
 /* ---------------  ImageButton class -------------------------- */
@@ -98,6 +126,10 @@ ImageButton::ImageButton(ImageButtonType type, QString text, QWidget *parent) :
 		case MENU_BUTTON:
 			normalImage_.load(Data::Images::MenuButtonsNormal);
 			darkImage_.load(Data::Images::MenuButtonsDark);
+			break;
+		case SMALL_MENU_BUTTON:
+			normalImage_.load(Data::Images::SmallMenuButtonNormal);
+			darkImage_.load(Data::Images::SmallMenuButtonDark);
 			break;
 		case NEXT_ARROW_BUTTON:
 			normalImage_.load(Data::Images::NextButtonNormal);
@@ -394,6 +426,100 @@ void GameSavesWidget::downButtonClicked()
 	}
 }
 
+/* ---------------  KeyChangeWidget class -------------------------- */
+
+KeyChangeWidget::KeyChangeWidget(QString actionName, int defaultKey, QWidget *parent) :
+	QWidget(parent),
+	defaultKey(defaultKey),
+	editing(false)
+{
+	QHBoxLayout *layout = new QHBoxLayout;
+
+	actionNameLabel = new QLabel(actionName + ": ");
+	actionNameLabel->setFixedWidth(150);
+	actionNameLabel->setAlignment(Qt::AlignRight);
+	layout->addWidget(actionNameLabel);
+	layout->setAlignment(actionNameLabel, Qt::AlignCenter);
+
+	keyLabel = new QLabel();
+	keyLabel->setAlignment(Qt::AlignCenter);
+	keyLabel->setFixedWidth(100);
+	setChoosenKey(defaultKey);
+	layout->addWidget(keyLabel);
+	layout->setAlignment(keyLabel, Qt::AlignCenter);
+
+	changeButton = new ImageButton(ImageButton::SMALL_MENU_BUTTON, tr("Change"));
+	connect(changeButton, &ImageButton::clicked, this, &KeyChangeWidget::beginEditing);
+	layout->addWidget(changeButton);
+	layout->setAlignment(Qt::AlignCenter);
+
+	layout->setAlignment(Qt::AlignVCenter);
+	setLayout(layout);
+}
+
+bool KeyChangeWidget::isEditing() const
+{
+	return editing;
+}
+
+int KeyChangeWidget::getKey() const
+{
+	return choosenKey;
+}
+
+void KeyChangeWidget::beginEditing()
+{
+	setFocus();
+	editing = true;
+	ealirKey = choosenKey;
+	keyLabel->setText(tr("Press key"));
+}
+
+void KeyChangeWidget::restoreDefaultKey()
+{
+	setChoosenKey(defaultKey);
+	editing = false;
+}
+
+void KeyChangeWidget::restoreEalierKey()
+{
+	setChoosenKey(ealirKey);
+	editing = false;
+}
+
+void KeyChangeWidget::setChoosenKey(int key)
+{
+	choosenKey = key;
+	keyLabel->setText(QKeySequence(key).toString());
+	editing = false;
+	emit keyChanged(key);
+}
+
+void KeyChangeWidget::keyPressEvent(QKeyEvent *event)
+{
+	if (editing) {
+		setChoosenKey(event->key());
+	}
+}
+
+void KeyChangeWidget::focusOutEvent(QFocusEvent *event)
+{
+	if (editing) {
+		restoreEalierKey();
+	}
+	QWidget::focusOutEvent(event);
+}
+
+void KeyChangeWidget::highlight()
+{
+	keyLabel->setStyleSheet("color: red");
+}
+
+void KeyChangeWidget::unhiglight()
+{
+	keyLabel->setStyleSheet("color: #94e4fc;");
+}
+
 /* ---------------  NewGameSubmenu class -------------------------- */
 
 NewGameSubmenu::NewGameSubmenu(QWidget *parent) :
@@ -583,6 +709,7 @@ DefaultSubmenu::DefaultSubmenu(QWidget *parent) :
 	connect(saveGameBtn, &ImageButton::clicked, this, &DefaultSubmenu::saveGamePressed);
 
 	optionsBtn  = new ImageButton(ImageButton::MENU_BUTTON, tr("Options"));
+	connect(optionsBtn, &ImageButton::clicked, this, &DefaultSubmenu::optionsPressed);
 
 	creditsBtn  = new ImageButton(ImageButton::MENU_BUTTON, tr("Credits"));
 
@@ -598,4 +725,117 @@ DefaultSubmenu::DefaultSubmenu(QWidget *parent) :
 
 	layout->setAlignment(Qt::AlignCenter);
 	setLayout(layout);
+}
+
+/* ---------------  OptionsSubmenu class -------------------------- */
+
+OptionsSubmenu::OptionsSubmenu()
+{
+	QVBoxLayout *layout = new QVBoxLayout;
+	graphicSubmenuBtn = new ImageButton(ImageButton::MENU_BUTTON, tr("Graphic options"));
+	connect(graphicSubmenuBtn, &ImageButton::clicked, this, &OptionsSubmenu::graphicSubmenuPressed);
+	soundSubmenuBtn = new ImageButton(ImageButton::MENU_BUTTON, tr("Sound options"));
+	connect(soundSubmenuBtn, &ImageButton::clicked, this, &OptionsSubmenu::soundSubmenuPressed);
+	controlsSubmenuBtn = new ImageButton(ImageButton::MENU_BUTTON, tr("Controls"));
+	connect(controlsSubmenuBtn, &ImageButton::clicked, this, &OptionsSubmenu::controlsSubmenuPressed);
+	returnBtn = new ImageButton(ImageButton::MENU_BUTTON, tr("Return"));
+	connect(returnBtn, &ImageButton::clicked, this, &OptionsSubmenu::returnButtonPressed);
+
+	for (ImageButton *button : {graphicSubmenuBtn, soundSubmenuBtn, controlsSubmenuBtn, returnBtn}) {
+		layout->addWidget(button);
+		layout->setAlignment(button, Qt::AlignCenter);
+	}
+	layout->setAlignment(Qt::AlignCenter);
+
+	setLayout(layout);
+}
+
+/* ---------------  ControlsSubmenu class -------------------------- */
+
+ControlsSubmenu::ControlsSubmenu(QWidget *parent) :
+	QWidget(parent)
+{
+	this->setStyleSheet("QLabel {color: #94e4fc;}" );
+
+	QVBoxLayout *layout = new QVBoxLayout;
+	QGridLayout *gridLayout = new QGridLayout;
+	gridLayout->setSpacing(0);
+
+	collisionLabel = new QLabel();
+	collisionLabel->setStyleSheet("color: red");
+	collisionLabel->setAlignment(Qt::AlignCenter);
+	layout->addWidget(collisionLabel);
+	layout->setAlignment(collisionLabel, Qt::AlignCenter);
+
+	addKeyChangeWidget(tr("Move forward"), HOA::KeyFunction::MOVE_FORWARD, Qt::Key_W, 0, 0, gridLayout);
+	addKeyChangeWidget(tr("Move backwards"), HOA::KeyFunction::MOVE_BACKWARDS, Qt::Key_S, 1, 0, gridLayout);
+	addKeyChangeWidget(tr("Move Left"), HOA::KeyFunction::MOVE_LEFT, Qt::Key_A, 2, 0, gridLayout);
+	addKeyChangeWidget(tr("Move Right"), HOA::KeyFunction::MOVE_RIGHT, Qt::Key_D, 3, 0, gridLayout);
+	addKeyChangeWidget(tr("Jump"), HOA::KeyFunction::JUMP, Qt::Key_Space, 4, 0, gridLayout);
+
+	addKeyChangeWidget(tr("Inventory"), HOA::KeyFunction::INVENTORY, Qt::Key_I, 0, 1, gridLayout);
+	addKeyChangeWidget(tr("Skills"), HOA::KeyFunction::SKILLS, Qt::Key_P, 1, 1, gridLayout);
+	addKeyChangeWidget(tr("Quests"), HOA::KeyFunction::QUESTS, Qt::Key_Q, 2, 1, gridLayout);
+
+	setCollisionLabel();
+
+	layout->addLayout(gridLayout);
+
+	restoreButton = new ImageButton(ImageButton::MENU_BUTTON, tr("Restore default"));
+	restoreButton->setFontPointSize(11);
+	connect(restoreButton, &ImageButton::clicked, this, &ControlsSubmenu::restoreDefault);
+	layout->addWidget(restoreButton);
+	layout->setAlignment(restoreButton, Qt::AlignCenter);
+
+	returnButton = new ImageButton(ImageButton::MENU_BUTTON, tr("Return"));
+	connect(returnButton, &ImageButton::clicked, this, &ControlsSubmenu::returnButtonPressed);
+	layout->addWidget(returnButton);
+	layout->setAlignment(returnButton, Qt::AlignCenter);
+
+	layout->setAlignment(Qt::AlignCenter);
+	setLayout(layout);
+}
+
+void ControlsSubmenu::addKeyChangeWidget(QString functionName, HOA::KeyFunction function,
+	int defaultKey, int row, int col, QGridLayout *layout)
+{
+	KeyChangeWidget *widget = new KeyChangeWidget(functionName, defaultKey);
+	keyWidgets.append(widget);
+	layout->addWidget(widget, row, col);
+	connect(widget, &KeyChangeWidget::keyChanged, this, &ControlsSubmenu::setCollisionLabel);
+	connect(widget, &KeyChangeWidget::keyChanged, this, &ControlsSubmenu::controlsChanged);
+
+	functionsMap[function] = widget;
+}
+
+int ControlsSubmenu::getKey(HOA::KeyFunction function)
+{
+	return functionsMap[function]->getKey();
+}
+
+void ControlsSubmenu::setCollisionLabel()
+{
+	for (KeyChangeWidget *widget : keyWidgets)
+		widget->unhiglight();
+
+	bool collision = false;
+	for (int i = 0; i < (int)keyWidgets.size(); i++) {
+		for (int j = i + 1; j < (int)keyWidgets.size(); j++) {
+			if (keyWidgets[i]->getKey() == keyWidgets[j]->getKey()) {
+				collision = true;
+				keyWidgets[i]->highlight();
+				keyWidgets[j]->highlight();
+			}
+		}
+	}
+	if (collision)
+		collisionLabel->setText(tr("Keys collision!"));
+	else
+		collisionLabel->setText(" ");
+}
+
+void ControlsSubmenu::restoreDefault()
+{
+	for (KeyChangeWidget *widget : keyWidgets)
+		widget->restoreDefaultKey();
 }

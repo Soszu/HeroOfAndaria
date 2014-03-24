@@ -3,9 +3,24 @@
 
 #include <QtWidgets>
 
+namespace HOA {
+	enum class KeyFunction : qint8 {
+		MOVE_FORWARD,
+		MOVE_BACKWARDS,
+		MOVE_LEFT,
+		MOVE_RIGHT,
+		JUMP,
+		INVENTORY,
+		SKILLS,
+		QUESTS
+	};
+}
+
 class NewGameSubmenu;
 class SaveGameSubmenu;
 class DefaultSubmenu;
+class OptionsSubmenu;
+class ControlsSubmenu;
 
 /* ---------------  Menu class -------------------------- */
 
@@ -17,12 +32,21 @@ public:
 
 	QString getSaveFileName() const;
 	QString getLoadFileName() const;
+	int getControlKey(HOA::KeyFunction function) const;
 
 private:
+	static const int DEFAULT_SUBMENU_INDEX = 0;
+	static const int NEW_GAME_SUBMENU_INDEX	= 1;
+	static const int SAVE_GAME_SUBMENU_INDEX = 2;
+	static const int OPTIONS_SUBMENU_INDEX = 3;
+	static const int CONTROLS_SUBMENU_INDEX = 4;
+
 	QStackedLayout *stackLayout;
 	DefaultSubmenu *defaultSubmenu;
 	NewGameSubmenu *newGameSubmenu;
 	SaveGameSubmenu *saveGameSubmenu;
+	OptionsSubmenu *optionsSubmenu;
+	ControlsSubmenu *controlsSubmenu;
 
 	QPixmap backgroundImage;
 
@@ -35,12 +59,15 @@ signals:
 	void loadGameActivated();
 	void saveGameActivated();
 	void quitActivated();
+	void controlsChanged();
 
 public slots:
 	void setDefaultSubmenu();
 	void setNewGameSubmenu();
 	void setSaveGameSubmenu();
 	void setLoadGameSubmenu();
+	void setOptionsSubmenu();
+	void setControlsSubmenu();
 };
 
 /* ---------------  ImageButton class -------------------------- */
@@ -51,6 +78,7 @@ Q_OBJECT;
 public:
 	enum ImageButtonType : quint8 {
 		MENU_BUTTON,
+		SMALL_MENU_BUTTON,
 		NEXT_ARROW_BUTTON,
 		PREV_ARROW_BUTTON,
 		UP_MENU_BUTTON,
@@ -66,7 +94,7 @@ private:
 	QPixmap normalImage_;
 	QPixmap darkImage_;
 	int fontPointSize_;
-	static const int DEFAULT_FONT_SIZE = 12;
+	static const int DEFAULT_FONT_SIZE = 11;
 
 protected:
 	void paintEvent(QPaintEvent *);
@@ -204,6 +232,47 @@ public slots:
 
 };
 
+/* ---------------  KeyChange class -------------------------- */
+
+class KeyChangeWidget : public QWidget
+{
+Q_OBJECT;
+public:
+	KeyChangeWidget(QString actionName, int defaultKey, QWidget *parent = 0);
+
+	int getKey() const;
+	bool isEditing() const;
+
+private:
+	int choosenKey;
+	int defaultKey;
+	bool editing;
+	// key before clicking change button
+	int ealirKey;
+
+	QLabel *actionNameLabel;
+	QLabel *keyLabel;
+	ImageButton *changeButton;
+
+	void setChoosenKey(int key);
+
+protected:
+	void keyPressEvent(QKeyEvent *event);
+	void focusOutEvent(QFocusEvent *event);
+
+signals:
+	void keyChanged(int newKey);
+
+public slots:
+	void beginEditing();
+	void restoreDefaultKey();
+	void restoreEalierKey();
+
+	void highlight();
+	void unhiglight();
+
+};
+
 /* ---------------  NewGameSubmenu class -------------------------- */
 
 class NewGameSubmenu : public QWidget
@@ -291,7 +360,62 @@ signals:
 	void newGamePressed();
 	void saveGamePressed();
 	void loadGamePressed();
+	void optionsPressed();
 	void quitPressed();
+};
+
+/* ---------------  OptionsSubmenu class --------------------------- */
+
+class OptionsSubmenu : public QWidget
+{
+Q_OBJECT;
+public:
+	OptionsSubmenu();
+
+private:
+	ImageButton *graphicSubmenuBtn;
+	ImageButton *soundSubmenuBtn;
+	ImageButton *controlsSubmenuBtn;
+	ImageButton *returnBtn;
+
+signals:
+	void graphicSubmenuPressed();
+	void soundSubmenuPressed();
+	void controlsSubmenuPressed();
+	void returnButtonPressed();
+
+};
+
+/* ---------------  ControlsSubmenu class --------------------------- */
+
+class ControlsSubmenu : public QWidget
+{
+Q_OBJECT;
+
+public:
+	ControlsSubmenu(QWidget *parent = 0);
+	bool isEditing();
+	int getKey(HOA::KeyFunction function);
+
+private:
+	QLabel *collisionLabel;
+	QVector <KeyChangeWidget *> keyWidgets;
+	ImageButton *restoreButton;
+	ImageButton *returnButton;
+	QMap <HOA::KeyFunction, KeyChangeWidget*> functionsMap;
+
+	void addKeyChangeWidget(QString functionName, HOA::KeyFunction function,
+		int defaultKey, int row, int col, QGridLayout *layout);
+
+signals:
+	void controlsChanged();
+	void returnButtonPressed();
+
+public slots:
+	void setCollisionLabel();
+	void restoreDefault();
+
+
 };
 
 #endif // MENU_H
