@@ -43,7 +43,6 @@ Menu::Menu(QWidget *parent) :
 	// controls submenu
 	controlsSubmenu = new ControlsSubmenu;
 	connect(controlsSubmenu, &ControlsSubmenu::returnButtonPressed, this, &Menu::setOptionsSubmenu);
-	connect(controlsSubmenu, &ControlsSubmenu::controlsChanged, this, &Menu::controlsChanged);
 	stackLayout->addWidget(controlsSubmenu);
 
 	layout->addSpacerItem(new QSpacerItem(backgroundImage.width(), backgroundImage.height()));
@@ -67,11 +66,6 @@ QString Menu::loadFileName() const
 QString Menu::saveFileName() const
 {
 	return saveGameSubmenu->getFileName();
-}
-
-int Menu::controlKey(HOA::KeyFunction function) const
-{
-	return controlsSubmenu->key(function);
 }
 
 void Menu::setDefaultSubmenu()
@@ -428,8 +422,9 @@ void GameSavesWidget::downButtonClicked()
 
 /* ---------------  KeyChangeWidget class -------------------------- */
 
-KeyChangeWidget::KeyChangeWidget(QString actionName, int defaultKey, QWidget *parent) :
+KeyChangeWidget::KeyChangeWidget(QString actionName, HOA::KeyFunction function, int defaultKey, QWidget *parent) :
 	QWidget(parent),
+	function(function),
 	defaultKey(defaultKey),
 	editing(false)
 {
@@ -444,7 +439,7 @@ KeyChangeWidget::KeyChangeWidget(QString actionName, int defaultKey, QWidget *pa
 	keyLabel = new QLabel();
 	keyLabel->setAlignment(Qt::AlignCenter);
 	keyLabel->setFixedWidth(100);
-	setChosenKey(defaultKey);
+	setChosenKey(defaultKey); //TODO wczytac to z Key managera po wczytaniu z pliku
 	layout->addWidget(keyLabel);
 	layout->setAlignment(keyLabel, Qt::AlignCenter);
 
@@ -492,7 +487,8 @@ void KeyChangeWidget::setChosenKey(int key)
 	choosenKey = key;
 	keyLabel->setText(QKeySequence(key).toString());
 	editing = false;
-	emit keyChanged(key);
+	KeyboardManager::setKeyFunction(function, key);
+	emit keyChanged();
 }
 
 void KeyChangeWidget::keyPressEvent(QKeyEvent *event)
@@ -797,11 +793,10 @@ ControlsSubmenu::ControlsSubmenu(QWidget *parent) :
 void ControlsSubmenu::addKeyChangeWidget(const QString &functionName, HOA::KeyFunction function,
 	int defaultKey, int row, int col, QGridLayout *layout)
 {
-	KeyChangeWidget *widget = new KeyChangeWidget(functionName, defaultKey);
+	KeyChangeWidget *widget = new KeyChangeWidget(functionName, function, defaultKey);
 	keyWidgets.append(widget);
 	layout->addWidget(widget, row, col);
 	connect(widget, &KeyChangeWidget::keyChanged, this, &ControlsSubmenu::setCollisionLabel);
-	connect(widget, &KeyChangeWidget::keyChanged, this, &ControlsSubmenu::controlsChanged);
 
 	functionsMap[function] = widget;
 }

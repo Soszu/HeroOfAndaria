@@ -20,7 +20,6 @@ public:
 
 	QString saveFileName() const;
 	QString loadFileName() const;
-	int controlKey(HOA::KeyFunction function) const;
 
 private:
 	static const int DEFAULT_SUBMENU_INDEX   = 0;
@@ -47,7 +46,6 @@ signals:
 	void loadGameActivated();
 	void saveGameActivated();
 	void quitActivated();
-	void controlsChanged();
 
 public slots:
 	void setDefaultSubmenu();
@@ -226,12 +224,13 @@ class KeyChangeWidget : public QWidget
 {
 Q_OBJECT;
 public:
-	KeyChangeWidget(QString actionName, int defaultKey, QWidget *parent = 0);
+	KeyChangeWidget(QString actionName, HOA::KeyFunction function, int defaultKey, QWidget *parent = 0);
 
 	int key() const;
 	bool isEditing() const;
 
 private:
+	HOA::KeyFunction function;
 	int choosenKey;
 	int defaultKey;
 	bool editing;
@@ -249,7 +248,7 @@ protected:
 	void focusOutEvent(QFocusEvent *event);
 
 signals:
-	void keyChanged(int newKey);
+	void keyChanged();
 
 public slots:
 	void beginEditing();
@@ -396,7 +395,6 @@ private:
 		int defaultKey, int row, int col, QGridLayout *layout);
 
 signals:
-	void controlsChanged();
 	void returnButtonPressed();
 
 public slots:

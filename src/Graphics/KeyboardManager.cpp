@@ -10,7 +10,12 @@ KeyboardManager & KeyboardManager::getInstance()
 
 void KeyboardManager::setKeyFunction(HOA::KeyFunction keyFunction, int key)
 {
-	getInstance().keyFunctions_[key] = keyFunction;
+	// removing previous entry
+	KeyboardManager::getInstance().keyFunctions_.remove(
+		KeyboardManager::getInstance().keyFunctions_.key(keyFunction));
+	KeyboardManager::getInstance().keyFunctions_[key] = keyFunction;
+
+	//TODO save to file
 }
 
 HOA::KeyFunction KeyboardManager::keyFunction(int key)
@@ -25,12 +30,7 @@ bool KeyboardManager::hasKeyFunction(int key)
 
 KeyboardManager::KeyboardManager()
 {
-	//TODO write from && to settings
-
-	keyFunctions_[Qt::Key_W] = HOA::KeyFunction::MoveForward;
-	keyFunctions_[Qt::Key_S] = HOA::KeyFunction::MoveBackwards;
-	keyFunctions_[Qt::Key_A] = HOA::KeyFunction::MoveLeft;
-	keyFunctions_[Qt::Key_D] = HOA::KeyFunction::MoveRight;
+	//TODO load from file
 
 	keyFunctions_[Qt::Key_Escape] = HOA::KeyFunction::Menu;
 }
