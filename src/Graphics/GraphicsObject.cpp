@@ -23,10 +23,7 @@ QVector <GraphicsObject *> GraphicsObject::collisions(const QPoint &vector)
 {
 	QVector <GraphicsObject *> collisions;
 
-	QPainterPath shp = shape();
-	shp.moveTo(vector);
-
-	QList <QGraphicsItem *> cs = scene()->items(mapToScene(shp));
+	QList <QGraphicsItem *> cs = scene()->items(mapToScene(shape().translated(vector)), Qt::IntersectsItemShape);
 	for (QGraphicsItem *item : cs)
 		if (item != this)
 			collisions.append(static_cast<GraphicsObject *>(item));

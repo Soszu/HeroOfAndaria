@@ -44,6 +44,8 @@ void GraphicsMap::addGraphicsObject(GraphicsObject *graphicsObject)
 
 void GraphicsMap::keyPressEvent(QKeyEvent *event)
 {
+	if (event->isAutoRepeat())
+		return;
 	if (!KeyboardManager::hasKeyFunction(event->key()))
 		return QGraphicsView::keyPressEvent(event);
 
@@ -87,6 +89,8 @@ void GraphicsMap::keyPressEvent(QKeyEvent *event)
 
 void GraphicsMap::keyReleaseEvent(QKeyEvent *event)
 {
+	if (event->isAutoRepeat())
+		return;
 	if (!KeyboardManager::hasKeyFunction(event->key()))
 		return QGraphicsView::keyReleaseEvent(event);
 
@@ -148,12 +152,26 @@ void GraphicsMap::initMap()
 	connect(map_, &Map::objectAdded, this, &GraphicsMap::onObjectAdded);
 }
 
+static int mapActionToValue(HOA::KeyFunction mapAction)
+{
+	switch (mapAction) {
+		case HOA::KeyFunction::None:
+			return 1;
+		case HOA::KeyFunction::MoveForward:
+		case HOA::KeyFunction::MoveLeft:
+			return 0;
+		case HOA::KeyFunction::MoveBackwards:
+		case HOA::KeyFunction::MoveRight:
+			return 2;
+		default:
+			return -1;
+	}
+}
+
 HOA::Direction GraphicsMap::mapActionDirection() const
 {
-	int vertical   = (int)(mapActions_.verticalDirection == HOA::KeyFunction::None)
-	                 + (int)(mapActions_.verticalDirection == HOA::KeyFunction::MoveRight) * 2;
-	int horizontal = (int)(mapActions_.horizontalDirection == HOA::KeyFunction::None)
-	                 + (int)(mapActions_.horizontalDirection == HOA::KeyFunction::MoveBackwards) * 2;
+	int vertical   = mapActionToValue(mapActions_.verticalDirection);
+	int horizontal = mapActionToValue(mapActions_.horizontalDirection);
 
 	switch (vertical + 3 * horizontal) {
 		case 0:  return HOA::Direction::LeftFront;
