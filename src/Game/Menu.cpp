@@ -59,19 +59,19 @@ void Menu::paintEvent(QPaintEvent *event)
 	QWidget::paintEvent(event);
 }
 
-QString Menu::getLoadFileName() const
+QString Menu::loadFileName() const
 {
 	return saveGameSubmenu->getFileName();
 }
 
-QString Menu::getSaveFileName() const
+QString Menu::saveFileName() const
 {
 	return saveGameSubmenu->getFileName();
 }
 
-int Menu::getControlKey(HOA::KeyFunction function) const
+int Menu::controlKey(HOA::KeyFunction function) const
 {
-	return controlsSubmenu->getKey(function);
+	return controlsSubmenu->key(function);
 }
 
 void Menu::setDefaultSubmenu()
@@ -444,7 +444,7 @@ KeyChangeWidget::KeyChangeWidget(QString actionName, int defaultKey, QWidget *pa
 	keyLabel = new QLabel();
 	keyLabel->setAlignment(Qt::AlignCenter);
 	keyLabel->setFixedWidth(100);
-	setChoosenKey(defaultKey);
+	setChosenKey(defaultKey);
 	layout->addWidget(keyLabel);
 	layout->setAlignment(keyLabel, Qt::AlignCenter);
 
@@ -462,7 +462,7 @@ bool KeyChangeWidget::isEditing() const
 	return editing;
 }
 
-int KeyChangeWidget::getKey() const
+int KeyChangeWidget::key() const
 {
 	return choosenKey;
 }
@@ -471,23 +471,23 @@ void KeyChangeWidget::beginEditing()
 {
 	setFocus();
 	editing = true;
-	ealirKey = choosenKey;
+	previousKey = choosenKey;
 	keyLabel->setText(tr("Press key"));
 }
 
 void KeyChangeWidget::restoreDefaultKey()
 {
-	setChoosenKey(defaultKey);
+	setChosenKey(defaultKey);
 	editing = false;
 }
 
-void KeyChangeWidget::restoreEalierKey()
+void KeyChangeWidget::restorePreviousKey()
 {
-	setChoosenKey(ealirKey);
+	setChosenKey(previousKey);
 	editing = false;
 }
 
-void KeyChangeWidget::setChoosenKey(int key)
+void KeyChangeWidget::setChosenKey(int key)
 {
 	choosenKey = key;
 	keyLabel->setText(QKeySequence(key).toString());
@@ -497,16 +497,14 @@ void KeyChangeWidget::setChoosenKey(int key)
 
 void KeyChangeWidget::keyPressEvent(QKeyEvent *event)
 {
-	if (editing) {
-		setChoosenKey(event->key());
-	}
+	if (editing)
+		setChosenKey(event->key());
 }
 
 void KeyChangeWidget::focusOutEvent(QFocusEvent *event)
 {
-	if (editing) {
-		restoreEalierKey();
-	}
+	if (editing)
+		restorePreviousKey();
 	QWidget::focusOutEvent(event);
 }
 
@@ -767,15 +765,15 @@ ControlsSubmenu::ControlsSubmenu(QWidget *parent) :
 	layout->addWidget(collisionLabel);
 	layout->setAlignment(collisionLabel, Qt::AlignCenter);
 
-	addKeyChangeWidget(tr("Move forward"), HOA::KeyFunction::MOVE_FORWARD, Qt::Key_W, 0, 0, gridLayout);
-	addKeyChangeWidget(tr("Move backwards"), HOA::KeyFunction::MOVE_BACKWARDS, Qt::Key_S, 1, 0, gridLayout);
-	addKeyChangeWidget(tr("Move Left"), HOA::KeyFunction::MOVE_LEFT, Qt::Key_A, 2, 0, gridLayout);
-	addKeyChangeWidget(tr("Move Right"), HOA::KeyFunction::MOVE_RIGHT, Qt::Key_D, 3, 0, gridLayout);
-	addKeyChangeWidget(tr("Jump"), HOA::KeyFunction::JUMP, Qt::Key_Space, 4, 0, gridLayout);
+	addKeyChangeWidget(tr("Move forward"), HOA::KeyFunction::MoveForward, Qt::Key_W, 0, 0, gridLayout);
+	addKeyChangeWidget(tr("Move backwards"), HOA::KeyFunction::MoveBackwards, Qt::Key_S, 1, 0, gridLayout);
+	addKeyChangeWidget(tr("Move Left"), HOA::KeyFunction::MoveLeft, Qt::Key_A, 2, 0, gridLayout);
+	addKeyChangeWidget(tr("Move Right"), HOA::KeyFunction::MoveRight, Qt::Key_D, 3, 0, gridLayout);
+	addKeyChangeWidget(tr("Jump"), HOA::KeyFunction::Jump, Qt::Key_Space, 4, 0, gridLayout);
 
-	addKeyChangeWidget(tr("Inventory"), HOA::KeyFunction::INVENTORY, Qt::Key_I, 0, 1, gridLayout);
-	addKeyChangeWidget(tr("Skills"), HOA::KeyFunction::SKILLS, Qt::Key_P, 1, 1, gridLayout);
-	addKeyChangeWidget(tr("Quests"), HOA::KeyFunction::QUESTS, Qt::Key_Q, 2, 1, gridLayout);
+	addKeyChangeWidget(tr("Inventory"), HOA::KeyFunction::Inventory, Qt::Key_I, 0, 1, gridLayout);
+	addKeyChangeWidget(tr("Skills"), HOA::KeyFunction::Skills, Qt::Key_P, 1, 1, gridLayout);
+	addKeyChangeWidget(tr("Quests"), HOA::KeyFunction::Quests, Qt::Key_Q, 2, 1, gridLayout);
 
 	setCollisionLabel();
 
@@ -796,7 +794,7 @@ ControlsSubmenu::ControlsSubmenu(QWidget *parent) :
 	setLayout(layout);
 }
 
-void ControlsSubmenu::addKeyChangeWidget(QString functionName, HOA::KeyFunction function,
+void ControlsSubmenu::addKeyChangeWidget(const QString &functionName, HOA::KeyFunction function,
 	int defaultKey, int row, int col, QGridLayout *layout)
 {
 	KeyChangeWidget *widget = new KeyChangeWidget(functionName, defaultKey);
@@ -808,9 +806,9 @@ void ControlsSubmenu::addKeyChangeWidget(QString functionName, HOA::KeyFunction 
 	functionsMap[function] = widget;
 }
 
-int ControlsSubmenu::getKey(HOA::KeyFunction function)
+int ControlsSubmenu::key(HOA::KeyFunction function)
 {
-	return functionsMap[function]->getKey();
+	return functionsMap[function]->key();
 }
 
 void ControlsSubmenu::setCollisionLabel()
@@ -821,7 +819,7 @@ void ControlsSubmenu::setCollisionLabel()
 	bool collision = false;
 	for (int i = 0; i < (int)keyWidgets.size(); i++) {
 		for (int j = i + 1; j < (int)keyWidgets.size(); j++) {
-			if (keyWidgets[i]->getKey() == keyWidgets[j]->getKey()) {
+			if (keyWidgets[i]->key() == keyWidgets[j]->key()) {
 				collision = true;
 				keyWidgets[i]->highlight();
 				keyWidgets[j]->highlight();

@@ -2,19 +2,7 @@
 #define MENU_H
 
 #include <QtWidgets>
-
-namespace HOA {
-	enum class KeyFunction : qint8 {
-		MOVE_FORWARD,
-		MOVE_BACKWARDS,
-		MOVE_LEFT,
-		MOVE_RIGHT,
-		JUMP,
-		INVENTORY,
-		SKILLS,
-		QUESTS
-	};
-}
+#include "Graphics/KeyboardManager.h"
 
 class NewGameSubmenu;
 class SaveGameSubmenu;
@@ -28,18 +16,18 @@ class Menu : public QWidget
 {
 Q_OBJECT;
 public:
-	Menu(QWidget *parent = 0);
+	Menu(QWidget *parent = nullptr);
 
-	QString getSaveFileName() const;
-	QString getLoadFileName() const;
-	int getControlKey(HOA::KeyFunction function) const;
+	QString saveFileName() const;
+	QString loadFileName() const;
+	int controlKey(HOA::KeyFunction function) const;
 
 private:
-	static const int DEFAULT_SUBMENU_INDEX = 0;
-	static const int NEW_GAME_SUBMENU_INDEX	= 1;
+	static const int DEFAULT_SUBMENU_INDEX   = 0;
+	static const int NEW_GAME_SUBMENU_INDEX	 = 1;
 	static const int SAVE_GAME_SUBMENU_INDEX = 2;
-	static const int OPTIONS_SUBMENU_INDEX = 3;
-	static const int CONTROLS_SUBMENU_INDEX = 4;
+	static const int OPTIONS_SUBMENU_INDEX   = 3;
+	static const int CONTROLS_SUBMENU_INDEX  = 4;
 
 	QStackedLayout *stackLayout;
 	DefaultSubmenu *defaultSubmenu;
@@ -240,7 +228,7 @@ Q_OBJECT;
 public:
 	KeyChangeWidget(QString actionName, int defaultKey, QWidget *parent = 0);
 
-	int getKey() const;
+	int key() const;
 	bool isEditing() const;
 
 private:
@@ -248,13 +236,13 @@ private:
 	int defaultKey;
 	bool editing;
 	// key before clicking change button
-	int ealirKey;
+	int previousKey;
 
 	QLabel *actionNameLabel;
 	QLabel *keyLabel;
 	ImageButton *changeButton;
 
-	void setChoosenKey(int key);
+	void setChosenKey(int key);
 
 protected:
 	void keyPressEvent(QKeyEvent *event);
@@ -266,7 +254,7 @@ signals:
 public slots:
 	void beginEditing();
 	void restoreDefaultKey();
-	void restoreEalierKey();
+	void restorePreviousKey();
 
 	void highlight();
 	void unhiglight();
@@ -395,16 +383,16 @@ Q_OBJECT;
 public:
 	ControlsSubmenu(QWidget *parent = 0);
 	bool isEditing();
-	int getKey(HOA::KeyFunction function);
+	int key(HOA::KeyFunction function);
 
 private:
 	QLabel *collisionLabel;
 	QVector <KeyChangeWidget *> keyWidgets;
 	ImageButton *restoreButton;
 	ImageButton *returnButton;
-	QMap <HOA::KeyFunction, KeyChangeWidget*> functionsMap;
+	QMap <HOA::KeyFunction, KeyChangeWidget *> functionsMap;
 
-	void addKeyChangeWidget(QString functionName, HOA::KeyFunction function,
+	void addKeyChangeWidget(const QString &functionName, HOA::KeyFunction function,
 		int defaultKey, int row, int col, QGridLayout *layout);
 
 signals:
@@ -414,7 +402,6 @@ signals:
 public slots:
 	void setCollisionLabel();
 	void restoreDefault();
-
 
 };
 

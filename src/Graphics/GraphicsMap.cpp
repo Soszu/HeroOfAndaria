@@ -44,31 +44,33 @@ void GraphicsMap::addGraphicsObject(GraphicsObject *graphicsObject)
 
 void GraphicsMap::keyPressEvent(QKeyEvent *event)
 {
-	if (!keyToMapAction_.contains(event->key()))
+	if (!KeyboardManager::hasKeyFunction(event->key()))
 		return QGraphicsView::keyPressEvent(event);
 
-	HOA::MapAction action = keyToMapAction_[event->key()];
+	HOA::KeyFunction action = KeyboardManager::keyFunction(event->key());
+
+	//TODO modifiers
 
 	switch (action) {
 
 	/** Movement */
-	case HOA::MapAction::Up:
-	case HOA::MapAction::Down:
-		mapActions_.verticalDirection = action;
-		break;
-	case HOA::MapAction::Left:
-	case HOA::MapAction::Right:
-		mapActions_.horizontalDirection = action;
-		break;
+		case HOA::KeyFunction::MoveForward:
+		case HOA::KeyFunction::MoveBackwards:
+			mapActions_.verticalDirection = action;
+			break;
+		case HOA::KeyFunction::MoveLeft:
+		case HOA::KeyFunction::MoveRight:
+			mapActions_.horizontalDirection = action;
+			break;
 
 	/** Windows */
-	case HOA::MapAction::Menu:
-		emit menuActivated();
-		//TODO pause (global timer?)
-		break;
+		case HOA::KeyFunction::Menu:
+			emit menuActivated();
+			//TODO pause (global timer?)
+			break;
 
-	default:
-		Q_ASSERT(false);
+		default:
+			return QGraphicsView::keyPressEvent(event);
 	}
 
 	//TODO player control could be implemented using some sort of AI-like control panel.
@@ -85,21 +87,21 @@ void GraphicsMap::keyPressEvent(QKeyEvent *event)
 
 void GraphicsMap::keyReleaseEvent(QKeyEvent *event)
 {
-	if (!keyToMapAction_.contains(event->key()))
+	if (!KeyboardManager::hasKeyFunction(event->key()))
 		return QGraphicsView::keyReleaseEvent(event);
 
-	HOA::MapAction action = keyToMapAction_[event->key()];
+	HOA::KeyFunction action = KeyboardManager::keyFunction(event->key());
 
 	switch (action) {
 
 	/** Movement */
-		case HOA::MapAction::Up:
-		case HOA::MapAction::Down:
-			mapActions_.verticalDirection = HOA::MapAction::None;
+		case HOA::KeyFunction::MoveForward:
+		case HOA::KeyFunction::MoveBackwards:
+			mapActions_.verticalDirection = HOA::KeyFunction::None;
 			break;
-		case HOA::MapAction::Left:
-		case HOA::MapAction::Right:
-			mapActions_.horizontalDirection = HOA::MapAction::None;
+		case HOA::KeyFunction::MoveLeft:
+		case HOA::KeyFunction::MoveRight:
+			mapActions_.horizontalDirection = HOA::KeyFunction::None;
 			break;
 
 		default:
@@ -137,8 +139,8 @@ void GraphicsMap::initGraphicsObjects()
 
 void GraphicsMap::initMapActions()
 {
-	mapActions_.horizontalDirection = HOA::MapAction::None;
-	mapActions_.verticalDirection   = HOA::MapAction::None;
+	mapActions_.horizontalDirection = HOA::KeyFunction::None;
+	mapActions_.verticalDirection   = HOA::KeyFunction::None;
 }
 
 void GraphicsMap::initMap()
@@ -148,8 +150,10 @@ void GraphicsMap::initMap()
 
 HOA::Direction GraphicsMap::mapActionDirection() const
 {
-	int vertical   = ((int)mapActions_.verticalDirection + 1) / 2;
-	int horizontal = (int)mapActions_.horizontalDirection / 2;
+	int vertical   = (int)(mapActions_.verticalDirection == HOA::KeyFunction::None)
+	                 + (int)(mapActions_.verticalDirection == HOA::KeyFunction::MoveRight) * 2;
+	int horizontal = (int)(mapActions_.horizontalDirection == HOA::KeyFunction::None)
+	                 + (int)(mapActions_.horizontalDirection == HOA::KeyFunction::MoveBackwards) * 2;
 
 	switch (vertical + 3 * horizontal) {
 		case 0:  return HOA::Direction::LeftFront;
@@ -172,15 +176,6 @@ void GraphicsMap::onCollision()
 	//GraphicsObject *object = static_cast<GraphicsObject *>(sender());
 	//QVector <GraphicsObject *> collisions = objectA->collisions();
 }
-
-//TODO modifiable by options in menu
-QHash <int, HOA::MapAction> GraphicsMap::keyToMapAction_ {
-	{Qt::Key_W,      HOA::MapAction::Up},
-	{Qt::Key_S,      HOA::MapAction::Down},
-	{Qt::Key_A,      HOA::MapAction::Left},
-	{Qt::Key_D,      HOA::MapAction::Right},
-	{Qt::Key_Escape, HOA::MapAction::Menu},
-};
 
 /**
  * \class TileScene

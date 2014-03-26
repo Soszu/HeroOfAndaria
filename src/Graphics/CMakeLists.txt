@@ -11,6 +11,7 @@ set (HOAGraphics_SRCS
 	GraphicsObject.cpp
  	GraphicsPlace.cpp
  	GraphicsTown.cpp
+ 	KeyboardManager.cpp
 )
 
 set (HOAGraphics_HDRS

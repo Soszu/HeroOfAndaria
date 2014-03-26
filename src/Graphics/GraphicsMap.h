@@ -3,6 +3,7 @@
 
 #include <QtWidgets>
 #include "Graphics/GraphicsObject.h"
+#include "Graphics/KeyboardManager.h"
 #include "System/Map.h"
 
 /**
@@ -33,19 +34,6 @@ private:
 	void drawBackground(QPainter *painter, const QRectF &exposed);
 };
 
-namespace HOA {
-	/** Numbers are important */
-	enum class MapAction : quint8 {
-		Up    = 0,
-		Left  = 1,
-		None  = 2,
-		Down  = 3,
-		Right = 4,
-
-		Menu  = 5,
-	};
-}
-
 /**
  * \class GraphicsMap
  * Graphical representation of a Map.
@@ -70,11 +58,9 @@ protected:
 	void addGraphicsObject(GraphicsObject *graphicsObject);
 
 	struct {
-		HOA::MapAction horizontalDirection;
-		HOA::MapAction verticalDirection;
+		HOA::KeyFunction horizontalDirection;
+		HOA::KeyFunction verticalDirection;
 	} mapActions_;
-
-	static QHash <int, HOA::MapAction> keyToMapAction_;
 
 	void keyPressEvent(QKeyEvent *event);
 	void keyReleaseEvent(QKeyEvent *event);
