@@ -89,13 +89,6 @@ int Creature::endurance() const
 	return base->endurance();
 }
 
-/*
-const EquipmentCarrier * Creature::equipmentCarrier() const
-{
-	return equipmentCarrier_;
-}
-*/
-
 QDataStream & operator << (QDataStream &out, const Creature &creature)
 {
 	out << creature.base->uid();

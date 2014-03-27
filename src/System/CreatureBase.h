@@ -2,7 +2,6 @@
 #define CREATUREBASE_H
 
 #include <QtWidgets>
-#include "System/FileIO.h"
 #include "System/Uid.h"
 #include "System/CommonStrings.h"
 
@@ -68,18 +67,18 @@ Q_OBJECT;
 public:
 	int columnCount(const QModelIndex &index = QModelIndex()) const;
 	QVariant data(const QModelIndex &index, int role) const;
+	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex());
 	bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+	void reset();
 
 	bool isChanged() const;
 	void setChanged(bool changed);
 
 	static CreatureModel & instance();
-	static bool loadFromFile(const QString &fileName);
-	static bool saveToFile(const QString &fileName);
 
 	static void addNewCreature();
 	static bool empty();
@@ -101,7 +100,6 @@ public:
 
 	friend QDataStream & operator << (QDataStream &out, const CreatureModel &cModel);
 	friend QDataStream & operator >> (QDataStream &in, CreatureModel &cModel);
-	friend bool ::saveToFile<CreatureModel>(CreatureModel &obj, const QString &fileName);
 
 private:
 	explicit CreatureModel(QObject *parent = nullptr);

@@ -92,13 +92,10 @@ void CreatureBase::setEndurance(int endurance)
 
 QDataStream & operator << (QDataStream &out, const CreatureBase &creature)
 {
-	out << creature.name_ << "(" << creature.uid_ << ")"
-	<< "\nstats:"
-	<< "\n\tfull hit points:    " << creature.fullHitPoints_
-	<< "\n\tstrength:           " << creature.strength_
-	<< "\n\tagility:            " << creature.agility_
-	<< "\n\tintelligence:       " << creature.intelligence_
-	<< "\n\tendurance:          " << creature.endurance_;
+	out << creature.name_ << creature.uid_;
+	out << creature.fullHitPoints_;
+	out << creature.strength_ << creature.agility_ << creature.intelligence_ << creature.endurance_;
+
 
 	return out;
 }
@@ -147,11 +144,28 @@ QVariant CreatureModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
+QVariant CreatureModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+	if (role != Qt::DisplayRole || orientation != Qt::Horizontal)
+		return QVariant();
+
+	switch (section) {
+		case Name:             return HOA::Strings::CreatureName;
+		case FullHitPoints:    return HOA::Strings::CreatureFullHitPoints;
+		case Strength:         return HOA::Strings::CreatureStrength;
+		case Agility:          return HOA::Strings::CreatureAgility;
+		case Intelligence:     return HOA::Strings::CreatureIntellgence;
+		case Endurance:        return HOA::Strings::CreatureEndurance;
+	}
+
+	return QVariant();
+}
+
 Qt::ItemFlags CreatureModel::flags(const QModelIndex &index) const
 {
 	if (!index.isValid())
 		return Qt::ItemIsEnabled;
-	return Qt::ItemIsEnabled | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable;
+	return Qt::ItemIsEnabled | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 }
 
 bool CreatureModel::insertRows(int row, int count, const QModelIndex &parent)
@@ -162,7 +176,7 @@ bool CreatureModel::insertRows(int row, int count, const QModelIndex &parent)
 		QString creatureName;
 		do {
 			++nameSuffix;
-			creatureName = QString("%1 %2").arg(Strings::DefaultNewCreatureName).arg(nameSuffix);
+			creatureName = QString("%1 %2").arg(HOA::Strings::DefaultNewCreatureName).arg(nameSuffix);
 		} while (hasCreature(creatureName));
 
 		creatures_.insert(row + i, new CreatureBase(nextUid++, creatureName));
@@ -208,6 +222,13 @@ bool CreatureModel::setData(const QModelIndex &index, const QVariant &value, int
 	return true;
 }
 
+void CreatureModel::reset()
+{
+	removeRows(0, rowCount());
+	nextUid = MinUid;
+	changed_ = false;
+}
+
 bool CreatureModel::isChanged() const
 {
 	return changed_;
@@ -222,16 +243,6 @@ CreatureModel & CreatureModel::instance()
 {
 	static CreatureModel *instance = new CreatureModel;
 	return *instance;
-}
-
-bool CreatureModel::loadFromFile(const QString &fileName)
-{
-	return ::loadFromFile(instance(), fileName);
-}
-
-bool CreatureModel::saveToFile(const QString &fileName)
-{
-	return ::saveToFile(instance(), fileName);
 }
 
 void CreatureModel::addNewCreature()
