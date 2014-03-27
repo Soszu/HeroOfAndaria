@@ -23,6 +23,12 @@ namespace Data {
 		const QString DownButtonDark        = Preffix + "/downButtonDark.png";
 
 		const QString TileGrass = Preffix + "/grass.png";
+		
+		const QString BlacksmithButton	=	Preffix + "/blacksmithButton.png";
+		const QString InnButton		=	Preffix + "/innButton.png";
+		const QString LeaveTownButton	=	Preffix + "/leaveTownButton.png";
+		const QString OpenPlaceButton	=	Preffix + "/openPlaceButton.png";
+		const QString TownBackground	=	Preffix + "/townBackground.png";
 	}
 }
 

@@ -36,15 +36,43 @@ class TownMainView : public QWidget
 {
 	Q_OBJECT;
 public:
-	TownMainView(QVector< QString >& buttonCaps, QWidget* parent = 0);
+	TownMainView(QVector <QPair <QString, HOA::PlaceType>> &buttonCaps, QWidget *parent = 0);
 	QSignalMapper * sigMapper();
 	QPushButton * exitButton();
+	
+protected:
+	void paintEvent(QPaintEvent *event);
 private:
 	QHBoxLayout * layout_;
 	QSignalMapper * sigMapper_;
 	QPushButton * exitButton_;
+	
+	QPixmap backgroundImage_;
 };
 
+
+class PlaceButton : public QPushButton
+{
+	Q_OBJECT;
+public:
+	PlaceButton(QPixmap *closedImage, QPixmap *openImage, QString text, QWidget *parent);
+
+	QSize minimumSize() const;
+	QSize sizeHint() const;
+	void enterEvent(QEvent *event);
+	void leaveEvent(QEvent *event);
+protected:
+	void paintEvent(QPaintEvent *event);
+	
+private:
+	QPixmap* closedImage_;
+	QPixmap* openImage_;
+	int fontPointSize_;
+	static const int DEFAULT_FONT_SIZE = 11;
+	bool isMouseOver_;
+	
+	
+};
 
 GraphicsTown * getExample();
 
