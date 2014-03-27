@@ -82,6 +82,8 @@ void MainWindow::initLayout()
 	modelsList_->setMaximumWidth(100);
 
 	placeholder->setVisible(false);
+
+	statusBar()->showMessage(HOAEditor::Messages::HowToStart);
 }
 
 void MainWindow::startEditing()
@@ -92,7 +94,7 @@ void MainWindow::startEditing()
 	placeholder->setVisible(true);
 }
 
-bool MainWindow::loadContent(const QString& path)
+bool MainWindow::loadContent(const QString &path)
 {
 	if (path.isEmpty())
 		return false;
@@ -107,10 +109,11 @@ bool MainWindow::loadContent(const QString& path)
 		editor->loadFromStream(in);
 
 	file.close();
+	statusBar()->showMessage(HOAEditor::Messages::ContentLoaded);
 	return true;
 }
 
-bool MainWindow::saveContent(const QString& path)
+bool MainWindow::saveContent(const QString &path)
 {
 	if (path.isEmpty())
 		return false;
@@ -125,6 +128,7 @@ bool MainWindow::saveContent(const QString& path)
 		editor->saveToStream(out);
 
 	file.close();
+	statusBar()->showMessage(HOAEditor::Messages::ContentSaved);
 	return true;
 }
 
@@ -146,8 +150,6 @@ int MainWindow::checkForUnsavedChanges()
 	msgBox.setDefaultButton(QMessageBox::Save);
 
 	return msgBox.exec();
-
-
 }
 
 void MainWindow::onNewActivated()
@@ -157,12 +159,12 @@ void MainWindow::onNewActivated()
 	switch (checkForUnsavedChanges()) {
 		case QMessageBox::Save:
 			onSaveActivated();
-			break;
+			return;
 		case QMessageBox::Discard:
 
 			for (ContentEditor *editor : contentEditors_)
 				editor->clear();
-			break;
+			return;
 		default :
 			return;
 	}
@@ -170,6 +172,16 @@ void MainWindow::onNewActivated()
 
 void MainWindow::onLoadActivated()
 {
+	switch (checkForUnsavedChanges()) {
+		case QMessageBox::Save:
+			onSaveActivated();
+			return;
+		case QMessageBox::Discard:
+			break;
+		default :
+			return;
+	}
+
 	QString path = QFileDialog::getOpenFileName(this, HOAEditor::Strings::LoadFileDialog, QString(), HOAEditor::Strings::HOAContentFiles);
 	if (loadContent(path))
 		startEditing();

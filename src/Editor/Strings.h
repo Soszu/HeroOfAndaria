@@ -5,6 +5,13 @@
 #include "Editor/Shortcuts.h"
 
 namespace HOAEditor {
+
+	namespace Messages {
+		const QString HowToStart           = QObject::tr("Use \"New\" or \"Load\" from \"File\" menu to start");
+		const QString ContentLoaded        = QObject::tr("Content loaded");
+		const QString ContentSaved        = QObject::tr("Content saved");
+	}
+
 	namespace Strings {
 		const QString MenuFile           = QObject::tr("&File");
 		const QString MenuFileNew        = QObject::tr("New");

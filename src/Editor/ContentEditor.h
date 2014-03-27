@@ -15,7 +15,7 @@ public:
 
 	virtual void clear(){}
 	virtual bool isChanged() const = 0;
-	virtual void saveToStream(QDataStream &out) = 0;
+	virtual void saveToStream(QDataStream &out) const = 0 ;
 	virtual void loadFromStream(QDataStream &in) = 0;
 
 public slots:

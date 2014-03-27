@@ -3,7 +3,6 @@
  * paths
  * window and widgets size in const variables listed in one place
  * separate common files if any
- *
  */
 
 #ifndef MAINWINDOW_H

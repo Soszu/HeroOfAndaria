@@ -21,12 +21,12 @@ void CreatureEditor::modelSaved()
 	model->setChanged(false);
 }
 
-void CreatureEditor::saveToStream(QDataStream &out)
+void CreatureEditor::saveToStream(QDataStream &out) const
 {
 	out << *model;
 }
 
-void CreatureEditor::loadFromStream(QDataStream& in)
+void CreatureEditor::loadFromStream(QDataStream &in)
 {
 	in >> *model;
 }
@@ -40,11 +40,6 @@ void CreatureEditor::initView()
 	view->setSelectionMode(QAbstractItemView::SingleSelection);
 
 	widget_ = view;
-
-	mapper = new QDataWidgetMapper(this);
-	mapper->setModel(model);
-	mapper->setSubmitPolicy(QDataWidgetMapper::AutoSubmit);
-	connect(view->selectionModel(), &QItemSelectionModel::currentRowChanged, mapper, &QDataWidgetMapper::setCurrentModelIndex);
 }
 
 void CreatureEditor::initButtonsAndLayout()

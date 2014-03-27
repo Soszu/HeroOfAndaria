@@ -14,7 +14,7 @@ public:
 	CreatureEditor();
 	void clear();
 	bool isChanged() const;
-	void saveToStream(QDataStream &out);
+	void saveToStream(QDataStream &out) const;
 	void loadFromStream(QDataStream &in);
 
 public slots:
@@ -26,7 +26,6 @@ private:
 
 	QTableView *view;
 	CreatureModel *model;
-	QDataWidgetMapper *mapper;
 
 private slots:
 	void addCreature();
