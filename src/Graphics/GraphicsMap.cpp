@@ -7,39 +7,28 @@
  */
 
 GraphicsMap::GraphicsMap(Map *map)
-	: map_(map), tileScene_(map)
+	: map_(map)
 {
-	initWindow();
-	initGraphicsObjects();
-	initScene();
-	initMapActions();
 	initMap();
-
-	//TODO scaling && resolution (from menu/settings -> mainwindow)
-	scale(1.2, 1.2);
+	initMapActions();
+	initView();
+	initLayout();
 }
 
-void GraphicsMap::updateCursor()
+GraphicsMap::~GraphicsMap()
 {
-	cursorPosition_ = mapToScene(cursor().pos()).toPoint();
-	map_->player()->setRotation(cursorPosition_);
+	delete mapView_;
 }
 
 bool GraphicsMap::canMakeMove(const Movable *object, const QPoint &vector) const
 {
 	GraphicsObject *graphicsObject = GraphicsFactory::get(object);
-	return graphicsObject->collisions(vector).isEmpty();
-}
+	auto collisions = graphicsObject->collisions(vector);
 
-void GraphicsMap::addGraphicsObject(GraphicsObject *graphicsObject)
-{
-	connect(graphicsObject, &GraphicsObject::collided, this, &GraphicsMap::onCollision);
-
-	Object *object = graphicsObject->object();
-
-	if (object->isMovable())
-		((Movable *)object)->setMovementManager(this);
-	tileScene_.addItem(graphicsObject);
+	for (GraphicsObject *x : collisions)
+		if (!map_->canCollide(object, x->object()))
+			return false;
+	return true;
 }
 
 void GraphicsMap::keyPressEvent(QKeyEvent *event)
@@ -47,7 +36,7 @@ void GraphicsMap::keyPressEvent(QKeyEvent *event)
 	if (event->isAutoRepeat())
 		return;
 	if (!KeyboardManager::hasKeyFunction(event->key()))
-		return QGraphicsView::keyPressEvent(event);
+		return QWidget::keyPressEvent(event);
 
 	HOA::KeyFunction action = KeyboardManager::keyFunction(event->key());
 
@@ -72,7 +61,7 @@ void GraphicsMap::keyPressEvent(QKeyEvent *event)
 			break;
 
 		default:
-			return QGraphicsView::keyPressEvent(event);
+			return QWidget::keyPressEvent(event);
 	}
 
 	//TODO player control could be implemented using some sort of AI-like control panel.
@@ -92,7 +81,7 @@ void GraphicsMap::keyReleaseEvent(QKeyEvent *event)
 	if (event->isAutoRepeat())
 		return;
 	if (!KeyboardManager::hasKeyFunction(event->key()))
-		return QGraphicsView::keyReleaseEvent(event);
+		return QWidget::keyReleaseEvent(event);
 
 	HOA::KeyFunction action = KeyboardManager::keyFunction(event->key());
 
@@ -115,30 +104,13 @@ void GraphicsMap::keyReleaseEvent(QKeyEvent *event)
 	map_->player()->move(mapActionDirection());
 }
 
-void GraphicsMap::onObjectAdded()
+void GraphicsMap::initMap()
 {
-	addGraphicsObject(GraphicsFactory::get(map_->newestObject()));
-}
+	for (Object *obj : map_->objects())
+		if (obj->isMovable())
+			((Movable *)obj)->setMovementManager(this);
 
-void GraphicsMap::initWindow()
-{
-	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	setFrameStyle(QFrame::NoFrame);
-}
-
-void GraphicsMap::initScene()
-{
-	setScene(&tileScene_);
-	QGraphicsView::centerOn(mapFromScene(map_->player()->position()));
-}
-
-void GraphicsMap::initGraphicsObjects()
-{
-	tileScene_.clear();
-	for (Object *object : map_->objects())
-		addGraphicsObject(GraphicsFactory::get(object));
-	map_->player();
+	connect(map_, &Map::objectAdded, this, &GraphicsMap::onObjectAdded);
 }
 
 void GraphicsMap::initMapActions()
@@ -147,10 +119,14 @@ void GraphicsMap::initMapActions()
 	mapActions_.verticalDirection   = HOA::KeyFunction::None;
 }
 
-void GraphicsMap::initMap()
+void GraphicsMap::initView()
 {
-	connect(map_, &Map::objectAdded, this, &GraphicsMap::onObjectAdded);
+	mapView_ = new MapView(map_);
+	connect(mapView_, &MapView::collided, this, &GraphicsMap::onCollision);
 }
+
+void GraphicsMap::initLayout()
+{}
 
 static int mapActionToValue(HOA::KeyFunction mapAction)
 {
@@ -195,6 +171,106 @@ void GraphicsMap::onCollision()
 	//QVector <GraphicsObject *> collisions = objectA->collisions();
 }
 
+void GraphicsMap::onObjectAdded()
+{
+	Object *object = map_->newestObject();
+
+	if (object->isMovable())
+		((Movable *)object)->setMovementManager(this);
+}
+
+/**
+ * \class MapView
+ */
+
+MapView::MapView(Map *map)
+	: QGraphicsView(), map_(map), tileScene_(new TileScene(map))
+{
+	initMap();
+	initWindow();
+	initGraphicsObjects();
+	initScene();
+	initCursor();
+	initView();
+}
+
+MapView::~MapView()
+{}
+
+void MapView::initMap()
+{
+	connect(map_, &Map::objectAdded, this, &MapView::onObjectAdded);
+}
+
+void MapView::initWindow()
+{
+	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	setFrameStyle(QFrame::NoFrame);
+}
+
+void MapView::initScene()
+{
+	setScene(tileScene_);
+	QGraphicsView::centerOn(mapFromScene(map_->player()->position()));
+}
+
+void MapView::initGraphicsObjects()
+{
+	tileScene_->clear();
+	for (Object *object : map_->objects())
+		addGraphicsObject(GraphicsFactory::get(object));
+	map_->player();
+}
+
+void MapView::initCursor()
+{
+	QTimer *timer = new QTimer(this);
+	connect(timer, &QTimer::timeout, this, &MapView::updateCursor);
+	timer->start();
+}
+
+void MapView::initView()
+{
+	//TODO scaling && resolution (from menu/settings -> mainwindow)
+	scale(1.2, 1.2);
+}
+
+void MapView::addGraphicsObject(GraphicsObject *graphicsObject)
+{
+	connect(graphicsObject, &GraphicsObject::collided, this, &MapView::collided);
+
+	int zValue;
+	switch (graphicsObject->object()->objectType()) {
+		case HOA::ObjectType::Human:
+		case HOA::ObjectType::Creature:
+			zValue = 2;
+			break;
+		case HOA::ObjectType::Item:
+			zValue = 3;
+			break;
+		case HOA::ObjectType::Town:
+			zValue = 1;
+			break;
+		default:;
+	}
+
+	graphicsObject->setZValue(zValue);
+
+	tileScene_->addItem(graphicsObject);
+}
+
+void MapView::updateCursor()
+{
+	QPointF cursorPosition_ = mapToScene(cursor().pos());
+	map_->player()->setRotation(cursorPosition_.toPoint());
+}
+
+void MapView::onObjectAdded()
+{
+	addGraphicsObject(GraphicsFactory::get(map_->newestObject()));
+}
+
 /**
  * \class TileScene
  */
@@ -235,11 +311,24 @@ void TileScene::initBackground()
 
 //TODO prepare some samples for tiles + generating tiles (?)
 //TODO Change the function signature. New big tile for specific tile set, or something. // DataManager
-const QPixmap * TileScene::newTile(const Tile &tile) const
+QPixmap TileScene::newTile(const Tile &tile) const
 {
-	//TODO
-	static const QPixmap samplePixmap(Data::Images::TileGrass);
-	return &samplePixmap;
+	//TODO data manager
+	static QPixmap fullPixmap(Data::Images::TileGrass);
+
+	//TODO throw some global rand please
+	static bool initialized = false;
+	if (!initialized) {
+		initialized = true;
+		qsrand(0);
+	}
+
+	return fullPixmap.copy(
+		qrand() % (fullPixmap.width() / map_->tileSize()) * map_->tileSize(),
+		qrand() % (fullPixmap.height() / map_->tileSize()) * map_->tileSize(),
+		map_->tileSize(),
+		map_->tileSize()
+	);
 }
 
 /** From Qt documentation */
@@ -255,7 +344,6 @@ QRectF TileScene::rectForTile(int x, int y) const
 
 void TileScene::addTile(const Tile &tile)
 {
-	static const QPixmap pixmap(Data::Images::TileGrass);
 
 	if (bigTiles_.isEmpty() || bigTiles_.last().second == bigTileMultiplier() * bigTileMultiplier()) {
 		bigTiles_.append({
@@ -270,7 +358,7 @@ void TileScene::addTile(const Tile &tile)
 	QPainter painter(&bigTiles_.last().first);
 	painter.drawPixmap(QPoint(currentNumber % bigTileMultiplier() * Grid::tileSize(),
 	                          currentNumber / bigTileMultiplier() * Grid::tileSize()),
-	                   pixmap);
+	                   newTile(tile));
 
 	bigTiles_.last().second++;
 

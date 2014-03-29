@@ -4,3 +4,5 @@ skoki
 ukształtowanie terenu
 efekty (trucizna, zamrożenie)
 
+#4
+cursor

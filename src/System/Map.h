@@ -18,13 +18,15 @@ public:
 
 	Human * player();
 
-	void onCollision(Object *object, const QVector <Object *> &collisions);
+	virtual bool canCollide(const Movable *lhs, const Object *rhs) const;
+	virtual void onCollision(Object *object, const QVector <Object *> &collisions);
 
 protected:
 	QVector <Object *> objects_;
+	Object *newestObject_;
 	Human *player_;
 
-	void addObject(Object *object);
+	virtual void addObject(Object *object);
 
 signals:
 	void objectAdded();

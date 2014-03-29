@@ -5,8 +5,7 @@ MainWindow::MainWindow()
 	initMenu();
 	initActions();
 	initGlobalMap();
-	initCursor();
-	initTown(); //Only for testing GraphicsTown
+	//initTown(); //Only for testing GraphicsTown
 	initLayout();
 	initWindow();
 }
@@ -32,7 +31,7 @@ void MainWindow::initActions()
 	actionQuit_->setShortcut(tr("Ctrl+Q"));
 	connect(actionQuit_, &QAction::triggered, this, &MainWindow::onQuitActivated);
 	addAction(actionQuit_);
-	
+
 	// Just for graphicsTown testing
 	actionTown_ = new QAction(this);
 	actionTown_->setShortcut(tr("Ctrl+T"));
@@ -48,33 +47,22 @@ void MainWindow::initGlobalMap()
 	connect(graphicsGlobalMap_, &GraphicsGlobalMap::menuActivated, this, &MainWindow::onMenuActivated);
 }
 
-void MainWindow::initCursor()
-{
-	static int CURSOR_TIMEOUT = 20;
-
-	//TODO graphical pretties
-	QTimer *cursorTimer = new QTimer(this);
-	connect(cursorTimer, &QTimer::timeout, this, &MainWindow::updateCursor);
-	cursorTimer->start(CURSOR_TIMEOUT);
-}
-
 void MainWindow::initLayout()
 {
 	stackedWidget_ = new QStackedWidget;
 
-	stackedWidget_->addWidget(menu_);
-	stackedWidget_->addWidget(graphicsGlobalMap_);
-	
-	stackedWidget_->addWidget(graphicsTown_);
-	
+	stackedWidget_->insertWidget(MENU_INDEX, menu_);
+	stackedWidget_->insertWidget(GLOBAL_MAP_INDEX, graphicsGlobalMap_);
+
+	//stackedWidget_->insertWidget(TOWN_INDEX, graphicsTown_);
+
 	setCentralWidget(stackedWidget_);
 }
 
 void MainWindow::initTown() //Only for testing GraphicsTown
 {
-	this->graphicsTown_ = getExample();
-	connect(graphicsTown_, &GraphicsTown::leaveTown, this, &MainWindow::onHideTown);
-	
+	//this->graphicsTown_ = getExample();
+	//connect(graphicsTown_, &GraphicsTown::townLeaved, this, &MainWindow::onHideTown);
 }
 
 
@@ -114,12 +102,6 @@ void MainWindow::onGlobalMapActivated()
 {
 	stackedWidget_->setCurrentIndex(GLOBAL_MAP_INDEX);
 }
-
-void MainWindow::updateCursor()
-{
-	graphicsGlobalMap_->updateCursor();
-}
-
 
 void MainWindow::onHideTown()//Only for testing GraphicsTown
 {

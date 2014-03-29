@@ -9,7 +9,10 @@
 class Item : public Carriable, public Movable
 {
 public:
-	Item(int type);
+	Item();
+
+	int weight() const;
+	int price() const;
 
 private:
 	ItemBase *base_;

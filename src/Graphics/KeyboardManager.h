@@ -6,11 +6,15 @@
 namespace HOA {
 	enum class KeyFunction : quint8 {
 		None,
+
 		MoveForward,
 		MoveBackwards,
 		MoveLeft,
 		MoveRight,
 		Jump,
+
+		EnterLocation,
+
 		Inventory,
 		Skills,
 		Quests,
@@ -21,11 +25,14 @@ namespace HOA {
 class KeyboardManager
 {
 public:
-	static KeyboardManager & getInstance();
+	static KeyboardManager & instance();
 
+	//TODO scopes: localmap, globalmap
 	static void setKeyFunction(HOA::KeyFunction keyFunction, int key);
 	static HOA::KeyFunction keyFunction(int key);
 	static bool hasKeyFunction(int key);
+
+	static int primaryKey(HOA::KeyFunction keyFunction);
 
 private:
 	QHash <int, HOA::KeyFunction> keyFunctions_;

@@ -48,7 +48,7 @@ class ItemBase
 {
 public:
 	ItemBase();
-	
+
 	UID uid() const;
 
 	QString name() const;
@@ -59,10 +59,16 @@ public:
 
 	HOA::ItemType type() const;
 	void setType(HOA::ItemType type);
-	
+
+	int weight() const;
+	void setWeight(int weight);
+
+	int price() const;
+	void setPrice(int price);
+
 	int minStrength() const;
 	void setMinStrength(int strength);
-	
+
 	int minIntelligence() const;
 	void setMinIntelligence(int intelligence);
 
@@ -78,10 +84,13 @@ private:
 
 	HOA::ItemType type_;
 
+	int weight_;
+	int price_;
+
 	HOA::Effect effect_;
 
 	int minStrength_;
-	int minIntelligence_;	
+	int minIntelligence_;
 	int minAgility_;
 };
 

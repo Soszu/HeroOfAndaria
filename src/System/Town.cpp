@@ -1,6 +1,7 @@
 #include "System/Town.h"
 
-Town::Town()
+Town::Town(const QString &name) :
+	name_(name)
 {}
 
 HOA::ObjectType Town::objectType() const
@@ -25,7 +26,12 @@ const QVector <Place *> & Town::places() const
 	return this->places_;
 }
 
-void Town::addPlace(Place* p)
+void Town::addPlace(Place *p)
 {
 	this->places_.append(p);
+}
+
+void Town::exitTown()
+{
+	emit townExited();
 }

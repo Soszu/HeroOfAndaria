@@ -6,6 +6,88 @@
 #include "Graphics/KeyboardManager.h"
 #include "System/Map.h"
 
+class MapView;
+class TileScene;
+
+/**
+ * \class GraphicsMap
+ * Graphical representation of a Map.
+ */
+class GraphicsMap : public QStackedWidget, public MovementManager
+{
+Q_OBJECT;
+
+public:
+	GraphicsMap(Map *map);
+	~GraphicsMap();
+
+	virtual bool canMakeMove(const Movable *object, const QPoint &vector) const;
+
+signals:
+	void menuActivated();
+
+protected:
+	Map *map_;
+
+	MapView *mapView_;
+
+	struct {
+		HOA::KeyFunction horizontalDirection;
+		HOA::KeyFunction verticalDirection;
+	} mapActions_;
+
+	virtual void keyPressEvent(QKeyEvent *event);
+	virtual void keyReleaseEvent(QKeyEvent *event);
+
+protected slots:
+	void onCollision();
+
+private:
+	void initMap();
+	void initMapActions();
+	void initView();
+	void initLayout();
+
+	HOA::Direction mapActionDirection() const;
+
+private slots:
+	void onObjectAdded();
+};
+
+/**
+ * \class MapView
+ */
+
+class MapView : public QGraphicsView
+{
+Q_OBJECT;
+
+public:
+	MapView(Map *map);
+	~MapView();
+
+signals:
+	void collided();
+
+private:
+	Map *map_;
+	TileScene *tileScene_;
+
+	void initMap();
+	void initWindow();
+	void initGraphicsObjects();
+	void initScene();
+	void initCursor();
+	void initView();
+
+	void addGraphicsObject(GraphicsObject *graphicsObject);
+
+private slots:
+	void updateCursor();
+
+	void onObjectAdded();
+};
+
 /**
  * \class TileScene
  * Scene with tiny tiles.
@@ -27,62 +109,11 @@ private:
 
 	void initBackground();
 
-	const QPixmap * newTile(const Tile &tile) const;
+	QPixmap newTile(const Tile &tile) const;
 	QRectF rectForTile(int x, int y) const;
 	void addTile(const Tile &tile);
 
 	void drawBackground(QPainter *painter, const QRectF &exposed);
-};
-
-/**
- * \class GraphicsMap
- * Graphical representation of a Map.
- */
-class GraphicsMap : public QGraphicsView, public MovementManager
-{
-Q_OBJECT;
-
-public:
-	GraphicsMap(Map *map);
-
-	void updateCursor();
-
-	virtual bool canMakeMove(const Movable *object, const QPoint &vector) const;
-
-signals:
-	void menuActivated();
-
-protected:
-	Map *map_;
-
-	void addGraphicsObject(GraphicsObject *graphicsObject);
-
-	struct {
-		HOA::KeyFunction horizontalDirection;
-		HOA::KeyFunction verticalDirection;
-	} mapActions_;
-
-	void keyPressEvent(QKeyEvent *event);
-	void keyReleaseEvent(QKeyEvent *event);
-
-protected slots:
-	void onObjectAdded();
-
-private:
-	TileScene tileScene_;
-
-	QPoint cursorPosition_;
-
-	void initWindow();
-	void initGraphicsObjects();
-	void initScene();
-	void initMapActions();
-	void initMap();
-
-	HOA::Direction mapActionDirection() const;
-
-private slots:
-	void onCollision();
 };
 
 #endif // GRAPHICSMAP_H

@@ -7,8 +7,9 @@ namespace HOA {
 	//TODO more when the time comes
 	enum class ObjectType : quint8 {
 		Creature,
+		Human,
 		Item,
-		Town
+		Town,
 	};
 }
 
@@ -31,8 +32,8 @@ public:
 
 protected:
 	static const int ADVANCE_TIMEOUT      = 40;
-	static const int TIME_DIVIDER         = 40;
-	static const int REAL_ADVANCE_TIMEOUT = ADVANCE_TIMEOUT / TIME_DIVIDER;
+	static const int TIME_DIVISOR         = 40;
+	static const int REAL_ADVANCE_TIMEOUT = ADVANCE_TIMEOUT / TIME_DIVISOR;
 
 protected slots:
 	virtual void advance();

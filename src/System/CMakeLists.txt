@@ -10,7 +10,7 @@ set (HOASystem_SRCS
 	Grid.cpp
 	Human.cpp
 	Inn.cpp
-# 	Item.cpp
+	Item.cpp
 # 	LocalMap.cpp
 	Map.cpp
 # 	Mission.cpp
@@ -26,9 +26,11 @@ set (HOASystem_SRCS
 )
 
 set (HOASystem_HDRS
+	CreatureBase.h
+	GlobalMap.h
 	Object.h
 	Map.h
-	CreatureBase.h
+	Town.h
 )
 
 qt5_wrap_cpp (HOASystem_SRCS ${HOASystem_HDRS})

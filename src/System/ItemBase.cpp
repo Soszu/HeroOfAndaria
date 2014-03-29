@@ -30,6 +30,26 @@ void ItemBase::setType(HO::ItemType type)
 	type_ = type;
 }
 
+int ItemBase::weight() const
+{
+	return weight_;
+}
+
+void ItemBase::setWeight(int weight)
+{
+	weight_ = weight;
+}
+
+int ItemBase::price() const
+{
+	return price_;
+}
+
+void ItemBase::setPrice(int price)
+{
+	price_ = price;
+}
+
 HOA::Effect ItemBase::effect() const
 {
 	return effect_;

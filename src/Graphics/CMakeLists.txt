@@ -15,11 +15,12 @@ set (HOAGraphics_SRCS
 )
 
 set (HOAGraphics_HDRS
+	GraphicsBlacksmith.h
+	GraphicsInn.h
+	GraphicsGlobalMap.h
 	GraphicsMap.h
 	GraphicsObject.h
 	GraphicsPlace.h
-	GraphicsInn.h
-	GraphicsBlacksmith.h
 	GraphicsTown.h
 )
 

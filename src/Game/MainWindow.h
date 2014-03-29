@@ -7,8 +7,6 @@
 #include "Graphics/GraphicsLocalMap.h"
 #include "Graphics/GraphicsTown.h"
 
-
-
 class MainWindow : public QMainWindow
 {
 Q_OBJECT;
@@ -23,24 +21,23 @@ private:
 	static const int GLOBAL_MAP_INDEX = 1;
 
 	static const int TOWN_INDEX	  = 2; //Only for testing GraphicsTown
-	
+
 	QStackedWidget *stackedWidget_;
 	Menu *menu_;
 	GraphicsGlobalMap *graphicsGlobalMap_;
 	GraphicsLocalMap *graphicsLocalMap_;
-	
+
 	GraphicsTown *graphicsTown_; //Only for testing GraphicsTown
 	QAction *actionTown_; //Only for testing GraphicsTown
-	
+
 	QAction *actionQuit_;
 
 	void initActions();
 	void initMenu();
 	void initGlobalMap();
-	void initCursor();
 	void initLayout();
 	void initWindow();
-	
+
 	void initTown(); //Only for testing GraphicsTown
 
 private slots:
@@ -53,8 +50,6 @@ private slots:
 	void onMenuActivated();
 	void onGlobalMapActivated();
 
-	void updateCursor();
-	
 	void onShowTown(); //Only for testing GraphicsTown
 	void onHideTown(); //Only for testing GraphicsTown
 };
