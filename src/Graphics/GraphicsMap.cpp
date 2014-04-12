@@ -192,6 +192,7 @@ MapView::MapView(Map *map)
 	initScene();
 	initCursor();
 	initView();
+	initPanels();
 }
 
 MapView::~MapView()
@@ -234,6 +235,17 @@ void MapView::initView()
 {
 	//TODO scaling && resolution (from menu/settings -> mainwindow)
 	scale(1.2, 1.2);
+}
+
+void MapView::initPanels()
+{
+	BottomPanel *bottomPanel = new BottomPanel(this);
+	SidePanel *sidePanel = new SidePanel(this);
+
+	// connecting panels
+	connect(bottomPanel, &BottomPanel::inventoryPressed, sidePanel, &SidePanel::onInventoryClicked);
+	connect(bottomPanel, &BottomPanel::skillsPressed, sidePanel, &SidePanel::onSkillsClicked);
+	connect(bottomPanel, &BottomPanel::questsPressed, sidePanel, &SidePanel::onQuestsClicked);
 }
 
 void MapView::addGraphicsObject(GraphicsObject *graphicsObject)

@@ -12,6 +12,8 @@ set (HOAGraphics_SRCS
  	GraphicsPlace.cpp
  	GraphicsTown.cpp
  	KeyboardManager.cpp
+	ImageButton.cpp
+	Panels.cpp
 )
 
 set (HOAGraphics_HDRS
@@ -22,6 +24,8 @@ set (HOAGraphics_HDRS
 	GraphicsObject.h
 	GraphicsPlace.h
 	GraphicsTown.h
+	ImageButton.h
+	Panels.h
 )
 
 qt5_wrap_cpp (HOAGraphics_SRCS ${HOAGraphics_HDRS})

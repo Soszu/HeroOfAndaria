@@ -22,6 +22,19 @@ namespace Data {
 		const QString DownButtonNormal	    = Preffix + "/downButtonNormal.png";
 		const QString DownButtonDark        = Preffix + "/downButtonDark.png";
 
+		const QString BottomPanelBackground  = Preffix + "/bottomPanel.png";
+		const QString SidePanelBackground    = Preffix + "/sidePanel.png";
+		const QString PanelCloseButtonNormal = Preffix + "/panelCloseButtonNormal.png";
+		const QString PanelCloseButtonDark   = Preffix + "/panelCloseButtonDark.png";
+		const QString SkillsButtonNormal     = Preffix + "/skillsButtonNormal.png";
+		const QString SkillsButtonDark	     = Preffix + "/skillsButtonDark.png";
+		const QString QuestsButtonNormal     = Preffix + "/questsButtonNormal.png";
+		const QString QuestsButtonDark       = Preffix + "/questsButtonDark.png";
+		const QString InventoryButtonNormal  = Preffix + "/inventoryButtonNormal.png";
+		const QString InventoryButtonDark    = Preffix + "/inventoryButtonDark.png";
+		const QString HpBar                  = Preffix + "/hpBar.png";
+		const QString HpBarBackground        = Preffix + "/hpBarBackground.png";
+
 		const QString TileGrass = Preffix + "/tileGrass.png";
 
 		const QString BlacksmithButton = Preffix + "/blacksmithButton.png";

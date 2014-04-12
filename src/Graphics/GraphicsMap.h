@@ -5,6 +5,7 @@
 #include "Graphics/GraphicsObject.h"
 #include "Graphics/KeyboardManager.h"
 #include "System/Map.h"
+#include "Panels.h"
 
 class MapView;
 class TileScene;
@@ -79,6 +80,7 @@ private:
 	void initScene();
 	void initCursor();
 	void initView();
+	void initPanels();
 
 	void addGraphicsObject(GraphicsObject *graphicsObject);
 
