@@ -15,6 +15,11 @@ namespace HOA {
 
 		EnterLocation,
 
+		CameraLeft,
+		CameraRight,
+		CameraUp,
+		CameraDown,
+
 		Inventory,
 		Skills,
 		Quests,

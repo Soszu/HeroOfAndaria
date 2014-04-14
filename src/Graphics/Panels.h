@@ -56,9 +56,9 @@ private:
 	ImageButton *exitButton;
 	QLabel *label;
 
-	const int INVENTORY_PANEL_INDEX = 0;
-	const int SKILLS_PANEL_INDEX = 1;
-	const int QUESTS_PANEL_INDEX = 2;
+	static const int INVENTORY_PANEL_INDEX = 0;
+	static const int SKILLS_PANEL_INDEX = 1;
+	static const int QUESTS_PANEL_INDEX = 2;
 
 	int currentIndex;
 

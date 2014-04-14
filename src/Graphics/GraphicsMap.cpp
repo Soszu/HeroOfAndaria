@@ -10,7 +10,6 @@ GraphicsMap::GraphicsMap(Map *map)
 	: map_(map)
 {
 	initMap();
-	initMapActions();
 	initView();
 	initLayout();
 }
@@ -22,6 +21,14 @@ GraphicsMap::~GraphicsMap()
 
 bool GraphicsMap::canMakeMove(const Movable *object, const QPoint &vector) const
 {
+	static const int BORDER_SIZE = 20;
+
+	QPoint finalPosition = object->position() + vector;
+	if (finalPosition.x() < BORDER_SIZE || finalPosition.y() < BORDER_SIZE
+	    || finalPosition.x() > map_->width() * Grid::tileSize() - BORDER_SIZE
+	    || finalPosition.y() > map_->height() * Grid::tileSize() - BORDER_SIZE)
+		return false;
+
 	GraphicsObject *graphicsObject = GraphicsFactory::get(object);
 	auto collisions = graphicsObject->collisions(vector);
 
@@ -29,6 +36,47 @@ bool GraphicsMap::canMakeMove(const Movable *object, const QPoint &vector) const
 		if (!map_->canCollide(object, x->object()))
 			return false;
 	return true;
+}
+
+static int keyFunctionToDirectionValue(HOA::KeyFunction mapAction)
+{
+	switch (mapAction) {
+		case HOA::KeyFunction::None:
+			return 1;
+		case HOA::KeyFunction::MoveForward:
+		case HOA::KeyFunction::MoveLeft:
+		case HOA::KeyFunction::CameraUp:
+		case HOA::KeyFunction::CameraLeft:
+			return 0;
+		case HOA::KeyFunction::MoveBackwards:
+		case HOA::KeyFunction::MoveRight:
+		case HOA::KeyFunction::CameraDown:
+		case HOA::KeyFunction::CameraRight:
+			return 2;
+		default:
+			return 1;
+	}
+}
+
+HOA::Direction GraphicsMap::keysToDirection(HOA::KeyFunction horizontalDirection,
+                                            HOA::KeyFunction verticalDirection)
+{
+	int vertical   = keyFunctionToDirectionValue(verticalDirection);
+	int horizontal = keyFunctionToDirectionValue(horizontalDirection);
+
+	switch (vertical + 3 * horizontal) {
+		case 0:  return HOA::Direction::LeftFront;
+		case 1:  return HOA::Direction::Left;
+		case 2:  return HOA::Direction::LeftRear;
+		case 3:  return HOA::Direction::Front;
+		case 4:  return HOA::Direction::None;
+		case 5:  return HOA::Direction::Rear;
+		case 6:  return HOA::Direction::RightFront;
+		case 7:  return HOA::Direction::Right;
+		case 8:  return HOA::Direction::RightRear;
+		default: Q_ASSERT(false);
+	}
+	return HOA::Direction::None;
 }
 
 void GraphicsMap::keyPressEvent(QKeyEvent *event)
@@ -39,8 +87,6 @@ void GraphicsMap::keyPressEvent(QKeyEvent *event)
 		return QWidget::keyPressEvent(event);
 
 	HOA::KeyFunction action = KeyboardManager::keyFunction(event->key());
-
-	//TODO modifiers
 
 	switch (action) {
 
@@ -54,26 +100,29 @@ void GraphicsMap::keyPressEvent(QKeyEvent *event)
 			mapActions_.horizontalDirection = action;
 			break;
 
+	/** Camera */
+		case HOA::KeyFunction::CameraUp:
+		case HOA::KeyFunction::CameraDown:
+			mapView_->setCameraVerticalAction(action);
+			break;
+
+		case HOA::KeyFunction::CameraLeft:
+		case HOA::KeyFunction::CameraRight:
+			mapView_->setCameraHorizontalAction(action);
+			break;
+
 	/** Windows */
 		case HOA::KeyFunction::Menu:
 			emit menuActivated();
-			//TODO pause (global timer?)
+			//TODO pause (global timer?), stop any scrolling, scaling
 			break;
 
-		default:
-			return QWidget::keyPressEvent(event);
+		default:;
 	}
 
 	//TODO player control could be implemented using some sort of AI-like control panel.
 	// This would eliminate inconsistency between player character and CPU.
-	map_->player()->move(mapActionDirection());
-
-	//TODO centerOn player.
-	//QGraphicsView::centerOn(mapFromScene(map_->player()->position()));
-	/*QGraphicsView::setSceneRect(map_->player()->position().x() - QGraphicsView::width() / 2,
-	                            map_->player()->position().y() - QGraphicsView::width() / 2,
-	                            QGraphicsView::width(),
-	                            QGraphicsView::height());*/
+	map_->player()->move(keysToDirection(mapActions_.horizontalDirection, mapActions_.verticalDirection));
 }
 
 void GraphicsMap::keyReleaseEvent(QKeyEvent *event)
@@ -97,11 +146,26 @@ void GraphicsMap::keyReleaseEvent(QKeyEvent *event)
 			mapActions_.horizontalDirection = HOA::KeyFunction::None;
 			break;
 
-		default:
-			Q_ASSERT(false);
+	/** Camera */
+		case HOA::KeyFunction::CameraUp:
+		case HOA::KeyFunction::CameraDown:
+			mapView_->setCameraVerticalAction(HOA::KeyFunction::None);
+			break;
+
+		case HOA::KeyFunction::CameraLeft:
+		case HOA::KeyFunction::CameraRight:
+			mapView_->setCameraHorizontalAction(HOA::KeyFunction::None);
+			break;
+
+		default:;
 	}
 
-	map_->player()->move(mapActionDirection());
+	map_->player()->move(keysToDirection(mapActions_.horizontalDirection, mapActions_.verticalDirection));
+}
+
+void GraphicsMap::wheelEvent(QWheelEvent *event)
+{
+	mapView_->zoom(event->delta());
 }
 
 void GraphicsMap::initMap()
@@ -113,56 +177,17 @@ void GraphicsMap::initMap()
 	connect(map_, &Map::objectAdded, this, &GraphicsMap::onObjectAdded);
 }
 
-void GraphicsMap::initMapActions()
+void GraphicsMap::initView()
 {
 	mapActions_.horizontalDirection = HOA::KeyFunction::None;
 	mapActions_.verticalDirection   = HOA::KeyFunction::None;
-}
 
-void GraphicsMap::initView()
-{
 	mapView_ = new MapView(map_);
 	connect(mapView_, &MapView::collided, this, &GraphicsMap::onCollision);
 }
 
 void GraphicsMap::initLayout()
 {}
-
-static int mapActionToValue(HOA::KeyFunction mapAction)
-{
-	switch (mapAction) {
-		case HOA::KeyFunction::None:
-			return 1;
-		case HOA::KeyFunction::MoveForward:
-		case HOA::KeyFunction::MoveLeft:
-			return 0;
-		case HOA::KeyFunction::MoveBackwards:
-		case HOA::KeyFunction::MoveRight:
-			return 2;
-		default:
-			return -1;
-	}
-}
-
-HOA::Direction GraphicsMap::mapActionDirection() const
-{
-	int vertical   = mapActionToValue(mapActions_.verticalDirection);
-	int horizontal = mapActionToValue(mapActions_.horizontalDirection);
-
-	switch (vertical + 3 * horizontal) {
-		case 0:  return HOA::Direction::LeftFront;
-		case 1:  return HOA::Direction::Left;
-		case 2:  return HOA::Direction::LeftRear;
-		case 3:  return HOA::Direction::Front;
-		case 4:  return HOA::Direction::None;
-		case 5:  return HOA::Direction::Rear;
-		case 6:  return HOA::Direction::RightFront;
-		case 7:  return HOA::Direction::Right;
-		case 8:  return HOA::Direction::RightRear;
-		default: Q_ASSERT(false);
-	}
-	return HOA::Direction::None;
-}
 
 void GraphicsMap::onCollision()
 {
@@ -197,6 +222,36 @@ MapView::MapView(Map *map)
 
 MapView::~MapView()
 {}
+
+void MapView::setCameraHorizontalAction(HOA::KeyFunction action)
+{
+	cameraActions_.horizontalDirection = action;
+	checkScrolling();
+}
+
+void MapView::setCameraVerticalAction(HOA::KeyFunction action)
+{
+	cameraActions_.verticalDirection = action;
+	checkScrolling();
+}
+
+int MapView::scrollSpeed()
+{
+	//TODO options in menu
+	static const int SCROLL_SPEED = 70;
+	return SCROLL_SPEED;
+}
+
+void MapView::zoom(int delta)
+{
+	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+
+	static constexpr qreal SCALE_FACTOR = 1.15;
+	if (delta > 0)
+		scale(SCALE_FACTOR, SCALE_FACTOR);
+	else
+		scale(1.0 / SCALE_FACTOR, 1.0 / SCALE_FACTOR);
+}
 
 void MapView::initMap()
 {
@@ -234,7 +289,14 @@ void MapView::initCursor()
 void MapView::initView()
 {
 	//TODO scaling && resolution (from menu/settings -> mainwindow)
-	scale(1.2, 1.2);
+// 	scale(1.2, 1.2);
+	scale(2, 2);
+
+	cameraActions_.verticalDirection   = HOA::KeyFunction::None;
+	cameraActions_.horizontalDirection = HOA::KeyFunction::None;
+
+	connect(map_->player(), &Object::positionSet, this, &MapView::onPlayerMoved);
+	connect(&scrollTimer_, &QTimer::timeout, this, &MapView::onScroll);
 }
 
 void MapView::initPanels()
@@ -244,8 +306,8 @@ void MapView::initPanels()
 
 	// connecting panels
 	connect(bottomPanel, &BottomPanel::inventoryPressed, sidePanel, &SidePanel::onInventoryClicked);
-	connect(bottomPanel, &BottomPanel::skillsPressed, sidePanel, &SidePanel::onSkillsClicked);
-	connect(bottomPanel, &BottomPanel::questsPressed, sidePanel, &SidePanel::onQuestsClicked);
+	connect(bottomPanel, &BottomPanel::skillsPressed,    sidePanel, &SidePanel::onSkillsClicked);
+	connect(bottomPanel, &BottomPanel::questsPressed,    sidePanel, &SidePanel::onQuestsClicked);
 }
 
 void MapView::addGraphicsObject(GraphicsObject *graphicsObject)
@@ -272,15 +334,76 @@ void MapView::addGraphicsObject(GraphicsObject *graphicsObject)
 	tileScene_->addItem(graphicsObject);
 }
 
+void MapView::checkScrolling()
+{
+	scrollDirection_ = GraphicsMap::keysToDirection(cameraActions_.horizontalDirection,
+	                                                cameraActions_.verticalDirection);
+	if (scrollDirection_ == HOA::Direction::None)
+		scrollTimer_.stop();
+	else
+		scrollTimer_.start(50);
+}
+
+void MapView::scroll(const QPoint &change)
+{
+	horizontalScrollBar()->setValue(change.x());
+	verticalScrollBar()->setValue(change.y());
+}
+
+QPoint MapView::scrollPosition() const
+{
+	return {horizontalScrollBar()->value(), verticalScrollBar()->value()};
+}
+
+void MapView::keyPressEvent(QKeyEvent *event)
+{
+	event->ignore();
+}
+
+void MapView::keyReleaseEvent(QKeyEvent *event)
+{
+	event->ignore();
+}
+
+void MapView::wheelEvent(QWheelEvent *event)
+{
+	event->ignore();
+}
+
 void MapView::updateCursor()
 {
 	QPointF cursorPosition_ = mapToScene(cursor().pos());
 	map_->player()->setRotation(cursorPosition_.toPoint());
 }
 
+void MapView::onScroll()
+{
+	static const int SCROLL_SLANT_SPEED = int(scrollSpeed() / sqrt(2));
+	int x = scrollPosition().x();
+	int y = scrollPosition().y();
+
+	switch (scrollDirection_) {
+		case HOA::Direction::Front:      scroll({x, y - scrollSpeed()}); break;
+		case HOA::Direction::LeftFront:  scroll({x - SCROLL_SLANT_SPEED, y - SCROLL_SLANT_SPEED}); break;
+		case HOA::Direction::Left:       scroll({x - scrollSpeed(), y}); break;
+		case HOA::Direction::LeftRear:   scroll({x - SCROLL_SLANT_SPEED, y + SCROLL_SLANT_SPEED}); break;
+		case HOA::Direction::Rear:       scroll({x, y + scrollSpeed()}); break;
+		case HOA::Direction::RightRear:  scroll({x + SCROLL_SLANT_SPEED, y + SCROLL_SLANT_SPEED}); break;
+		case HOA::Direction::Right:      scroll({x + scrollSpeed(), y}); break;
+		case HOA::Direction::RightFront: scroll({x + SCROLL_SLANT_SPEED, y - SCROLL_SLANT_SPEED}); break;
+		default:;
+	}
+}
+
 void MapView::onObjectAdded()
 {
 	addGraphicsObject(GraphicsFactory::get(map_->newestObject()));
+}
+
+void MapView::onPlayerMoved()
+{
+	GraphicsObject *graphicsPlayer = GraphicsFactory::get(map_->player());
+	centerOn(graphicsPlayer);
 }
 
 /**
@@ -356,7 +479,6 @@ QRectF TileScene::rectForTile(int x, int y) const
 
 void TileScene::addTile(const Tile &tile)
 {
-
 	if (bigTiles_.isEmpty() || bigTiles_.last().second == bigTileMultiplier() * bigTileMultiplier()) {
 		bigTiles_.append({
 			QPixmap(bigTileSize(),

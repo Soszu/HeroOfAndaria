@@ -42,5 +42,10 @@ KeyboardManager::KeyboardManager()
 	//TODO specialized settings for different windows
 
 	keyFunctions_[Qt::Key_Return] = HOA::KeyFunction::EnterLocation;
+
+	keyFunctions_[Qt::Key_Down]  = HOA::KeyFunction::CameraDown;
+	keyFunctions_[Qt::Key_Up]    = HOA::KeyFunction::CameraUp;
+	keyFunctions_[Qt::Key_Left]  = HOA::KeyFunction::CameraLeft;
+	keyFunctions_[Qt::Key_Right] = HOA::KeyFunction::CameraRight;
 }
 

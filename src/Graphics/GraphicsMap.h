@@ -24,6 +24,8 @@ public:
 
 	virtual bool canMakeMove(const Movable *object, const QPoint &vector) const;
 
+	static HOA::Direction keysToDirection(HOA::KeyFunction horizontal, HOA::KeyFunction vertical);
+
 signals:
 	void menuActivated();
 
@@ -39,17 +41,15 @@ protected:
 
 	virtual void keyPressEvent(QKeyEvent *event);
 	virtual void keyReleaseEvent(QKeyEvent *event);
+	virtual void wheelEvent(QWheelEvent *event);
 
 protected slots:
 	void onCollision();
 
 private:
 	void initMap();
-	void initMapActions();
 	void initView();
 	void initLayout();
-
-	HOA::Direction mapActionDirection() const;
 
 private slots:
 	void onObjectAdded();
@@ -67,12 +67,27 @@ public:
 	MapView(Map *map);
 	~MapView();
 
+	void setCameraHorizontalAction(HOA::KeyFunction action);
+	void setCameraVerticalAction(HOA::KeyFunction action);
+
+	int scrollSpeed();
+
+	void zoom(int delta);
+
 signals:
 	void collided();
 
 private:
 	Map *map_;
 	TileScene *tileScene_;
+
+	QTimer scrollTimer_;
+	HOA::Direction scrollDirection_;
+
+	struct {
+		HOA::KeyFunction horizontalDirection;
+		HOA::KeyFunction verticalDirection;
+	} cameraActions_;
 
 	void initMap();
 	void initWindow();
@@ -84,10 +99,21 @@ private:
 
 	void addGraphicsObject(GraphicsObject *graphicsObject);
 
+	void checkScrolling();
+	void scroll(const QPoint &change);
+	QPoint scrollPosition() const;
+
+	virtual void keyPressEvent(QKeyEvent *event);
+	virtual void keyReleaseEvent(QKeyEvent *event);
+	virtual void wheelEvent(QWheelEvent *event);
+
 private slots:
 	void updateCursor();
+	void onScroll();
 
 	void onObjectAdded();
+
+	void onPlayerMoved();
 };
 
 /**

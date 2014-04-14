@@ -43,7 +43,7 @@ namespace Data {
 		const QString OpenPlaceButton  = Preffix + "/openPlaceButton.png";
 		const QString TownBackground   = Preffix + "/townBackground.png";
 
-		const QString TownPoor = Preffix + "/townPoor.png";
+		const QString TownPoor = Preffix + "/townPoor2.png";
 	}
 }
 
