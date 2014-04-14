@@ -44,6 +44,9 @@ public:
 	friend QDataStream & operator << (QDataStream &out, const Creature &creature);
 	friend QDataStream & operator >> (QDataStream &in, Creature &creature);
 
+signals:
+	void hitPointsChanged();
+
 private:
 	const CreatureBase *base;
 	int hitPoints_;

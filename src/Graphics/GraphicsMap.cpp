@@ -301,7 +301,7 @@ void MapView::initView()
 
 void MapView::initPanels()
 {
-	BottomPanel *bottomPanel = new BottomPanel(this);
+	BottomPanel *bottomPanel = new BottomPanel(map_->player(), this);
 	SidePanel *sidePanel = new SidePanel(this);
 
 	// connecting panels

@@ -1,5 +1,7 @@
 #include "Panels.h"
 #include "System/Paths.h"
+#include "System/Creature.h"
+#include "System/Character.h"
 
 /* ----------------------- Panel class ------------------ */
 
@@ -11,7 +13,7 @@ Panel::Panel(QWidget *parent) :
 
 QSize Panel::sizeHint() const
 {
-	return QSize(backgroundImage.width(), backgroundImage.height());
+	return backgroundImage.size();
 }
 
 void Panel::paintEvent(QPaintEvent *event)
@@ -23,11 +25,13 @@ void Panel::paintEvent(QPaintEvent *event)
 
 /* ---------------------- BottomPanel class -------------- */
 
-BottomPanel::BottomPanel(QWidget *parent) :
+BottomPanel::BottomPanel(Character *player, QWidget *parent) :
 	Panel(parent)
 {
 	backgroundImage.load(Data::Images::BottomPanelBackground);
 	QHBoxLayout *layout = new QHBoxLayout;
+
+	hpBar = new HPBar(player);
 
 	inventoryButton = new ImageButton(Data::Images::InventoryButtonNormal, Data::Images::InventoryButtonDark);
 	skillsButton = new ImageButton(Data::Images::SkillsButtonNormal, Data::Images::SkillsButtonDark);
@@ -37,6 +41,8 @@ BottomPanel::BottomPanel(QWidget *parent) :
 	connect(skillsButton, &ImageButton::clicked, this, &BottomPanel::skillsPressed);
 	connect(questsButton, &ImageButton::clicked, this, &BottomPanel::questsPressed);
 
+	layout->addWidget(hpBar);
+	layout->setAlignment(hpBar, Qt::AlignVCenter);
 	layout->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Expanding));
 	for (ImageButton *btn : {inventoryButton, skillsButton, questsButton}) {
 		layout->addWidget(btn);
@@ -119,4 +125,55 @@ void SidePanel::onQuestsClicked()
 	//TODO set quests panel
 	currentIndex = QUESTS_PANEL_INDEX;
 	label->setText(tr("Quests"));
+}
+
+/* -------------------- ProgressBar class ----------------- */
+
+ProgressBar::ProgressBar(QWidget *parent):
+	QWidget(parent)
+{
+}
+
+QSize ProgressBar::sizeHint() const
+{
+	return backgroundImage.size();
+}
+
+void ProgressBar::paintEvent(QPaintEvent *event)
+{
+	Q_ASSERT(backgroundImage.size() == barImage.size());
+	QPainter painter(this);
+	painter.drawPixmap(rect(), backgroundImage);
+
+	double value = getValue();
+	Q_ASSERT(value >= 0 && value <= 1.0);
+	if (int(value * barImage.width()) > 0) {
+		QPixmap copy = barImage.copy(0, 0, int(value * barImage.width()), barImage.height());
+		painter.drawPixmap(copy.rect(), copy);
+	}
+	QWidget::paintEvent(event);
+}
+
+/* -------------------- HPBar class ----------------- */
+
+HPBar::HPBar(Creature *owner, QWidget *parent):
+	ProgressBar(parent),
+	owner(owner)
+{
+	backgroundImage.load(Data::Images::HpBarBackground);
+	barImage.load(Data::Images::HpBar);
+
+	//TODO connect owner hitPointsChanged signal with this repaint slot, Creature is not QObject yet
+}
+
+double HPBar::getValue() const
+{
+	// owner->fullHitPoints() doesn't work yet, because player has no creature base
+	/*
+	int hp = owner->hitPoints();
+	int hpMax = owner->fullHitPoints();
+	Q_ASSERT(hpMax != 0);
+	return double(hp) / hpMax;
+	*/
+	return 0.8;
 }

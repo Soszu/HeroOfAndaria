@@ -4,6 +4,10 @@
 #include <QtWidgets>
 #include "ImageButton.h"
 
+class HPBar;
+class Creature;
+class Character;
+
 /* ----------------------- Panel class ------------------ */
 
 class Panel : public QWidget
@@ -30,12 +34,14 @@ class BottomPanel : public Panel
 {
 Q_OBJECT;
 public:
-	BottomPanel(QWidget *parent = 0);
+	BottomPanel(Character *player, QWidget *parent = 0);
 
 private:
 	ImageButton *inventoryButton;
 	ImageButton *skillsButton;
 	ImageButton *questsButton;
+
+	HPBar *hpBar;
 
 signals:
 	void inventoryPressed();
@@ -67,5 +73,37 @@ public slots:
 	void onSkillsClicked();
 	void onQuestsClicked();
 };
+
+/* -------------------- ProgressBar class ----------------- */
+
+class ProgressBar : public QWidget
+{
+Q_OBJECT;
+public:
+	ProgressBar(QWidget *parent = 0);
+	QSize sizeHint() const;
+
+private:
+	virtual double getValue() const = 0;
+
+protected:
+	QPixmap backgroundImage;
+	QPixmap barImage;
+	void paintEvent(QPaintEvent *event);
+};
+
+/* -------------------- HPBar class ----------------- */
+
+class HPBar : public ProgressBar
+{
+Q_OBJECT;
+public:
+	HPBar(Creature *owner, QWidget *parent = 0);
+
+private:
+	Creature *owner;
+	double getValue() const;
+};
+
 
 #endif // PANEL_H
