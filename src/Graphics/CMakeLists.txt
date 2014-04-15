@@ -14,6 +14,7 @@ set (HOAGraphics_SRCS
  	KeyboardManager.cpp
 	ImageButton.cpp
 	Panels.cpp
+	DataManager.cpp
 )
 
 set (HOAGraphics_HDRS

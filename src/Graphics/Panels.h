@@ -23,8 +23,7 @@ public slots:
 
 protected:
 	void paintEvent(QPaintEvent *event);
-	QPixmap backgroundImage;
-
+	QPixmap *backgroundImage;
 
 };
 
@@ -87,8 +86,8 @@ private:
 	virtual double getValue() const = 0;
 
 protected:
-	QPixmap backgroundImage;
-	QPixmap barImage;
+	QPixmap *backgroundImage;
+	QPixmap *barImage;
 	void paintEvent(QPaintEvent *event);
 };
 

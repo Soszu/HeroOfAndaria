@@ -18,16 +18,18 @@ public:
 		DOWN_MENU_BUTTON
 	};
 
-	ImageButton(QPixmap normalImage, QPixmap darkImage, QString text = "", QWidget *parent = 0);
+	ImageButton(QString normalPath, QString darkPath, QString text = "", QWidget *parent = 0);
 	ImageButton(ImageButtonType type, QString text = "", QWidget *parent = 0);
 	void setFontPointSize(int value);
 	QSize sizeHint() const;
 
 private:
-	QPixmap normalImage_;
-	QPixmap darkImage_;
+	QPixmap *normalImage_;
+	QPixmap *darkImage_;
 	int fontPointSize_;
 	static const int DEFAULT_FONT_SIZE = 11;
+
+	void loadImages(const QString normalPath, const QString darkPath);
 
 protected:
 	void paintEvent(QPaintEvent *);

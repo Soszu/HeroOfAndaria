@@ -36,7 +36,7 @@ private:
 	OptionsSubmenu *optionsSubmenu;
 	ControlsSubmenu *controlsSubmenu;
 
-	QPixmap backgroundImage;
+	QPixmap *backgroundImage;
 
 protected:
 	void paintEvent(QPaintEvent *event);

@@ -1,14 +1,14 @@
 #include "ImageButton.h"
 #include "System/Paths.h"
+#include "Graphics/DataManager.h"
 
 /* ---------------  ImageButton class -------------------------- */
 
-ImageButton::ImageButton(QPixmap normalImage, QPixmap darkImage, QString text, QWidget *parent) :
+ImageButton::ImageButton(QString normalPath, QString darkPath, QString text, QWidget *parent) :
 	QPushButton(text, parent),
-	normalImage_(normalImage),
-	darkImage_(darkImage),
 	fontPointSize_(DEFAULT_FONT_SIZE)
 {
+	loadImages(normalPath, darkPath);
 	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
@@ -18,31 +18,31 @@ ImageButton::ImageButton(ImageButtonType type, QString text, QWidget *parent) :
 {
 	switch (type) {
 		case MENU_BUTTON:
-			normalImage_.load(Data::Images::MenuButtonsNormal);
-			darkImage_.load(Data::Images::MenuButtonsDark);
+			loadImages(Data::Images::MenuButtonsNormal, Data::Images::MenuButtonsDark);
 			break;
 		case SMALL_MENU_BUTTON:
-			normalImage_.load(Data::Images::SmallMenuButtonNormal);
-			darkImage_.load(Data::Images::SmallMenuButtonDark);
+			loadImages(Data::Images::SmallMenuButtonNormal, Data::Images::SmallMenuButtonDark);
 			break;
 		case NEXT_ARROW_BUTTON:
-			normalImage_.load(Data::Images::NextButtonNormal);
-			darkImage_.load(Data::Images::NextButtonDark);
+			loadImages(Data::Images::NextButtonNormal, Data::Images::NextButtonDark);
 			break;
 		case PREV_ARROW_BUTTON:
-			normalImage_.load(Data::Images::PrevButtonNormal);
-			darkImage_.load(Data::Images::PrevButtonDark);
+			loadImages(Data::Images::PrevButtonNormal, Data::Images::PrevButtonDark);
 			break;
 		case UP_MENU_BUTTON:
-			normalImage_.load(Data::Images::UpButtonNormal);
-			darkImage_.load(Data::Images::UpButtonDark);
+			loadImages(Data::Images::UpButtonNormal, Data::Images::UpButtonDark);
 			break;
 		case DOWN_MENU_BUTTON:
-			normalImage_.load(Data::Images::DownButtonNormal);
-			darkImage_.load(Data::Images::DownButtonDark);
+			loadImages(Data::Images::DownButtonNormal, Data::Images::DownButtonDark);
 			break;
 	}
 	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+}
+
+void ImageButton::loadImages(const QString normalPath, const QString darkPath)
+{
+	normalImage_ = DataManager::getPixmap(normalPath);
+	darkImage_ = DataManager::getPixmap(darkPath);
 }
 
 void ImageButton::setFontPointSize(int value)
@@ -52,16 +52,16 @@ void ImageButton::setFontPointSize(int value)
 
 QSize ImageButton::sizeHint() const
 {
-	return QSize(normalImage_.width(), normalImage_.height());
+	return QSize(normalImage_->width(), normalImage_->height());
 }
 
 void ImageButton::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
 	if (isDown() || !isEnabled())
-		painter.drawPixmap(rect(), darkImage_);
+		painter.drawPixmap(rect(), *darkImage_);
 	else
-		painter.drawPixmap(rect(), normalImage_);
+		painter.drawPixmap(rect(), *normalImage_);
 
 	QFont font = QApplication::font();
 	font.setPointSize(fontPointSize_);

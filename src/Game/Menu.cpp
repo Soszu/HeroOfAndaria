@@ -1,11 +1,12 @@
 #include "Game/Menu.h"
 #include "System/Paths.h"
+#include "Graphics/DataManager.h"
 
 /* ---------------  Menu class -------------------------- */
 
 Menu::Menu(QWidget *parent) :
 	QWidget(parent),
-	backgroundImage(Data::Images::MenuBackground)
+	backgroundImage(DataManager::getPixmap(Data::Images::MenuBackground))
 {
 	stackLayout = new QStackedLayout;
 	QVBoxLayout *layout = new QVBoxLayout;
@@ -45,7 +46,7 @@ Menu::Menu(QWidget *parent) :
 	connect(controlsSubmenu, &ControlsSubmenu::returnButtonPressed, this, &Menu::setOptionsSubmenu);
 	stackLayout->addWidget(controlsSubmenu);
 
-	layout->addSpacerItem(new QSpacerItem(backgroundImage.width(), backgroundImage.height()));
+	layout->addSpacerItem(new QSpacerItem(backgroundImage->width(), backgroundImage->height()));
 	layout->addLayout(stackLayout);
 	setLayout(layout);
 }
@@ -54,7 +55,7 @@ void Menu::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
 	painter.fillRect(rect(), Qt::black);
-	painter.drawPixmap((width() - backgroundImage.width()) / 2, 10, backgroundImage);
+	painter.drawPixmap((width() - backgroundImage->width()) / 2, 10, *backgroundImage);
 	QWidget::paintEvent(event);
 }
 

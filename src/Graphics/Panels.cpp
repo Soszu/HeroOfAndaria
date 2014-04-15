@@ -2,6 +2,7 @@
 #include "System/Paths.h"
 #include "System/Creature.h"
 #include "System/Character.h"
+#include "Graphics/DataManager.h"
 
 /* ----------------------- Panel class ------------------ */
 
@@ -13,13 +14,13 @@ Panel::Panel(QWidget *parent) :
 
 QSize Panel::sizeHint() const
 {
-	return backgroundImage.size();
+	return backgroundImage->size();
 }
 
 void Panel::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
-	painter.drawPixmap(rect(), backgroundImage);
+	painter.drawPixmap(rect(), *backgroundImage);
 	QWidget::paintEvent(event);
 }
 
@@ -28,7 +29,8 @@ void Panel::paintEvent(QPaintEvent *event)
 BottomPanel::BottomPanel(Character *player, QWidget *parent) :
 	Panel(parent)
 {
-	backgroundImage.load(Data::Images::BottomPanelBackground);
+	backgroundImage = DataManager::getPixmap(Data::Images::BottomPanelBackground);
+
 	QHBoxLayout *layout = new QHBoxLayout;
 
 	hpBar = new HPBar(player);
@@ -63,7 +65,7 @@ BottomPanel::BottomPanel(Character *player, QWidget *parent) :
 SidePanel::SidePanel(QWidget *parent) :
 	Panel(parent)
 {
-	backgroundImage.load(Data::Images::SidePanelBackground);
+	backgroundImage = DataManager::getPixmap(Data::Images::SidePanelBackground);
 
 	currentIndex = INVENTORY_PANEL_INDEX;
 
@@ -72,7 +74,7 @@ SidePanel::SidePanel(QWidget *parent) :
 	font.setBold(true);
 	font.setPointSize(11);
 	label->setFont(font);
-	label->setGeometry(30, 8, backgroundImage.width() - 60, 20);
+	label->setGeometry(30, 8, backgroundImage->width() - 60, 20);
 	label->setAlignment(Qt::AlignCenter);
 	label->setStyleSheet("color: black;");
 
@@ -136,19 +138,19 @@ ProgressBar::ProgressBar(QWidget *parent):
 
 QSize ProgressBar::sizeHint() const
 {
-	return backgroundImage.size();
+	return backgroundImage->size();
 }
 
 void ProgressBar::paintEvent(QPaintEvent *event)
 {
-	Q_ASSERT(backgroundImage.size() == barImage.size());
+	Q_ASSERT(backgroundImage->size() == barImage->size());
 	QPainter painter(this);
-	painter.drawPixmap(rect(), backgroundImage);
+	painter.drawPixmap(rect(), *backgroundImage);
 
 	double value = getValue();
 	Q_ASSERT(value >= 0 && value <= 1.0);
-	if (int(value * barImage.width()) > 0) {
-		QPixmap copy = barImage.copy(0, 0, int(value * barImage.width()), barImage.height());
+	if (int(value * barImage->width()) > 0) {
+		QPixmap copy = barImage->copy(0, 0, int(value * barImage->width()), barImage->height());
 		painter.drawPixmap(copy.rect(), copy);
 	}
 	QWidget::paintEvent(event);
@@ -160,8 +162,8 @@ HPBar::HPBar(Creature *owner, QWidget *parent):
 	ProgressBar(parent),
 	owner(owner)
 {
-	backgroundImage.load(Data::Images::HpBarBackground);
-	barImage.load(Data::Images::HpBar);
+	backgroundImage = DataManager::getPixmap(Data::Images::HpBarBackground);
+	barImage = DataManager::getPixmap(Data::Images::HpBar);
 
 	//TODO connect owner hitPointsChanged signal with this repaint slot, Creature is not QObject yet
 }
