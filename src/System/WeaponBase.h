@@ -44,29 +44,32 @@ public:
 	int reach() const;
 	void setReach(int reach);
 
-	int strengthInfluence() const;
-	void setStrengthInfluence(int strengthInfluence);
+	int strengthModifier() const;
+	void setStrengthModifier(int strengthModifier);
 
-	int agilityInfluence() const;
-	void setAgilityInfluence(int agilityInfluence);
+	int agilityModifier() const;
+	void setAgilityModifier(int agilityModifier);
 
-	int intelligenceInfluence() const;
-	void setIntelligenceInfluence(int intelligenceInfluence);
+	int intelligenceModifier() const;
+	void setIntelligenceModifier(int intelligenceModifier);
 
-	WeaponType weaponType() const;
-	void setType(WeaponType type);
+	HOA::WeaponType weaponType() const;
+	void setType(HOA::WeaponType type);
 
 	friend QDataStream & operator << (QDataStream &out, const WeaponBase &weapon);
 	friend QDataStream & operator >> (QDataStream &in, WeaponBase &weapon);
 
 private:
+	UID uid_;
+	QString name_;
+
 	int damage_;
 	int hitRatio_;
 	int reach_;
 
-	int strengthInfluence_;
-	int agilityInfluence_;
-	int intelligenceInfluence_;
+	int strengthModifier_;
+	int agilityModifier_;
+	int intelligenceModifier_;
 
 	HOA::WeaponType weaponType_;
 };

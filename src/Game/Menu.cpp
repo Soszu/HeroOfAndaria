@@ -1,12 +1,12 @@
 #include "Game/Menu.h"
+#include "System/DataManager.h"
 #include "System/Paths.h"
-#include "Graphics/DataManager.h"
 
 /* ---------------  Menu class -------------------------- */
 
 Menu::Menu(QWidget *parent) :
 	QWidget(parent),
-	backgroundImage(DataManager::getPixmap(Data::Images::MenuBackground))
+	backgroundImage(DataManager::pixmap(Data::ImagePath::MenuBackground))
 {
 	stackLayout = new QStackedLayout;
 	QVBoxLayout *layout = new QVBoxLayout;

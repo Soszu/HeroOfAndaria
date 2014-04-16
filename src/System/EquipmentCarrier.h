@@ -7,7 +7,7 @@
 class EquipmentCarrier
 {
 public:
-	EquipmentCarrier();
+	virtual ~EquipmentCarrier();
 
 	void addItem(Item *item);
 	Item * takeItem(const Item *item);
@@ -22,6 +22,8 @@ public:
 private:
 	QVector <Item *> items_;
 	int money_;
+
+	Item * findItem(const Item *item);
 };
 
 #endif // EQUIPMENTCARRIER_H

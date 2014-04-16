@@ -1,8 +1,10 @@
+#include "System/Attack.h"
 #include "System/Object.h"
 
 QTimer Object::advanceTimer_;
 
-Object::Object()
+Object::Object() :
+	attackManager_(nullptr)
 {
 	static bool timerInitialized = false;
 	if (!timerInitialized) {
@@ -21,6 +23,14 @@ bool Object::isMovable() const
 {
 	return false;
 }
+
+void Object::setAttackManager(AttackManager *attackManager)
+{
+	attackManager_ = attackManager;
+}
+
+void Object::receiveAttack(const Attack &attack)
+{}
 
 QPoint Object::position() const
 {

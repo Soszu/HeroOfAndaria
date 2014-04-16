@@ -1,6 +1,6 @@
-#include "ImageButton.h"
+#include "Graphics/ImageButton.h"
+#include "System/DataManager.h"
 #include "System/Paths.h"
-#include "Graphics/DataManager.h"
 
 /* ---------------  ImageButton class -------------------------- */
 
@@ -18,22 +18,28 @@ ImageButton::ImageButton(ImageButtonType type, QString text, QWidget *parent) :
 {
 	switch (type) {
 		case MENU_BUTTON:
-			loadImages(Data::Images::MenuButtonsNormal, Data::Images::MenuButtonsDark);
+			loadImages(Data::path(Data::ImagePath::MenuButtonsNormal),
+			           Data::path(Data::ImagePath::MenuButtonsDark));
 			break;
 		case SMALL_MENU_BUTTON:
-			loadImages(Data::Images::SmallMenuButtonNormal, Data::Images::SmallMenuButtonDark);
+			loadImages(Data::path(Data::ImagePath::SmallMenuButtonNormal),
+			           Data::path(Data::ImagePath::SmallMenuButtonDark));
 			break;
 		case NEXT_ARROW_BUTTON:
-			loadImages(Data::Images::NextButtonNormal, Data::Images::NextButtonDark);
+			loadImages(Data::path(Data::ImagePath::NextButtonNormal),
+			           Data::path(Data::ImagePath::NextButtonDark));
 			break;
 		case PREV_ARROW_BUTTON:
-			loadImages(Data::Images::PrevButtonNormal, Data::Images::PrevButtonDark);
+			loadImages(Data::path(Data::ImagePath::PrevButtonNormal),
+			           Data::path(Data::ImagePath::PrevButtonDark));
 			break;
 		case UP_MENU_BUTTON:
-			loadImages(Data::Images::UpButtonNormal, Data::Images::UpButtonDark);
+			loadImages(Data::path(Data::ImagePath::UpButtonNormal),
+			           Data::path(Data::ImagePath::UpButtonDark));
 			break;
 		case DOWN_MENU_BUTTON:
-			loadImages(Data::Images::DownButtonNormal, Data::Images::DownButtonDark);
+			loadImages(Data::path(Data::ImagePath::DownButtonNormal),
+			           Data::path(Data::ImagePath::DownButtonDark));
 			break;
 	}
 	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -41,8 +47,8 @@ ImageButton::ImageButton(ImageButtonType type, QString text, QWidget *parent) :
 
 void ImageButton::loadImages(const QString normalPath, const QString darkPath)
 {
-	normalImage_ = DataManager::getPixmap(normalPath);
-	darkImage_ = DataManager::getPixmap(darkPath);
+	normalImage_ = DataManager::pixmap(normalPath);
+	darkImage_ = DataManager::pixmap(darkPath);
 }
 
 void ImageButton::setFontPointSize(int value)

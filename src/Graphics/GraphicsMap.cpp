@@ -1,6 +1,7 @@
 #include "Graphics/GraphicsFactory.h"
 #include "Graphics/GraphicsMap.h"
 #include "System/Paths.h"
+#include "System/Utils.h"
 
 /**
  * \class GraphicsMap
@@ -36,6 +37,28 @@ bool GraphicsMap::canMakeMove(const Movable *object, const QPoint &vector) const
 		if (!map_->canCollide(object, x->object()))
 			return false;
 	return true;
+}
+
+void GraphicsMap::attack(const Attack &attack)
+{
+	QPoint attackPosition = attack.attacker()->position();
+	QPoint attackRotation = attack.attacker()->rotation();
+
+	//TODO put it in the weapon or something. And attack area is NOT just a little triangle.
+
+	QPolygon attackArea;
+
+	QPointF vector = HOA::lengthenVector(attackRotation - attackPosition, attack.weapon()->reach());
+	attackArea << attackPosition << (vector + attackPosition).toPoint() << (HOA::rotateVector(vector, 0.1) + attackPosition).toPoint();
+
+	QList <QGraphicsItem *> intersecting = mapView_->scene()->items(attackArea);
+
+	for (QGraphicsItem *item : intersecting) {
+		Object *object = (static_cast<GraphicsObject *>(item))->object();
+		//TODO riposte or something like that
+		if (object != attack.attacker())
+			object->receiveAttack(attack);
+	}
 }
 
 static int keyFunctionToDirectionValue(HOA::KeyFunction mapAction)
@@ -78,6 +101,13 @@ HOA::Direction GraphicsMap::keysToDirection(HOA::KeyFunction horizontalDirection
 	}
 	return HOA::Direction::None;
 }
+
+void GraphicsMap::mousePressEvent(QMouseEvent *event)
+{
+	if (event->button() & Qt::LeftButton)
+		map_->player()->attack(Attack(HOA::AttackType::Melee));
+}
+
 
 void GraphicsMap::keyPressEvent(QKeyEvent *event)
 {
@@ -171,8 +201,7 @@ void GraphicsMap::wheelEvent(QWheelEvent *event)
 void GraphicsMap::initMap()
 {
 	for (Object *obj : map_->objects())
-		if (obj->isMovable())
-			((Movable *)obj)->setMovementManager(this);
+		initObject(obj);
 
 	connect(map_, &Map::objectAdded, this, &GraphicsMap::onObjectAdded);
 }
@@ -189,6 +218,13 @@ void GraphicsMap::initView()
 void GraphicsMap::initLayout()
 {}
 
+void GraphicsMap::initObject(Object *object)
+{
+	object->setAttackManager(this);
+	if (object->isMovable())
+		((Movable *)object)->setMovementManager(this);
+}
+
 void GraphicsMap::onCollision()
 {
 	//TODO Will be useful. Yes. Trigger the relevant function in Map and here you go.
@@ -198,10 +234,7 @@ void GraphicsMap::onCollision()
 
 void GraphicsMap::onObjectAdded()
 {
-	Object *object = map_->newestObject();
-
-	if (object->isMovable())
-		((Movable *)object)->setMovementManager(this);
+	initObject(map_->newestObject());
 }
 
 /**
@@ -289,7 +322,6 @@ void MapView::initCursor()
 void MapView::initView()
 {
 	//TODO scaling && resolution (from menu/settings -> mainwindow)
-// 	scale(1.2, 1.2);
 	scale(2, 2);
 
 	cameraActions_.verticalDirection   = HOA::KeyFunction::None;
@@ -449,7 +481,7 @@ void TileScene::initBackground()
 QPixmap TileScene::newTile(const Tile &tile) const
 {
 	//TODO data manager
-	static QPixmap fullPixmap(Data::Images::TileGrass);
+	static QPixmap fullPixmap(Data::path(Data::ImagePath::TileGrass));
 
 	//TODO throw some global rand please
 	static bool initialized = false;

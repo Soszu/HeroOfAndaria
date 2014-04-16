@@ -12,6 +12,7 @@ namespace HOA {
 		MoveLeft,
 		MoveRight,
 		Jump,
+		Attack,
 
 		EnterLocation,
 

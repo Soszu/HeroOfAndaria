@@ -9,6 +9,11 @@ Map::Map(int width, int height) :
 	player_->setPosition({800, 500});
 	player_->setRotation({25, 800});
 	addObject(player_);
+
+	Creature *creature = new Creature();
+	creature->setPosition({300, 300});
+	creature->setRotation({150, 600});
+	addObject(creature);
 }
 
 Object * Map::newestObject()

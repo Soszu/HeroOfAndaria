@@ -25,7 +25,7 @@ HOA::ItemType ItemBase::type() const
 	return type_;
 }
 
-void ItemBase::setType(HO::ItemType type)
+void ItemBase::setType(HOA::ItemType type)
 {
 	type_ = type;
 }

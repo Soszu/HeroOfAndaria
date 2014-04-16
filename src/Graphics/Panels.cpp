@@ -2,7 +2,7 @@
 #include "System/Paths.h"
 #include "System/Creature.h"
 #include "System/Character.h"
-#include "Graphics/DataManager.h"
+#include "System/DataManager.h"
 
 /* ----------------------- Panel class ------------------ */
 
@@ -29,19 +29,19 @@ void Panel::paintEvent(QPaintEvent *event)
 BottomPanel::BottomPanel(Character *player, QWidget *parent) :
 	Panel(parent)
 {
-	backgroundImage = DataManager::getPixmap(Data::Images::BottomPanelBackground);
+	backgroundImage = DataManager::pixmap(Data::ImagePath::BottomPanelBackground);
 
 	QHBoxLayout *layout = new QHBoxLayout;
 
 	hpBar = new HPBar(player);
 
-	inventoryButton = new ImageButton(Data::Images::InventoryButtonNormal, Data::Images::InventoryButtonDark);
-	skillsButton = new ImageButton(Data::Images::SkillsButtonNormal, Data::Images::SkillsButtonDark);
-	questsButton = new ImageButton(Data::Images::QuestsButtonNormal, Data::Images::QuestsButtonDark);
+	inventoryButton = new ImageButton(Data::path(Data::ImagePath::InventoryButtonNormal), Data::path(Data::ImagePath::InventoryButtonDark));
+	skillsButton    = new ImageButton(Data::path(Data::ImagePath::SkillsButtonNormal), Data::path(Data::ImagePath::SkillsButtonDark));
+	questsButton    = new ImageButton(Data::path(Data::ImagePath::QuestsButtonNormal), Data::path(Data::ImagePath::QuestsButtonDark));
 
 	connect(inventoryButton, &ImageButton::clicked, this, &BottomPanel::inventoryPressed);
-	connect(skillsButton, &ImageButton::clicked, this, &BottomPanel::skillsPressed);
-	connect(questsButton, &ImageButton::clicked, this, &BottomPanel::questsPressed);
+	connect(skillsButton,    &ImageButton::clicked, this, &BottomPanel::skillsPressed);
+	connect(questsButton,    &ImageButton::clicked, this, &BottomPanel::questsPressed);
 
 	layout->addWidget(hpBar);
 	layout->setAlignment(hpBar, Qt::AlignVCenter);
@@ -65,7 +65,7 @@ BottomPanel::BottomPanel(Character *player, QWidget *parent) :
 SidePanel::SidePanel(QWidget *parent) :
 	Panel(parent)
 {
-	backgroundImage = DataManager::getPixmap(Data::Images::SidePanelBackground);
+	backgroundImage = DataManager::pixmap(Data::ImagePath::SidePanelBackground);
 
 	currentIndex = INVENTORY_PANEL_INDEX;
 
@@ -78,8 +78,8 @@ SidePanel::SidePanel(QWidget *parent) :
 	label->setAlignment(Qt::AlignCenter);
 	label->setStyleSheet("color: black;");
 
-	exitButton = new ImageButton(Data::Images::PanelCloseButtonNormal,
-			Data::Images::PanelCloseButtonDark, "", this);
+	exitButton = new ImageButton(Data::path(Data::ImagePath::PanelCloseButtonNormal),
+	                             Data::path(Data::ImagePath::PanelCloseButtonDark), "", this);
 	QSize size = exitButton->sizeHint();
 	exitButton->setGeometry(445, 13, size.width(), size.height());
 
@@ -95,11 +95,11 @@ SidePanel::SidePanel(QWidget *parent) :
 
 void SidePanel::onInventoryClicked()
 {
-	if (!isHidden() && currentIndex == INVENTORY_PANEL_INDEX) {
+	if (!isHidden() && currentIndex == INVENTORY_PANEL_INDEX)
 		hide();
-	} else if (isHidden()) {
+	else if (isHidden())
 		show();
-	}
+
 	//TODO set inventory panel
 	currentIndex = INVENTORY_PANEL_INDEX;
 	label->setText(tr("Inventory"));
@@ -107,11 +107,11 @@ void SidePanel::onInventoryClicked()
 
 void SidePanel::onSkillsClicked()
 {
-	if (!isHidden() && currentIndex == SKILLS_PANEL_INDEX) {
+	if (!isHidden() && currentIndex == SKILLS_PANEL_INDEX)
 		hide();
-	} else if (isHidden()) {
+	else if (isHidden())
 		show();
-	}
+
 	//TODO set sills panel
 	currentIndex = SKILLS_PANEL_INDEX;
 	label->setText(tr("Skills"));
@@ -119,11 +119,11 @@ void SidePanel::onSkillsClicked()
 
 void SidePanel::onQuestsClicked()
 {
-	if (!isHidden() && currentIndex == QUESTS_PANEL_INDEX) {
+	if (!isHidden() && currentIndex == QUESTS_PANEL_INDEX)
 		hide();
-	} else if (isHidden()) {
+	else if (isHidden())
 		show();
-	}
+
 	//TODO set quests panel
 	currentIndex = QUESTS_PANEL_INDEX;
 	label->setText(tr("Quests"));
@@ -162,20 +162,19 @@ HPBar::HPBar(Creature *owner, QWidget *parent):
 	ProgressBar(parent),
 	owner(owner)
 {
-	backgroundImage = DataManager::getPixmap(Data::Images::HpBarBackground);
-	barImage = DataManager::getPixmap(Data::Images::HpBar);
+	backgroundImage = DataManager::pixmap(Data::ImagePath::HpBarBackground);
+	barImage        = DataManager::pixmap(Data::ImagePath::HpBar);
+
+	connect(owner, &Creature::hitPointsChanged, this, static_cast<void (QWidget::*)()>(&QWidget::repaint));
 
 	//TODO connect owner hitPointsChanged signal with this repaint slot, Creature is not QObject yet
+	// u're joking, right, pal? QObject->Object->Movable->Creature
 }
 
 double HPBar::getValue() const
 {
-	// owner->fullHitPoints() doesn't work yet, because player has no creature base
-	/*
 	int hp = owner->hitPoints();
 	int hpMax = owner->fullHitPoints();
 	Q_ASSERT(hpMax != 0);
 	return double(hp) / hpMax;
-	*/
-	return 0.8;
 }

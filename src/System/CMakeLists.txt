@@ -1,16 +1,18 @@
 set (HOASystem_SRCS
-# 	Attack.cpp
+	Attack.cpp
 	Blacksmith.cpp
 	Carriable.cpp
 	Character.cpp
 	Creature.cpp
 	CreatureBase.cpp
+	DataManager.cpp
 	EquipmentCarrier.cpp
 	GlobalMap.cpp
 	Grid.cpp
 	Human.cpp
 	Inn.cpp
 	Item.cpp
+	ItemBase.cpp
 # 	LocalMap.cpp
 	Map.cpp
 # 	Mission.cpp
@@ -18,14 +20,19 @@ set (HOASystem_SRCS
 	Movable.cpp
 # 	NonHuman.cpp
 	Object.cpp
+	Paths.cpp
  	Place.cpp
 # 	Quest.cpp
 	QuestCarrier.cpp
 	Tile.cpp
  	Town.cpp
+ 	Utils.cpp
+ 	Weapon.cpp
+ 	WeaponBase.cpp
 )
 
 set (HOASystem_HDRS
+	Creature.h
 	CreatureBase.h
 	GlobalMap.h
 	Object.h

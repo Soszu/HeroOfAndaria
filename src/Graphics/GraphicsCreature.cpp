@@ -31,7 +31,14 @@ void GraphicsCreature::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 
 	//TODO no, it's not the final version in this program
 
-	painter->setBrush(Qt::yellow);
+	if (((Creature *)object_)->hitPoints() == 0)
+		painter->setBrush(Qt::darkGray);
+	else if (((Creature *)object_)->currentAction() == HOA::CreatureAction::Attack)
+		painter->setBrush(Qt::blue);
+	else if (((Creature *)object_)->currentAction() == HOA::CreatureAction::Recoil)
+		painter->setBrush(Qt::red);
+	else
+		painter->setBrush(Qt::yellow);
 	painter->drawPath(shape());
 
 	QPolygon polygon;
@@ -49,5 +56,6 @@ void GraphicsCreature::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 
 void GraphicsCreature::advance()
 {
+	//TODO attack, recoil
 	GraphicsObject::advance();
 }

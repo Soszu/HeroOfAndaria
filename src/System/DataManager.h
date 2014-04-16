@@ -2,11 +2,13 @@
 #define DATA_MANAGER_H
 
 #include <QtWidgets>
+#include "Paths.h"
 
 class DataManager
 {
 public:
-	static QPixmap * getPixmap(const QString &path);
+	static QPixmap * pixmap(const QString &path);
+	static QPixmap * pixmap(Data::ImagePath name);
 
 private:
 	DataManager() = delete;

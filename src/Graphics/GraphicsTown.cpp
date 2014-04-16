@@ -51,17 +51,18 @@ TownMainView::TownMainView(QVector <QPair <QString, HOA::PlaceType> > &buttonCap
 	QWidget(parent),
 	layout_(new QHBoxLayout(this)),
 	sigMapper_(new QSignalMapper(this)),
-	exitButton_(new PlaceButton(new QPixmap(Data::Images::LeaveTownButton), new QPixmap(Data::Images::OpenPlaceButton), QString("Wyjdź"), this))
+	exitButton_(new PlaceButton(new QPixmap(Data::path(Data::ImagePath::LeaveTownButton)),
+	                            new QPixmap(Data::path(Data::ImagePath::OpenPlaceButton)), QString("Wyjdź"), this))
 {
 	for (auto desc : buttonCaps) {
 		QString closedPath;
-		QString openPath = Data::Images::OpenPlaceButton;
+		QString openPath = Data::path(Data::ImagePath::OpenPlaceButton);
 		switch (desc.second){
 			case HOA::PlaceType::Blacksmith:
-				closedPath = Data::Images::BlacksmithButton;
+				closedPath = Data::path(Data::ImagePath::BlacksmithButton);
 				break;
 			case HOA::PlaceType::Inn:
-				closedPath = Data::Images::InnButton;
+				closedPath = Data::path(Data::ImagePath::InnButton);
 				break;
 			default:
 				break;
@@ -75,7 +76,7 @@ TownMainView::TownMainView(QVector <QPair <QString, HOA::PlaceType> > &buttonCap
 	}
 	layout_->addWidget(this->exitButton_);
 
-	this->backgroundImage_.load(Data::Images::TownBackground);
+	this->backgroundImage_.load(Data::path(Data::ImagePath::TownBackground));
 
 }
 
@@ -158,7 +159,7 @@ GraphicsTownObject::GraphicsTownObject(Town *town)
 {
 	graphicsTown_ = new GraphicsTown(town);
 	//TODO graphicsTown_->setParent(this);
-	pixmap_ = QPixmap(Data::Images::TownPoor);
+	pixmap_ = QPixmap(Data::path(Data::ImagePath::TownPoor));
 }
 
 GraphicsTown * GraphicsTownObject::graphicsTown()

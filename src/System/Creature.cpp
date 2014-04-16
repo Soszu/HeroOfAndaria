@@ -4,20 +4,35 @@
  * \class Creature
  */
 
-Creature::Creature(const CreatureBase * base) : base(base), hitPoints_(0)
+Creature::Creature(const CreatureBase *base) :
+	base_(base), hitPoints_(0)
 {
 	initStats();
+	initActions();
+
+	//TODO
+	setCurrentWeapon(new Weapon);
 }
+
+Creature::~Creature()
+{}
 
 void Creature::initStats()
 {
-	if (base != nullptr)
-		hitPoints_ = base->fullHitPoints();
+	//TODO if base != nullptr and why should we check it
+	setHitPoints(fullHitPoints());
+}
+
+void Creature::initActions()
+{
+	freezed_ = false;
+	currentAction_ = HOA::CreatureAction::None;
+	connect(&actionTimeLine_, &QTimeLine::finished, this, &Creature::onActionFinished);
 }
 
 void Creature::setBase(const CreatureBase* base)
 {
-	this->base = base;
+	this->base_ = base;
 
 	if (base == nullptr)
 		return;
@@ -36,22 +51,14 @@ int Creature::maxSpeed() const
 	return 10;
 }
 
-void Creature::attack(const Attack &attack)
-{
-}
-
-void Creature::receiveAttack(const Attack &attack)
-{
-}
-
 UID Creature::uid() const
 {
-	return base->uid();
+	return base_->uid();
 }
 
 QString Creature::name() const
 {
-	return base->name();
+	return base_->name();
 }
 
 int Creature::hitPoints() const
@@ -66,32 +73,92 @@ void Creature::setHitPoints(int hitPoints)
 
 int Creature::fullHitPoints() const
 {
-	return base->fullHitPoints();
+	//TODO base
+	return 20;
+	return base_->fullHitPoints();
 }
 
 int Creature::agility() const
 {
-	return base->agility();
+	return base_->agility();
 }
 
 int Creature::strength() const
 {
-	return base->strength();
+	return base_->strength();
 }
 
 int Creature::intelligence() const
 {
-	return base->intelligence();
+	return base_->intelligence();
 }
 
 int Creature::endurance() const
 {
-	return base->endurance();
+	return base_->endurance();
+}
+
+void Creature::attack(const Attack &attack)
+{
+	//TODO
+
+	if (freezed_)
+		return;
+
+	currentAction_ = HOA::CreatureAction::Attack;
+
+	Attack fullAttack(attack);
+
+	fullAttack.setAttacker(this);
+	fullAttack.setWeapon(currentWeapon());
+
+	attackManager_->attack(fullAttack);
+
+	freezed_ = true;
+
+	int attackDuration = 500;
+	actionTimeLine_.setDuration(attackDuration);
+
+	actionTimeLine_.start();
+}
+
+void Creature::receiveAttack(const Attack &attack)
+{
+	//TODO no it's not perfect
+	setHitPoints(qMax(hitPoints() - attack.weapon()->damage(), 0));
+
+	freezed_ = true;
+
+	if (hitPoints() == 0)
+		return;
+
+	//TODO
+	currentAction_ = HOA::CreatureAction::Recoil;
+
+	int recoilDuration = 500;
+	actionTimeLine_.setDuration(recoilDuration);
+
+	actionTimeLine_.start();
+}
+
+void Creature::setCurrentWeapon(Weapon *weapon)
+{
+	currentWeapon_ = weapon;
+}
+
+Weapon * Creature::currentWeapon() const
+{
+	return currentWeapon_;
+}
+
+HOA::CreatureAction Creature::currentAction() const
+{
+	return currentAction_;
 }
 
 QDataStream & operator << (QDataStream &out, const Creature &creature)
 {
-	out << creature.base->uid();
+	out << creature.base_->uid();
 	return out;
 }
 
@@ -102,4 +169,10 @@ QDataStream & operator >> (QDataStream &in, Creature &creature)
 	creature.setBase(CreatureModel::creature(uid));
 
 	return in;
+}
+
+void Creature::onActionFinished()
+{
+	freezed_ = false;
+	currentAction_ = HOA::CreatureAction::None;
 }

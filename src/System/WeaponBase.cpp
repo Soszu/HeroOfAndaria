@@ -3,9 +3,9 @@
 WeaponBase::WeaponBase() : damage_(0),
                            hitRatio_(0),
                            reach_(0),
-                           strengthInfluence_(0),
-                           agilityInfluence_(0),
-                           intelligenceInfluence_(0),
+                           strengthModifier_(0),
+                           agilityModifier_(0),
+                           intelligenceModifier_(0),
                            weaponType_(HOA::WeaponType::Melee)
 {}
 /*
@@ -23,9 +23,9 @@ WeaponBase::WeaponBase(UID uid, QString name) : uid_(uid),
 WeaponBase::WeaponBase(const WeaponBase& weapon) : damage_(weapon.damage()),
                                                    hitRatio_(weapon.hitRatio()),
                                                    reach_(weapon.reach()),
-                                                   strengthInfluence_(weapon.strengthInfluence()),
-                                                   agilityInfluence_(weapon.agilityInfluence()),
-                                                   intelligenceInfluence_(weapon.intelligenceInfluence()),
+                                                   strengthModifier_(weapon.strengthModifier()),
+                                                   agilityModifier_(weapon.agilityModifier()),
+                                                   intelligenceModifier_(weapon.intelligenceModifier()),
                                                    weaponType_(weapon.weaponType())
 {}
 
@@ -59,42 +59,42 @@ void WeaponBase::setReach(int reach)
 	reach_ = reach;
 }
 
-int WeaponBase::strengthInfluence() const
+int WeaponBase::strengthModifier() const
 {
-	return strengthInfluence_;
+	return strengthModifier_;
 }
 
-void WeaponBase::setStrengthInfluence(int strengthInfluence)
+void WeaponBase::setStrengthModifier(int strengthModifier)
 {
-	strengthInfluence_ = strengthInfluence;
+	strengthModifier_ = strengthModifier;
 }
 
-int WeaponBase::agilityInfluence() const
+int WeaponBase::agilityModifier() const
 {
-	return agilityInfluence_;
+	return agilityModifier_;
 }
 
-void WeaponBase::setAgilityInfluence(int agilityInfluence)
+void WeaponBase::setAgilityModifier(int agilityModifier)
 {
-	agilityInfluence_ = agilityInfluence;
+	agilityModifier_ = agilityModifier;
 }
 
-int WeaponBase::intelligenceInfluence() const
+int WeaponBase::intelligenceModifier() const
 {
-	return intelligenceInfluence_;
+	return intelligenceModifier_;
 }
 
-void WeaponBase::setIntelligenceInfluence(int intelligenceInfluence)
+void WeaponBase::setIntelligenceModifier(int intelligenceModifier)
 {
-	intelligenceInfluence_ = intelligenceInfluence;
+	intelligenceModifier_ = intelligenceModifier;
 }
 
-WeaponType WeaponBase::weaponType() const
+HOA::WeaponType WeaponBase::weaponType() const
 {
 	return weaponType_;
 }
 
-void WeaponBase::setType(WeaponType type)
+void WeaponBase::setType(HOA::WeaponType type)
 {
 	weaponType_  = type;
 }
@@ -106,9 +106,9 @@ QDataStream & operator << (QDataStream &out, const WeaponBase &weapon)
 	<< "\n\tdamage:                  " << weapon.damage_
 	<< "\n\thit ratio:               " << weapon.hitRatio_
 	<< "\n\treach:                   " << weapon.reach_
-	<< "\n\tstrength influence:      " << weapon.strengthInfluence_
-	<< "\n\tagility influence:       " << weapon.agilityInfluence_
-	<< "\n\tintelligence influence:  " << weapon.intelligenceInfluence_;
+	<< "\n\tstrength influence:      " << weapon.strengthModifier_
+	<< "\n\tagility influence:       " << weapon.agilityModifier_
+	<< "\n\tintelligence influence:  " << weapon.intelligenceModifier_;
 	//TODO wypisać type i ogarnąć wypisywanie na strumienie i debug.
 	//<< "\n\ttype:                    " << weapon.endurance_;
 

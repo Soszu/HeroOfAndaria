@@ -4,5 +4,8 @@ skoki
 ukształtowanie terenu
 efekty (trucizna, zamrożenie)
 
+#3
+rozdzielenie QGraphicsScene i systemu kolizji - to jest jednak kiepskie
+
 #4
 cursor

@@ -14,7 +14,7 @@ class TileScene;
  * \class GraphicsMap
  * Graphical representation of a Map.
  */
-class GraphicsMap : public QStackedWidget, public MovementManager
+class GraphicsMap : public QStackedWidget, public MovementManager, public AttackManager
 {
 Q_OBJECT;
 
@@ -23,6 +23,7 @@ public:
 	~GraphicsMap();
 
 	virtual bool canMakeMove(const Movable *object, const QPoint &vector) const;
+	virtual void attack(const Attack &attack);
 
 	static HOA::Direction keysToDirection(HOA::KeyFunction horizontal, HOA::KeyFunction vertical);
 
@@ -39,6 +40,7 @@ protected:
 		HOA::KeyFunction verticalDirection;
 	} mapActions_;
 
+	virtual void mousePressEvent(QMouseEvent *event);
 	virtual void keyPressEvent(QKeyEvent *event);
 	virtual void keyReleaseEvent(QKeyEvent *event);
 	virtual void wheelEvent(QWheelEvent *event);
@@ -50,6 +52,7 @@ private:
 	void initMap();
 	void initView();
 	void initLayout();
+	void initObject(Object *object);
 
 private slots:
 	void onObjectAdded();

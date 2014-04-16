@@ -11,10 +11,9 @@ set (HOAGraphics_SRCS
 	GraphicsObject.cpp
  	GraphicsPlace.cpp
  	GraphicsTown.cpp
+ 	ImageButton.cpp
  	KeyboardManager.cpp
-	ImageButton.cpp
 	Panels.cpp
-	DataManager.cpp
 )
 
 set (HOAGraphics_HDRS

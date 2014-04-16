@@ -1,8 +1,6 @@
 #ifndef ATTACK_H
 #define ATTACK_H
 
-#include "System/Movable.h"
-
 namespace HOA {
 	enum class AttackType {
 		Melee,
@@ -12,18 +10,41 @@ namespace HOA {
 }
 
 class Creature;
+class Weapon;
 
-class Attack : public Movable
+class Attack
 {
 public:
-	Attack();
+	Attack(HOA::AttackType type, Creature *attacker = nullptr);
 
 	HOA::AttackType type() const;
-	const Creature * attacker() const;
+
+	void setAttacker(Creature *attacker);
+	Creature * attacker() const;
+
+	void setWeapon(Weapon *weapon);
+	Weapon * weapon() const;
+
+	void setMissile(Weapon *missile);
+	Weapon * missile() const;
 
 private:
 	HOA::AttackType type_;
-	const Creature *attacker_;
+	Creature *attacker_;
+
+	/** Optional */
+	Weapon *weapon_;
+	Weapon *missile_;
+	//TODO spell
+
+
+	//TODO more info about the attack
+};
+
+class AttackManager
+{
+public:
+	virtual void attack(const Attack &att) = 0;
 };
 
 #endif // ATTACK_H
