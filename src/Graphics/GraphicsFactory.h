@@ -2,24 +2,29 @@
 #define GRAPHICSFACTORY_H
 
 #include <QtWidgets>
-#include "Graphics/GraphicsObject.h"
-#include "Graphics/GraphicsPlace.h"
-#include "System/Object.h"
-#include "System/Place.h"
 #include "Graphics/GraphicsBlacksmith.h"
 #include "Graphics/GraphicsInn.h"
+#include "Graphics/GraphicsMap.h"
+#include "Graphics/GraphicsObject.h"
+#include "Graphics/GraphicsPlace.h"
 
 class GraphicsFactory
 {
 public:
 	static GraphicsObject * get(Object *object);
 	static GraphicsObject * get(const Object *object);
+
 	static GraphicsPlace * get(Place * place);
+
+	static GraphicsMap * get(Map *map);
+
 private:
 	GraphicsFactory() = delete;
 	GraphicsFactory(const GraphicsFactory &) = delete;
-	
+
 	static QHash <const Object *, GraphicsObject *> map_;
+	static QHash <Place *, GraphicsPlace *> placesMap_;
+	static QHash <Map *, GraphicsMap *> mapsMap_;
 };
 
 #endif // GRAPHICSFACTORY_H

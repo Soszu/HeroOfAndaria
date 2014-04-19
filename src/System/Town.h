@@ -14,6 +14,8 @@ public:
 
 	virtual HOA::ObjectType objectType() const;
 
+	QString name() const;
+
 	const QVector <Place *> & places() const;
 	void visitPlace(Place *p);
 	void addPlace(Place *p);

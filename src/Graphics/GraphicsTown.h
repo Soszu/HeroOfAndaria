@@ -15,6 +15,8 @@ Q_OBJECT;
 public:
 	GraphicsTown(Town *town, QWidget *parent = nullptr);
 
+	Town *town() const;
+
 private:
 	TownMainView *mainView_;
 	Town *town_;
@@ -45,7 +47,7 @@ private:
 	QSignalMapper *sigMapper_;
 	QPushButton *exitButton_;
 
-	QPixmap backgroundImage_;
+	QPixmap *backgroundImage_;
 };
 
 class PlaceButton : public QPushButton
@@ -70,6 +72,10 @@ private:
 	bool isMouseOver_;
 };
 
+/**
+ * \class GraphicsTownObject
+ * Graphical representation of a town on the global map.
+ */
 class GraphicsTownObject : public GraphicsObject
 {
 public:
@@ -80,8 +86,7 @@ public:
 private:
 	GraphicsTown *graphicsTown_;
 
-	//TODO GraphicsManager
-	QPixmap pixmap_;
+	QPixmap *pixmap_;
 
 	virtual QRectF boundingRect() const;
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);

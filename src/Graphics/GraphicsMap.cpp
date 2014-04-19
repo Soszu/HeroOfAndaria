@@ -256,6 +256,11 @@ MapView::MapView(Map *map)
 MapView::~MapView()
 {}
 
+void MapView::reinit()
+{
+	initGraphicsObjects();
+}
+
 void MapView::setCameraHorizontalAction(HOA::KeyFunction action)
 {
 	cameraActions_.horizontalDirection = action;
@@ -306,9 +311,9 @@ void MapView::initScene()
 
 void MapView::initGraphicsObjects()
 {
-	tileScene_->clear();
 	for (Object *object : map_->objects())
-		addGraphicsObject(GraphicsFactory::get(object));
+		if (!items().contains(GraphicsFactory::get(object)))
+			addGraphicsObject(GraphicsFactory::get(object));
 	map_->player();
 }
 

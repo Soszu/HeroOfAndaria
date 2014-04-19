@@ -3,6 +3,7 @@ Skille#1
 skoki
 ukształtowanie terenu
 efekty (trucizna, zamrożenie)
+fix memleaks heh
 
 #3
 rozdzielenie QGraphicsScene i systemu kolizji - to jest jednak kiepskie

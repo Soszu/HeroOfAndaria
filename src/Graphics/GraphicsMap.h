@@ -70,6 +70,8 @@ public:
 	MapView(Map *map);
 	~MapView();
 
+	void reinit();
+
 	void setCameraHorizontalAction(HOA::KeyFunction action);
 	void setCameraVerticalAction(HOA::KeyFunction action);
 

@@ -4,6 +4,8 @@
 #include "System/Character.h"
 #include "System/QuestCarrier.h"
 
+//TODO saving and loading player
+
 class Human : public QuestCarrier, public Character
 {
 public:

@@ -9,6 +9,11 @@ HOA::ObjectType Town::objectType() const
 	return HOA::ObjectType::Town;
 }
 
+QString Town::name() const
+{
+	return name_;
+}
+
 /**
  * @brief Town::visitPlace(Place *) - players enters place
  * @param p - entered place

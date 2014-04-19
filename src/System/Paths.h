@@ -42,6 +42,12 @@ namespace Data {
 		TownBackground,
 
 		TownPoor,
+
+		LocationKennel,
+
+		Player,
+
+		Sword,
 	};
 
 	QString path(ImagePath name);

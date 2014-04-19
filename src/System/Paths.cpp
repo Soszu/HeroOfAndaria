@@ -17,7 +17,7 @@ QString Data::path(ImagePath name)
 	static const QString PrevButtonDark        = ImgPreffix + "/prevButtonDark.png";
 	static const QString UpButtonNormal        = ImgPreffix + "/upButtonNormal.png";
 	static const QString UpButtonDark          = ImgPreffix + "/upButtonDark.png";
-	static const QString DownButtonNormal	    = ImgPreffix + "/downButtonNormal.png";
+	static const QString DownButtonNormal      = ImgPreffix + "/downButtonNormal.png";
 	static const QString DownButtonDark        = ImgPreffix + "/downButtonDark.png";
 
 	static const QString BottomPanelBackground  = ImgPreffix + "/bottomPanel.png";
@@ -25,7 +25,7 @@ QString Data::path(ImagePath name)
 	static const QString PanelCloseButtonNormal = ImgPreffix + "/panelCloseButtonNormal.png";
 	static const QString PanelCloseButtonDark   = ImgPreffix + "/panelCloseButtonDark.png";
 	static const QString SkillsButtonNormal     = ImgPreffix + "/skillsButtonNormal.png";
-	static const QString SkillsButtonDark	     = ImgPreffix + "/skillsButtonDark.png";
+	static const QString SkillsButtonDark       = ImgPreffix + "/skillsButtonDark.png";
 	static const QString QuestsButtonNormal     = ImgPreffix + "/questsButtonNormal.png";
 	static const QString QuestsButtonDark       = ImgPreffix + "/questsButtonDark.png";
 	static const QString InventoryButtonNormal  = ImgPreffix + "/inventoryButtonNormal.png";
@@ -42,6 +42,12 @@ QString Data::path(ImagePath name)
 	static const QString TownBackground   = ImgPreffix + "/townBackground.png";
 
 	static const QString TownPoor = ImgPreffix + "/townPoor2.png";
+
+	static const QString LocationKennel = ImgPreffix + "/kennel.png";
+
+	static const QString Player = ImgPreffix + "/player.png";
+
+	static const QString Sword = ImgPreffix + "/sword.png";
 
 	switch (name) {
 		case ImagePath::MenuBackground:        return MenuBackground;
@@ -80,6 +86,12 @@ QString Data::path(ImagePath name)
 		case ImagePath::TownBackground:   return TownBackground;
 
 		case ImagePath::TownPoor: return TownPoor;
+
+		case ImagePath::LocationKennel: return LocationKennel;
+
+		case ImagePath::Player: return Player;
+
+		case ImagePath::Sword: return Sword;
 	}
 
 	return QString();

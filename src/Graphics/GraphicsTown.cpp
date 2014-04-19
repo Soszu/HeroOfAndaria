@@ -1,7 +1,7 @@
-#include "Graphics/GraphicsTown.h"
 #include "Graphics/GraphicsFactory.h"
-#include <System/Paths.h>
-#include <iostream>
+#include "Graphics/GraphicsTown.h"
+#include "System/DataManager.h"
+#include "System/Paths.h"
 
 GraphicsTown::GraphicsTown(Town *town, QWidget *parent) :
 	QStackedWidget(parent),
@@ -27,6 +27,11 @@ GraphicsTown::GraphicsTown(Town *town, QWidget *parent) :
 	this->addWidget(this->mainView_);
 
 	this->setCurrentWidget(this->mainView_);
+}
+
+Town * GraphicsTown::town() const
+{
+	return town_;
 }
 
 void GraphicsTown::enter(const QString &name)
@@ -76,7 +81,7 @@ TownMainView::TownMainView(QVector <QPair <QString, HOA::PlaceType> > &buttonCap
 	}
 	layout_->addWidget(this->exitButton_);
 
-	this->backgroundImage_.load(Data::path(Data::ImagePath::TownBackground));
+	this->backgroundImage_ = DataManager::pixmap(Data::ImagePath::TownBackground);
 
 }
 
@@ -84,7 +89,7 @@ void TownMainView::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
 
-	painter.drawPixmap(rect(), this->backgroundImage_);
+	painter.drawPixmap(rect(), *(this->backgroundImage_));
 
 	this->QWidget::paintEvent(event);
 }
@@ -112,7 +117,6 @@ PlaceButton::PlaceButton(QPixmap *closedImage, QPixmap *openImage, QString text,
 {
 	setMouseTracking(true);
 	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
 }
 
 void PlaceButton::paintEvent(QPaintEvent *event)
@@ -159,7 +163,7 @@ GraphicsTownObject::GraphicsTownObject(Town *town)
 {
 	graphicsTown_ = new GraphicsTown(town);
 	//TODO graphicsTown_->setParent(this);
-	pixmap_ = QPixmap(Data::path(Data::ImagePath::TownPoor));
+	pixmap_ = DataManager::pixmap(Data::ImagePath::TownPoor);
 }
 
 GraphicsTown * GraphicsTownObject::graphicsTown()
@@ -169,21 +173,22 @@ GraphicsTown * GraphicsTownObject::graphicsTown()
 
 QRectF GraphicsTownObject::boundingRect() const
 {
-	qreal width  = (qreal)pixmap_.width();
-	qreal height = (qreal)pixmap_.height();
+	qreal width  = (qreal)pixmap_->width();
+	qreal height = (qreal)pixmap_->height();
 	return {-width / 2, -height / 2, width, height};
 }
 
 void GraphicsTownObject::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-// 	painter->save();
+	painter->save();
+
+	painter->setPen(Qt::white);
+
+	painter->drawText(boundingRect(), Qt::AlignTop, graphicsTown_->town()->name());
 
 	painter->setPen(Qt::black);
 
-// 	painter->drawRect(boundingRect().toRect());
+	painter->drawPixmap(boundingRect().toRect(), *pixmap_);
 
-// 	painter->drawPixmap(QRect(0, 0, pixmap_.width(), pixmap_.height()), pixmap_);
-	painter->drawPixmap(boundingRect().toRect(), pixmap_);
-
-// 	painter->restore();
+	painter->restore();
 }

@@ -15,9 +15,13 @@ public:
 private:
 	QWidget *mapWidget_;
 	QWidget *townWidget_;
+	QWidget *locationWidget_;
 
-	static const int MAP_INDEX  = 0;
-	static const int TOWN_INDEX = 1;
+	static const int MAP_INDEX      = 0;
+	static const int TOWN_INDEX     = 1;
+	static const int LOCATION_INDEX = 2;
+
+	QPoint locationPosition_;
 
 	void initMap();
 	void initLayout();
@@ -25,10 +29,14 @@ private:
 	void keyPressEvent(QKeyEvent *event);
 
 	void tryEnterTown();
+	void tryEnterLocation();
 
 private slots:
 	void onTownEntered();
 	void onTownExited();
+
+	void onLocationEntered();
+	void onLocationExited();
 };
 
 #endif // GRAPHICSGLOBALMAP_H

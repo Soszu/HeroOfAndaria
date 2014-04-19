@@ -48,7 +48,7 @@ HOA::ObjectType Creature::objectType() const
 int Creature::maxSpeed() const
 {
 	//TODO depending on attributes and skills(?)
-	return 10;
+	return 6;
 }
 
 UID Creature::uid() const

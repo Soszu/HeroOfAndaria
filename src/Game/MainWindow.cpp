@@ -4,8 +4,8 @@ MainWindow::MainWindow()
 {
 	initMenu();
 	initActions();
+	initPlayer();
 	initGlobalMap();
-	//initTown(); //Only for testing GraphicsTown
 	initLayout();
 	initWindow();
 }
@@ -32,16 +32,22 @@ void MainWindow::initActions()
 	connect(actionQuit_, &QAction::triggered, this, &MainWindow::onQuitActivated);
 	addAction(actionQuit_);
 
-	// Just for graphicsTown testing
-	actionTown_ = new QAction(this);
-	actionTown_->setShortcut(tr("Ctrl+T"));
-	connect(actionTown_, &QAction::triggered, this, &MainWindow::onShowTown);
-	addAction(actionTown_);
+	actionContinue_ = new QAction(this);
+	actionContinue_->setShortcut(tr("Ctrl+E"));
+	connect(actionContinue_, &QAction::triggered, this, &MainWindow::onContinueActivated);
+	addAction(actionContinue_);
+}
+
+void MainWindow::initPlayer()
+{
+	//TODO Soszu? save & load
+	player_ = new Human();
 }
 
 void MainWindow::initGlobalMap()
 {
-	globalMap_ = new GlobalMap(150, 100);
+	//TODO Soszu save & load
+	globalMap_ = new GlobalMap(150, 100, player_);
 	graphicsGlobalMap_ = new GraphicsGlobalMap(globalMap_);
 
 	connect(graphicsGlobalMap_, &GraphicsGlobalMap::menuActivated, this, &MainWindow::onMenuActivated);
@@ -54,17 +60,8 @@ void MainWindow::initLayout()
 	stackedWidget_->insertWidget(MENU_INDEX, menu_);
 	stackedWidget_->insertWidget(GLOBAL_MAP_INDEX, graphicsGlobalMap_);
 
-	//stackedWidget_->insertWidget(TOWN_INDEX, graphicsTown_);
-
 	setCentralWidget(stackedWidget_);
 }
-
-void MainWindow::initTown() //Only for testing GraphicsTown
-{
-	//this->graphicsTown_ = getExample();
-	//connect(graphicsTown_, &GraphicsTown::townLeaved, this, &MainWindow::onHideTown);
-}
-
 
 void MainWindow::initWindow()
 {
@@ -101,14 +98,4 @@ void MainWindow::onMenuActivated()
 void MainWindow::onGlobalMapActivated()
 {
 	stackedWidget_->setCurrentIndex(GLOBAL_MAP_INDEX);
-}
-
-void MainWindow::onHideTown()//Only for testing GraphicsTown
-{
-	stackedWidget_->setCurrentIndex(GLOBAL_MAP_INDEX);
-}
-
-void MainWindow::onShowTown()//Only for testing GraphicsTown
-{
-	stackedWidget_->setCurrentIndex(TOWN_INDEX);
 }

@@ -13,10 +13,10 @@ set (HOASystem_SRCS
 	Inn.cpp
 	Item.cpp
 	ItemBase.cpp
-# 	LocalMap.cpp
+	LocalMap.cpp
 	Map.cpp
 # 	Mission.cpp
-# 	Monster.cpp
+	Monster.cpp
 	Movable.cpp
 # 	NonHuman.cpp
 	Object.cpp
@@ -35,6 +35,7 @@ set (HOASystem_HDRS
 	Creature.h
 	CreatureBase.h
 	GlobalMap.h
+	LocalMap.h
 	Object.h
 	Map.h
 	Town.h

@@ -11,7 +11,7 @@ class Map : public Grid
 Q_OBJECT;
 
 public:
-	Map(int width, int height);
+	Map(int width, int height, Human *player);
 
 	Object * newestObject();
 	const QVector <Object *> & objects() const;
@@ -21,15 +21,18 @@ public:
 	virtual bool canCollide(const Movable *lhs, const Object *rhs) const;
 	virtual void onCollision(Object *object, const QVector <Object *> &collisions);
 
+	virtual void addObject(Object *object);
+
+signals:
+	void objectAdded();
+
 protected:
 	QVector <Object *> objects_;
 	Object *newestObject_;
 	Human *player_;
 
-	virtual void addObject(Object *object);
-
-signals:
-	void objectAdded();
+private:
+	void test();
 };
 
 #endif // MAP_H
