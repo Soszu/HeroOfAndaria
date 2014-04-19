@@ -47,7 +47,7 @@ void Movable::advance()
 		speed_ = HOA::lengthenVector(dir, qMin((qreal)maxSpeed(), destinationDistanceLength)).toPoint();
 
 		Q_ASSERT(movementManager_ != nullptr);
-		QPoint vector = speed() * REAL_ADVANCE_TIMEOUT;
+		QPoint vector = speed() * realAdvanceTimeout();
 
 		if (movementManager_->canMakeMove(this, vector))
 			setPosition(position() + vector);

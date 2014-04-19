@@ -60,6 +60,8 @@ public:
 	bool freezed_;
 
 	HOA::CreatureAction currentAction() const;
+	int currentActionTime() const;
+	int currentActionTotalTime() const;
 
 	friend QDataStream & operator << (QDataStream &out, const Creature &creature);
 	friend QDataStream & operator >> (QDataStream &in, Creature &creature);

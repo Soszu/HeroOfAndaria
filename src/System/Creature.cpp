@@ -48,7 +48,7 @@ HOA::ObjectType Creature::objectType() const
 int Creature::maxSpeed() const
 {
 	//TODO depending on attributes and skills(?)
-	return 6;
+	return 4;
 }
 
 UID Creature::uid() const
@@ -154,6 +154,16 @@ Weapon * Creature::currentWeapon() const
 HOA::CreatureAction Creature::currentAction() const
 {
 	return currentAction_;
+}
+
+int Creature::currentActionTime() const
+{
+	return actionTimeLine_.currentTime();
+}
+
+int Creature::currentActionTotalTime() const
+{
+	return actionTimeLine_.duration();
 }
 
 QDataStream & operator << (QDataStream &out, const Creature &creature)

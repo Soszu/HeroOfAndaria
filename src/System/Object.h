@@ -41,9 +41,9 @@ public:
 	void setRotation(const QPoint &rotation);
 
 protected:
-	static const int ADVANCE_TIMEOUT      = 60;
-	static const int TIME_DIVISOR         = 60;
-	static const int REAL_ADVANCE_TIMEOUT = ADVANCE_TIMEOUT / TIME_DIVISOR;
+	static int advanceTimeout();
+	static int timeDivisor();
+	static int realAdvanceTimeout();
 
 	AttackManager *attackManager_;
 

@@ -11,8 +11,12 @@ public:
 
 private:
 	QPixmap *pixmap_;
+	QPixmap *weaponPixmap_;
+
+	qreal weaponAngle;
 
 	QRectF boundingRect() const;
+	QPainterPath shape() const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
 	void advance();
 };

@@ -54,6 +54,23 @@ void Object::setRotation(const QPoint &rotation)
 	emit rotationSet();
 }
 
+int Object::advanceTimeout()
+{
+	static const int ADVANCE_TIMEOUT = 40;
+	return ADVANCE_TIMEOUT;
+}
+
+int Object::timeDivisor()
+{
+	static const int TIME_DIVISOR = 40;
+	return TIME_DIVISOR;
+}
+
+int Object::realAdvanceTimeout()
+{
+	return advanceTimeout() / timeDivisor();
+}
+
 void Object::advance()
 {
 	//TODO static changes
@@ -62,5 +79,5 @@ void Object::advance()
 
 void Object::initTimer()
 {
-	advanceTimer_.start(ADVANCE_TIMEOUT);
+	advanceTimer_.start(advanceTimeout());
 }
