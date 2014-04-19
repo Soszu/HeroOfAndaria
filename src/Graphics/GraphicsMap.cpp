@@ -102,6 +102,12 @@ HOA::Direction GraphicsMap::keysToDirection(HOA::KeyFunction horizontalDirection
 	return HOA::Direction::None;
 }
 
+void GraphicsMap::reinit()
+{
+	mapView_->reinit();
+	initObject(map_->player());
+}
+
 void GraphicsMap::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() & Qt::LeftButton)

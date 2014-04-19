@@ -98,16 +98,22 @@ void GraphicsGlobalMap::onLocationEntered()
 {
 	const Location *currentLocation = ((GlobalMap *)map_)->currentLocation();
 	locationPosition_ = currentLocation->position();
+
 	GraphicsLocalMap *graphicsLocalMap =
 		static_cast<GraphicsLocalMap *>(GraphicsFactory::get(currentLocation->localMap()));
+	connect(graphicsLocalMap, &GraphicsLocalMap::menuActivated, this, &GraphicsGlobalMap::menuActivated);
+
 	locationWidget_->layout()->addWidget(graphicsLocalMap);
+	graphicsLocalMap->reinit();
 	QStackedWidget::setCurrentIndex(LOCATION_INDEX);
 }
 
 void GraphicsGlobalMap::onLocationExited()
 {
 	QStackedWidget::setCurrentIndex(MAP_INDEX);
+
 	locationWidget_->layout()->removeItem(locationWidget_->layout()->itemAt(0));
+
 	map_->player()->setPosition(locationPosition_);
-	mapView_->reinit();
+	reinit();
 }

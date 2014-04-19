@@ -27,6 +27,8 @@ public:
 
 	static HOA::Direction keysToDirection(HOA::KeyFunction horizontal, HOA::KeyFunction vertical);
 
+	void reinit();
+
 signals:
 	void menuActivated();
 
