@@ -2,9 +2,16 @@
 #include "System/Creature.h"
 #include "System/Weapon.h"
 
+static int currentUid = 0;
+
 Attack::Attack(HOA::AttackType type, Creature *attacker)
-	: type_(type), attacker_(attacker)
+	: uid_(currentUid++), type_(type), attacker_(attacker)
 {}
+
+int Attack::uid() const
+{
+	return uid_;
+}
 
 HOA::AttackType Attack::type() const
 {
@@ -40,5 +47,3 @@ Weapon * Attack::missile() const
 {
 	return missile_;
 }
-
-

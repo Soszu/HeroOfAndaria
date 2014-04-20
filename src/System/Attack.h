@@ -15,7 +15,9 @@ class Weapon;
 class Attack
 {
 public:
-	Attack(HOA::AttackType type, Creature *attacker = nullptr);
+	Attack(HOA::AttackType type = HOA::AttackType::Melee, Creature *attacker = nullptr);
+
+	int uid() const;
 
 	HOA::AttackType type() const;
 
@@ -29,6 +31,8 @@ public:
 	Weapon * missile() const;
 
 private:
+	int uid_;
+
 	HOA::AttackType type_;
 	Creature *attacker_;
 

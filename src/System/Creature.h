@@ -56,6 +56,8 @@ public:
 	void setCurrentWeapon(Weapon *weapon);
 	Weapon * currentWeapon() const;
 
+	Attack currentAttack() const;
+
 	//TODO in effects and certainly not in public
 	bool freezed_;
 
@@ -78,6 +80,8 @@ private:
 
 	QVector <Weapon *> weapons_;
 	Weapon *currentWeapon_;
+
+	Attack currentAttack_;
 
 private slots:
 	void onActionFinished();

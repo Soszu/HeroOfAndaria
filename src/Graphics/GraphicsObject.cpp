@@ -19,13 +19,20 @@ Object * GraphicsObject::object()
 	return object_;
 }
 
+QPainterPath GraphicsObject::shape() const
+{
+	QPainterPath path;
+	path.addRect(boundingRect());
+	return path;
+}
+
 QVector <GraphicsObject *> GraphicsObject::collisions(const QPoint &vector)
 {
 	QVector <GraphicsObject *> collisions;
 
 	QList <QGraphicsItem *> cs = scene()->items(mapToScene(shape().translated(vector)), Qt::IntersectsItemShape);
 	for (QGraphicsItem *item : cs)
-		if (item != this)
+		if (item != static_cast<QGraphicsItem *>(this))
 			collisions.append(static_cast<GraphicsObject *>(item));
 	return collisions;
 }

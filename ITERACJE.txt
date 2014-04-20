@@ -1,9 +1,19 @@
+#1
+skrót do wyświetlania życia na mapie: trigger i chwilowy (hold 'H')
+podobnie bounding boxy (dla eleganckiego debugu)
+wilk
+AI do wilka
+okno wymiany ekwipunku
+edytor map
+ładowanie map, gracza, przedmiotów, kreaturek itp.
+
 #2
 Skille#1
 skoki
 ukształtowanie terenu
 efekty (trucizna, zamrożenie)
 fix memleaks heh
+poprawić trawę. Jest Brzydka.
 
 #3
 rozdzielenie QGraphicsScene i systemu kolizji - to jest jednak kiepskie

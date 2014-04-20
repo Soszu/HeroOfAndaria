@@ -1,3 +1,4 @@
+#include "Graphics/GraphicsCreature.h"
 #include "Graphics/GraphicsFactory.h"
 #include "Graphics/GraphicsMap.h"
 #include "System/Paths.h"
@@ -41,15 +42,24 @@ bool GraphicsMap::canMakeMove(const Movable *object, const QPoint &vector) const
 
 void GraphicsMap::attack(const Attack &attack)
 {
-	QPoint attackPosition = attack.attacker()->position();
-	QPoint attackRotation = attack.attacker()->rotation();
+// 	QPoint attackPosition = attack.attacker()->position();
+// 	QPoint attackRotation = attack.attacker()->rotation();
 
 	//TODO put it in the weapon or something. And attack area is NOT just a little triangle.
 
-	QPolygon attackArea;
+// 	QPolygon attackArea;
 
-	QPointF vector = HOA::lengthenVector(attackRotation - attackPosition, attack.weapon()->reach());
-	attackArea << attackPosition << (vector + attackPosition).toPoint() << (HOA::rotateVector(vector, 0.1) + attackPosition).toPoint();
+	/*
+	QPointF vector = HOA::lengthenVector(attackRotation - attackPosition, attack.weapon()->reach() * Grid::tileSize());
+	attackArea << attackPosition
+	           << (vector + attackPosition).toPoint()
+		   << (HOA::rotateVector(vector, 0.1) + attackPosition).toPoint();
+	*/
+
+// 	GraphicsCreature *graphicsAttacker = static_cast<GraphicsCreature *>(GraphicsFactory::get(attack.attacker()));
+// 	attackArea = mapView_->mapToScene(graphicsAttacker->weaponShape().toPolygon()).toPolygon();
+/*
+	qDebug() << attackArea;
 
 	QList <QGraphicsItem *> intersecting = mapView_->scene()->items(attackArea);
 
@@ -58,7 +68,7 @@ void GraphicsMap::attack(const Attack &attack)
 		//TODO riposte or something like that
 		if (object != attack.attacker())
 			object->receiveAttack(attack);
-	}
+	}*/
 }
 
 static int keyFunctionToDirectionValue(HOA::KeyFunction mapAction)
@@ -231,11 +241,24 @@ void GraphicsMap::initObject(Object *object)
 		((Movable *)object)->setMovementManager(this);
 }
 
-void GraphicsMap::onCollision()
+void GraphicsMap::onCollision(QObject *object)
 {
-	//TODO Will be useful. Yes. Trigger the relevant function in Map and here you go.
-	//GraphicsObject *object = static_cast<GraphicsObject *>(sender());
-	//QVector <GraphicsObject *> collisions = objectA->collisions();
+	GraphicsObject *graphicsObject = static_cast<GraphicsObject *>(object);
+
+	QVector <GraphicsObject *> collisions = graphicsObject->collisions();
+
+	Object *obj = graphicsObject->object();
+
+	if ((obj->objectType() == HOA::ObjectType::Creature || obj->objectType() == HOA::ObjectType::Human)
+	    && ((Creature *)obj)->currentAction() == HOA::CreatureAction::Attack) {
+		GraphicsCreature *gCreature = static_cast<GraphicsCreature *>(graphicsObject);
+		for (GraphicsObject *col : collisions) {
+			QPolygon dangerArea = gCreature->weaponShape().toPolygon().translated(gCreature->pos().toPoint());
+			QPolygon objectArea = col->shape().toFillPolygon().toPolygon().translated(col->pos().toPoint());
+			if (!dangerArea.intersected(objectArea).isEmpty())
+				col->object()->receiveAttack(((Creature *)obj)->currentAttack());
+		}
+	}
 }
 
 void GraphicsMap::onObjectAdded()
@@ -355,7 +378,7 @@ void MapView::initPanels()
 
 void MapView::addGraphicsObject(GraphicsObject *graphicsObject)
 {
-	connect(graphicsObject, &GraphicsObject::collided, this, &MapView::collided);
+	connect(graphicsObject, &GraphicsObject::collided, this, &MapView::onCollision);
 
 	int zValue;
 	switch (graphicsObject->object()->objectType()) {
@@ -441,6 +464,12 @@ void MapView::onScroll()
 void MapView::onObjectAdded()
 {
 	addGraphicsObject(GraphicsFactory::get(map_->newestObject()));
+}
+
+void MapView::onCollision()
+{
+	//HACK
+	emit collided(sender());
 }
 
 void MapView::onPlayerMoved()

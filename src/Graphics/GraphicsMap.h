@@ -48,7 +48,7 @@ protected:
 	virtual void wheelEvent(QWheelEvent *event);
 
 protected slots:
-	void onCollision();
+	void onCollision(QObject *object);
 
 private:
 	void initMap();
@@ -82,7 +82,7 @@ public:
 	void zoom(int delta);
 
 signals:
-	void collided();
+	void collided(QObject *object);
 
 private:
 	Map *map_;
@@ -119,6 +119,7 @@ private slots:
 	void onScroll();
 
 	void onObjectAdded();
+	void onCollision();
 
 	void onPlayerMoved();
 };

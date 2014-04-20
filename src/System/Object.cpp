@@ -30,7 +30,9 @@ void Object::setAttackManager(AttackManager *attackManager)
 }
 
 void Object::receiveAttack(const Attack &attack)
-{}
+{
+	registeredAttacks_.append(attack.uid());
+}
 
 QPoint Object::position() const
 {

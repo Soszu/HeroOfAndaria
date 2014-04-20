@@ -22,5 +22,5 @@ int Weapon::damage() const
 
 int Weapon::reach() const
 {
-	return 50;
+	return 6;
 }

@@ -16,6 +16,8 @@ public:
 
 	Object * object();
 
+	virtual QPainterPath shape() const;
+
 	QVector <GraphicsObject *> collisions(const QPoint &vector = QPoint(0, 0));
 
 	static qreal vectorAngle(const QPoint &middle, const QPoint &vector);

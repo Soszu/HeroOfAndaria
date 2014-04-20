@@ -68,7 +68,10 @@ int Creature::hitPoints() const
 
 void Creature::setHitPoints(int hitPoints)
 {
+	bool changed = hitPoints_ != hitPoints;
 	hitPoints_ = hitPoints;
+	if (changed)
+		emit hitPointsChanged();
 }
 
 int Creature::fullHitPoints() const
@@ -112,6 +115,8 @@ void Creature::attack(const Attack &attack)
 	fullAttack.setAttacker(this);
 	fullAttack.setWeapon(currentWeapon());
 
+	currentAttack_ = fullAttack;
+
 	attackManager_->attack(fullAttack);
 
 	freezed_ = true;
@@ -119,11 +124,15 @@ void Creature::attack(const Attack &attack)
 	int attackDuration = 500;
 	actionTimeLine_.setDuration(attackDuration);
 
+	actionTimeLine_.stop();
 	actionTimeLine_.start();
 }
 
 void Creature::receiveAttack(const Attack &attack)
 {
+	if (registeredAttacks_.contains(attack.uid()))
+		return;
+
 	//TODO no it's not perfect
 	setHitPoints(qMax(hitPoints() - attack.weapon()->damage(), 0));
 
@@ -131,6 +140,8 @@ void Creature::receiveAttack(const Attack &attack)
 
 	if (hitPoints() == 0)
 		return;
+
+	Object::receiveAttack(attack);
 
 	//TODO
 	currentAction_ = HOA::CreatureAction::Recoil;
@@ -149,6 +160,11 @@ void Creature::setCurrentWeapon(Weapon *weapon)
 Weapon * Creature::currentWeapon() const
 {
 	return currentWeapon_;
+}
+
+Attack Creature::currentAttack() const
+{
+	return currentAttack_;
 }
 
 HOA::CreatureAction Creature::currentAction() const

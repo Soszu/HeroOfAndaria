@@ -46,6 +46,7 @@ protected:
 	static int realAdvanceTimeout();
 
 	AttackManager *attackManager_;
+	QVector <int> registeredAttacks_; //TODO with global timer remove attacks some time ago in advance()
 
 protected slots:
 	virtual void advance();
