@@ -2,6 +2,7 @@ set (HOAEditor_SRCS
 	main.cpp
 	MainWindow.cpp
 	ContentEditor.cpp
+	ItemEditor.cpp
 	CreatureEditor.cpp
 )
 
@@ -9,6 +10,7 @@ set (HOAEditor_HDRS
 	MainWindow.h
 	ContentEditor.h
 	CreatureEditor.h
+	ItemEditor.h
 	Strings.h
 	Shortcuts.h
 )

@@ -1,10 +1,12 @@
 set (HOASystem_SRCS
 	Attack.cpp
+	Bases/CreatureBase.cpp
+	Bases/ItemBase.cpp
+	Bases/WeaponBase.cpp
 	Blacksmith.cpp
 	Carriable.cpp
 	Character.cpp
 	Creature.cpp
-	CreatureBase.cpp
 	DataManager.cpp
 	EquipmentCarrier.cpp
 	GlobalMap.cpp
@@ -12,11 +14,13 @@ set (HOASystem_SRCS
 	Human.cpp
 	Inn.cpp
 	Item.cpp
-	ItemBase.cpp
 	LocalMap.cpp
 	Map.cpp
 # 	Mission.cpp
 	Monster.cpp
+	Models/CreatureModel.cpp
+	Models/ItemModel.cpp
+	Models/WeaponModel.cpp
 	Movable.cpp
 # 	NonHuman.cpp
 	Object.cpp
@@ -28,16 +32,17 @@ set (HOASystem_SRCS
  	Town.cpp
  	Utils.cpp
  	Weapon.cpp
- 	WeaponBase.cpp
 )
 
 set (HOASystem_HDRS
 	Creature.h
-	CreatureBase.h
 	GlobalMap.h
 	LocalMap.h
-	Object.h
+	Models/CreatureModel.h
+	Models/ItemModel.h
+	Models/WeaponModel.h
 	Map.h
+	Object.h
 	Town.h
 )
 

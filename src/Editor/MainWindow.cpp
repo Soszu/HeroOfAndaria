@@ -51,6 +51,8 @@ void MainWindow::initMenuAndActions()
 void MainWindow::initContentEditors()
 {
 	contentEditors_.push_back(new CreatureEditor());
+	contentEditors_.push_back(new ItemEditor());
+
 	for (ContentEditor *editor : contentEditors_)
 		connect(this, &MainWindow::modelSaved, editor, &ContentEditor::modelSaved);
 }

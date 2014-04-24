@@ -3,7 +3,8 @@
 CreatureEditor::CreatureEditor() : ContentEditor(HOAEditor::Strings::CratureEditorName)
 {
 	initView();
-	initButtonsAndLayout();
+	initButtons();
+	initLayout();
 }
 
 void CreatureEditor::clear()
@@ -38,20 +39,21 @@ void CreatureEditor::initView()
 	view->setModel(model);
 	view->setSelectionBehavior(QAbstractItemView::SelectRows);
 	view->setSelectionMode(QAbstractItemView::SingleSelection);
-
-	widget_ = view;
 }
 
-void CreatureEditor::initButtonsAndLayout()
+void CreatureEditor::initButtons()
 {
-	QPushButton *addCreatureButton = new QPushButton(HOAEditor::Strings::AddCreatureButton);
+	addCreatureButton = new QPushButton(HOAEditor::Strings::AddCreatureButton);
 	addCreatureButton->setShortcut(HOAEditor::Shortcuts::AddCreature);
 	connect(addCreatureButton, &QPushButton::clicked, this, &CreatureEditor::addCreature);
 
-	QPushButton *removeCreatureButton = new QPushButton(HOAEditor::Strings::RemoveCreatureButton);
+	removeCreatureButton = new QPushButton(HOAEditor::Strings::RemoveCreatureButton);
 	removeCreatureButton->setShortcut(HOAEditor::Shortcuts::RemoveCreature);
 	connect(removeCreatureButton, &QPushButton::clicked, this, &CreatureEditor::removeCreature);
+}
 
+void CreatureEditor::initLayout()
+{
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 	QHBoxLayout *buttonLayout = new QHBoxLayout;
 

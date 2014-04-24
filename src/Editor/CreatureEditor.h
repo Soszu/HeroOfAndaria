@@ -4,7 +4,7 @@
 #include <QtWidgets>
 #include "Editor/ContentEditor.h"
 #include "Editor/Strings.h"
-#include "System/CreatureBase.h"
+#include "System/Bases/CreatureBase.h"
 
 class CreatureEditor : public ContentEditor
 {
@@ -22,10 +22,14 @@ public slots:
 
 private:
 	void initView();
-	void initButtonsAndLayout();
+	void initButtons();
+	void initLayout();
 
 	QTableView *view;
 	CreatureModel *model;
+
+	QPushButton *addCreatureButton;
+	QPushButton *removeCreatureButton;
 
 private slots:
 	void addCreature();
