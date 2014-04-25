@@ -179,7 +179,8 @@ int Creature::currentActionTotalTime() const
 
 QDataStream & operator << (QDataStream &out, const Creature &creature)
 {
-	out << creature.uid();
+	out << creature.uid()
+	    << creature.hitPoints_ << creature.effects_;
 	return out;
 }
 
@@ -188,6 +189,9 @@ QDataStream & operator >> (QDataStream &in, Creature &creature)
 	UID uid;
 	in >> uid;
 	creature.setBase(CreatureModel::creature(uid));
+
+	in >> creature.hitPoints_ >> creature.effects_;
+
 	return in;
 }
 

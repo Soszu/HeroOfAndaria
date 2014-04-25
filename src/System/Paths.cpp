@@ -46,6 +46,10 @@ QString Data::path(ImagePath name)
 	static const QString LocationKennel = ImgPreffix + "/kennel.png";
 
 	static const QString Player = ImgPreffix + "/player.png";
+	static const QString Wolf   = ImgPreffix + "/wolf.png";
+
+	static const QString PlayerDead = ImgPreffix + "/playerDead.png";
+	static const QString WolfDead   = ImgPreffix + "/wolfDead.png";
 
 	static const QString Sword = ImgPreffix + "/sword.png";
 
@@ -90,6 +94,10 @@ QString Data::path(ImagePath name)
 		case ImagePath::LocationKennel: return LocationKennel;
 
 		case ImagePath::Player: return Player;
+		case ImagePath::Wolf:   return Wolf;
+
+		case ImagePath::PlayerDead: return PlayerDead;
+		case ImagePath::WolfDead:   return WolfDead;
 
 		case ImagePath::Sword: return Sword;
 	}

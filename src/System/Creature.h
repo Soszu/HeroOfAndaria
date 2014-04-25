@@ -71,6 +71,8 @@ private:
 	const CreatureBase *base_;
 	int hitPoints_;
 
+	QVector <HOA::Effect> effects_;
+
 	QTimeLine actionTimeLine_;
 	HOA::CreatureAction currentAction_;
 

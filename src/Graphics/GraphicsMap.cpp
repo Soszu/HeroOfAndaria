@@ -2,7 +2,7 @@
 #include "Graphics/GraphicsFactory.h"
 #include "Graphics/GraphicsMap.h"
 #include "System/Paths.h"
-#include "System/Utils.h"
+#include "System/Utils/Math.h"
 
 /**
  * \class GraphicsMap
@@ -155,6 +155,13 @@ void GraphicsMap::keyPressEvent(QKeyEvent *event)
 		case HOA::KeyFunction::CameraLeft:
 		case HOA::KeyFunction::CameraRight:
 			mapView_->setCameraHorizontalAction(action);
+			break;
+
+		case HOA::KeyFunction::TriggerHealthVisibility:
+			GraphicsCreature::triggerHealthVisibility();
+			break;
+		case HOA::KeyFunction::TriggerBoundingBoxesVisibility:
+			GraphicsCreature::triggerBoundingBoxesVisibility();
 			break;
 
 	/** Windows */

@@ -3,16 +3,17 @@
 WeaponBase::WeaponBase() : WeaponBase(MinUid, QString())
 {}
 
-WeaponBase::WeaponBase(UID uid, QString name) : uid_(uid),
-                                                name_(name),
-                                                weaponType_(HOA::WeaponType::OneHanded),
-                                                attackType_(HOA::AttackType::Melee),
-                                                damage_(0),
-                                                hitRatio_(0),
-                                                reach_(0),
-                                                strengthModifier_(0),
-                                                agilityModifier_(0),
-                                                intelligenceModifier_(0)
+WeaponBase::WeaponBase(UID uid, QString name) :
+	uid_(uid),
+	name_(name),
+	weaponType_(HOA::WeaponType::OneHanded),
+	attackType_(HOA::AttackType::Melee),
+	damage_(0),
+	hitRatio_(0),
+	reach_(0),
+	strengthModifier_(0),
+	agilityModifier_(0),
+	intelligenceModifier_(0)
 {}
 
 UID WeaponBase::uid() const

@@ -47,5 +47,8 @@ KeyboardManager::KeyboardManager()
 	keyFunctions_[Qt::Key_Up]    = HOA::KeyFunction::CameraUp;
 	keyFunctions_[Qt::Key_Left]  = HOA::KeyFunction::CameraLeft;
 	keyFunctions_[Qt::Key_Right] = HOA::KeyFunction::CameraRight;
+
+	keyFunctions_[Qt::Key_H] = HOA::KeyFunction::TriggerHealthVisibility;
+	keyFunctions_[Qt::Key_U] = HOA::KeyFunction::TriggerBoundingBoxesVisibility;
 }
 

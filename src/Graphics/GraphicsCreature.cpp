@@ -1,34 +1,15 @@
 #include "Graphics/GraphicsCreature.h"
 #include "System/DataManager.h"
 
-GraphicsCreature::GraphicsCreature(Creature *creature)
-	: GraphicsObject((Object *)creature)
+GraphicsCreature::GraphicsCreature(Creature *creature) :
+	GraphicsObject((Object *)creature)
 {
-	pixmap_       = DataManager::pixmap(Data::ImagePath::Player);
-	weaponPixmap_ = DataManager::pixmap(Data::ImagePath::Sword);
-
-	weaponVector_ = {0.0, 0.0};
-	weaponAngle_  = 0.0;
+	initPixmap();
 }
-
-int CREATURE_SIZE = 40;
 
 QPolygonF GraphicsCreature::weaponShape() const
 {
-	QPolygonF weapon;
-
-	QPointF left   = QPointF(scale() * -20.0, scale() * +15.0);
-	QPointF right  = QPointF(scale() * +20.0, scale() * +15.0);
-	QPointF bottom = QPointF(scale() * +0.0,  scale() * +85.0);
-
-	weapon << left << right << bottom << left;
-
-	QTransform weaponRotationMatrix;
-	weaponRotationMatrix.translate(weaponAttachPoint().x() + pointZero().x(),
-	                               weaponAttachPoint().y() + pointZero().y());
-	weaponRotationMatrix.rotate(weaponAngle_);
-
-	return weaponRotationMatrix.map(weapon);
+	return QPolygonF();
 }
 
 QPainterPath GraphicsCreature::figureShape() const
@@ -51,14 +32,50 @@ QPainterPath GraphicsCreature::shape() const
 	return path;
 }
 
+int GraphicsCreature::creatureSize() const
+{
+	static const int CREATURE_SIZE = 60;
+	return CREATURE_SIZE;
+}
+
+static bool healthVisibilityEnabled_ = false;
+
+void GraphicsCreature::triggerHealthVisibility()
+{
+	healthVisibilityEnabled_ = !healthVisibilityEnabled_;
+}
+
+bool GraphicsCreature::healthVisibilityEnabled()
+{
+	return healthVisibilityEnabled_;
+}
+
+static bool boundingBoxesVisibilityEnabled_ = false;
+
+void GraphicsCreature::triggerBoundingBoxesVisibility()
+{
+	boundingBoxesVisibilityEnabled_ = !boundingBoxesVisibilityEnabled_;
+}
+
+bool GraphicsCreature::boundingBoxesVisibilityEnabled()
+{
+	return boundingBoxesVisibilityEnabled_;
+}
+
+void GraphicsCreature::initPixmap()
+{
+	pixmap_     = DataManager::pixmap(Data::ImagePath::Wolf);
+	pixmapDead_ = DataManager::pixmap(Data::ImagePath::WolfDead);
+}
+
 qreal GraphicsCreature::scale() const
 {
-	return qreal(CREATURE_SIZE) / qreal(pixmap_->width());;
+	return qreal(creatureSize()) / qreal(pixmap_->width());;
 }
 
 QPointF GraphicsCreature::pointZero() const
 {
-	return {qreal(-CREATURE_SIZE / 2), qreal(-CREATURE_SIZE / 2)};
+	return {qreal(-creatureSize() / 2), qreal(-creatureSize() / 2)};
 }
 
 QPointF GraphicsCreature::weaponAttachPoint() const
@@ -66,76 +83,82 @@ QPointF GraphicsCreature::weaponAttachPoint() const
 	return {scale() * 4.0, scale() * 18.0};
 }
 
+void GraphicsCreature::paintFigure(QPainter *painter)
+{
+	if (((Creature *)object_)->hitPoints() > 0)
+		painter->drawPixmap(pointZero().toPoint(),
+		                    pixmap_->scaled(creatureSize(),
+		                                    creatureSize(),
+		                                    Qt::KeepAspectRatio));
+	else
+		painter->drawPixmap(pointZero().toPoint(),
+		                    pixmapDead_->scaled(creatureSize(),
+		                                        creatureSize(),
+		                                        Qt::KeepAspectRatio));
+}
+
+void GraphicsCreature::paintWeapon(QPainter *painter)
+{
+	return;
+}
+
+void GraphicsCreature::paintBoundingBoxes(QPainter *painter)
+{
+	painter->save();
+	painter->setPen(Qt::red);
+	painter->drawPath(shape());
+	painter->restore();
+}
+
+void GraphicsCreature::paintHealth(QPainter *painter)
+{
+	static const int LIFE_SIZE = 40;
+
+	painter->save();
+
+	painter->rotate(-rotation());
+	qreal lifePercent = qreal(((Creature *)object())->hitPoints())
+	                  / qreal(((Creature *)object())->fullHitPoints());
+
+	QPen pen;
+	pen.setWidth(3);
+
+	if (lifePercent > 0.0) {
+		pen.setColor(Qt::red);
+		painter->setPen(pen);
+		painter->drawLine(pointZero().toPoint() + QPoint(0, -LIFE_SIZE / 2),
+		                  pointZero().toPoint() + QPoint(LIFE_SIZE * lifePercent, -LIFE_SIZE / 2));
+	}
+
+	if (lifePercent < 1.0) {
+		pen.setColor(Qt::black);
+		painter->setPen(pen);
+		painter->drawLine(pointZero().toPoint() + QPoint(LIFE_SIZE * lifePercent, -LIFE_SIZE / 2),
+		                  pointZero().toPoint() + QPoint(LIFE_SIZE, -LIFE_SIZE / 2));
+	}
+
+	painter->restore();
+}
+
 QRectF GraphicsCreature::boundingRect() const
 {
-	return QRectF(-200.0, -200.0, 400.0, 400.0);
-	return shape().boundingRect();
+	return QRectF(-creatureSize(),
+	              -creatureSize(),
+	              creatureSize() * 2,
+	              creatureSize() * 2);
 }
 
 void GraphicsCreature::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-	if (((Creature *)object_)->hitPoints() == 0) {
-		;//TODO
-	} else {
-		/** Bounding boxes */
-
-		//painter->setPen(Qt::red);
-		//painter->drawPath(shape());
-
-		/** Life */ //TODO visible while 'H' held
-
-		painter->save();
-
-		painter->rotate(-rotation());
-		qreal lifePercent = qreal(((Creature *)object())->hitPoints())
-		                    / qreal(((Creature *)object())->fullHitPoints());
-
-		QPen pen;
-		pen.setWidth(3);
-
-		if (lifePercent > 0) {
-			pen.setColor(Qt::red);
-			painter->setPen(pen);
-			painter->drawLine(pointZero().toPoint() + QPoint(0, -20),
-					pointZero().toPoint() + QPoint(40 * lifePercent, -20));
-		}
-
-		if (lifePercent < 1) {
-			pen.setColor(Qt::black);
-			painter->setPen(pen);
-			painter->drawLine(pointZero().toPoint() + QPoint(40 * lifePercent, -20),
-			                  pointZero().toPoint() + QPoint(40, -20));
-		}
-
-		painter->restore();
-
-		/** Figure and weapon */
-
-		painter->drawPixmap(pointZero().toPoint(),
-		                    pixmap_->scaled(CREATURE_SIZE, CREATURE_SIZE, Qt::KeepAspectRatio));
-
-		painter->save();
-		painter->translate(weaponAttachPoint() + pointZero());
-		painter->rotate(weaponAngle_);
-		painter->drawPixmap(QPointF(scale() * -18.0, scale() * -5.0),
-		                    weaponPixmap_->scaled(qreal(weaponPixmap_->width())  * scale(),
-		                                          qreal(weaponPixmap_->height()) * scale()));
-		painter->restore();
-	}
+	if (GraphicsCreature::healthVisibilityEnabled())
+		paintHealth(painter);
+	if (GraphicsCreature::boundingBoxesVisibilityEnabled())
+		paintBoundingBoxes(painter);
+	paintFigure(painter);
+	paintWeapon(painter);
 }
 
 void GraphicsCreature::advance()
 {
-	//TODO EKHEM. This... "stabbing"... can actually be done better. :)
-	//TODO attack, recoil
-	if (((Creature *)object_)->currentAction() == HOA::CreatureAction::Attack) {
-		// y - degrees, x - timedelta from 0 to 1
-		// y = 60x3 - 160x2 + 100x
-		qreal x = qreal(((Creature *)object_)->currentActionTime())
-		          / qreal(((Creature *)object_)->currentActionTotalTime());
-		weaponAngle_ = ((60. * x - 160.) * x + 100.) * x * 5 - 15;
-	} else {
-		weaponAngle_ = -15;
-	}
 	GraphicsObject::advance();
 }

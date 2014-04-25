@@ -3,21 +3,21 @@
 CreatureBase::CreatureBase() : CreatureBase(EmptyUid, QString())
 {}
 
-CreatureBase::CreatureBase(UID uid, const QString &name)
-                           : uid_(uid), name_(name), fullHitPoints_(0),
-                           strength_(0), agility_(0), intelligence_(0), endurance_(0)
+CreatureBase::CreatureBase(UID uid, const QString &name) :
+	uid_(uid), name_(name), fullHitPoints_(0),
+	strength_(0), agility_(0), intelligence_(0), endurance_(0)
 {}
 
-CreatureBase::CreatureBase(const CreatureBase &creature)
-                           : name_(creature.name()), fullHitPoints_(creature.fullHitPoints()),
-                           strength_(creature.strength()), agility_(creature.agility()),
-                           intelligence_(creature.intelligence()), endurance_(creature.endurance())
+CreatureBase::CreatureBase(const CreatureBase &creature) :
+	name_(creature.name()), fullHitPoints_(creature.fullHitPoints()),
+	strength_(creature.strength()), agility_(creature.agility()),
+	intelligence_(creature.intelligence()), endurance_(creature.endurance())
 {}
 
 CreatureBase::CreatureBase(const QString &name, int fullHitPoints, int strength,
-			   int agility, int intelligence, int endurance)
-                           : name_(name), fullHitPoints_(fullHitPoints), strength_(strength),
-                           agility_(agility), intelligence_(intelligence), endurance_(endurance)
+                           int agility, int intelligence, int endurance) :
+	name_(name), fullHitPoints_(fullHitPoints), strength_(strength),
+	agility_(agility), intelligence_(intelligence), endurance_(endurance)
 {}
 
 UID CreatureBase::uid() const

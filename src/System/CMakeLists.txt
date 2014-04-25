@@ -30,7 +30,7 @@ set (HOASystem_SRCS
 	QuestCarrier.cpp
 	Tile.cpp
  	Town.cpp
- 	Utils.cpp
+ 	Utils/Math.cpp
  	Weapon.cpp
 )
 

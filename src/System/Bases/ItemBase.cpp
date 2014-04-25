@@ -1,16 +1,51 @@
 #include "System/Bases/ItemBase.h"
 
+/**
+ * \struct HOA::Effect
+ */
+
+bool HOA::Effect::operator==(const Effect &effect) const
+{
+	return this->type      == effect.type
+	    && this->duration  == effect.duration
+	    && this->magnitude == effect.magnitude;
+}
+
+QString HOA::Effect::description()
+{
+	return HOA::EffectTypeLabels[type] + QString(" ") + QString::number(magnitude);
+}
+
+QDataStream & operator<<(QDataStream &out, const HOA::Effect &effect)
+{
+	out << static_cast<quint16>(effect.type) << effect.duration << effect.magnitude;
+	return out;
+}
+
+QDataStream & operator>>(QDataStream &in, HOA::Effect &effect)
+{
+	quint16 typeV;
+	in >> typeV >> effect.duration >> effect.magnitude;
+	effect.type = static_cast<HOA::EffectType>(typeV);
+	return in;
+}
+
+/**
+ * \class ItemBase
+ */
+
 ItemBase::ItemBase() : ItemBase(MinUid, QString())
 {}
 
-ItemBase::ItemBase(UID uid, const QString &name) : uid_(uid),
-                                                   name_(name),
-                                                   type_(HOA::ItemType::Armor), //weapon as default type is not recommended
-                                                   weight_(0),
-                                                   price_(0),
-                                                   minStrength_(0),
-                                                   minAgility_(0),
-                                                   minIntelligence_(0)
+ItemBase::ItemBase(UID uid, const QString &name) :
+	uid_(uid),
+	name_(name),
+	type_(HOA::ItemType::Armor), //weapon as default type is not recommended
+	weight_(0),
+	price_(0),
+	minStrength_(0),
+	minAgility_(0),
+	minIntelligence_(0)
 {}
 
 UID ItemBase::uid() const

@@ -16,9 +16,9 @@ namespace HOA {
 	};
 
 	const QHash <HOA::AttackType, QString> AttackTypeLabels = {
-		{HOA::AttackType::Melee, HOA::Strings::AttackTypeMelee},
+		{HOA::AttackType::Melee,    HOA::Strings::AttackTypeMelee},
 		{HOA::AttackType::Distance, HOA::Strings::AttackTypeDistance},
-		{HOA::AttackType::Magic, HOA::Strings::AttackTypeMagic}
+		{HOA::AttackType::Magic,    HOA::Strings::AttackTypeMagic}
 	};
 
 	enum WeaponType : quint8 {
