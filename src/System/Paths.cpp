@@ -49,6 +49,15 @@ QString Data::path(ImagePath name)
 
 	static const QString Sword = ImgPreffix + "/sword.png";
 
+	static const QString EmptySlotNormal = ImgPreffix + "/emptySlotNormal.png";
+	static const QString EmptySlotDark = ImgPreffix + "/emptySlotDark.png";
+	
+	static const QString ItemNormal = ImgPreffix + "/itemNormal.png";
+	static const QString ItemDark = ImgPreffix + "/itemDark.png";
+
+	static const QString ExchangeButtonNormal = ImgPreffix + "/exchangeButtonNormal.png";
+	static const QString ExchangeButtonDark = ImgPreffix + "/exchangeButtonDark.png";
+
 	switch (name) {
 		case ImagePath::MenuBackground:        return MenuBackground;
 		case ImagePath::MenuButtonsNormal:     return MenuButtonsNormal;
@@ -92,6 +101,15 @@ QString Data::path(ImagePath name)
 		case ImagePath::Player: return Player;
 
 		case ImagePath::Sword: return Sword;
+
+		case ImagePath::EmptySlotNormal: return EmptySlotNormal;
+		case ImagePath::EmptySlotDark: return EmptySlotDark;
+
+		case ImagePath::ItemNormal: return ItemNormal;
+		case ImagePath::ItemDark: return ItemDark;
+
+		case ImagePath::ExchangeButtonNormal: return ExchangeButtonNormal;
+		case ImagePath::ExchangeButtonDark: return ExchangeButtonDark;
 	}
 
 	return QString();

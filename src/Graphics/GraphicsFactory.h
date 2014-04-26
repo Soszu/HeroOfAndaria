@@ -18,6 +18,8 @@ public:
 
 	static GraphicsMap * get(Map *map);
 
+	static GraphicsItem * get(Item * item);//TODO
+
 private:
 	GraphicsFactory() = delete;
 	GraphicsFactory(const GraphicsFactory &) = delete;

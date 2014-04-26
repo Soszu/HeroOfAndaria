@@ -48,6 +48,15 @@ namespace Data {
 		Player,
 
 		Sword,
+
+		EmptySlotNormal,
+		EmptySlotDark,
+
+		ItemNormal,
+		ItemDark,
+
+		ExchangeButtonNormal,
+		ExchangeButtonDark,
 	};
 
 	QString path(ImagePath name);

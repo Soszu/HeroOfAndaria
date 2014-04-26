@@ -20,9 +20,22 @@ void EquipmentCarrier::removeItem(const Item *item)
 	items_.remove(items_.indexOf(findItem(item)));
 }
 
-void moveItem(EquipmentCarrier *lhs, EquipmentCarrier *rhs, Item *item)
+bool moveItem(EquipmentCarrier *lhs, EquipmentCarrier *rhs, Item *item)
 {
 	rhs->addItem(lhs->takeItem(item));
+	return true;
+}
+
+bool sellItem(EquipmentCarrier *seller, EquipmentCarrier *buyer, Item *item)
+{
+	if (buyer->money() >= item->price()) {
+		seller->money_ += item->price();
+		buyer->money_ -= item->price();
+		moveItem(seller, buyer, item);
+		return true;
+	} else {
+		return false;
+	}
 }
 
 const QVector <Item *> & EquipmentCarrier::itemList() const

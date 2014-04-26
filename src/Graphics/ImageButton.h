@@ -29,9 +29,9 @@ private:
 	int fontPointSize_;
 	static const int DEFAULT_FONT_SIZE = 11;
 
-	void loadImages(const QString normalPath, const QString darkPath);
 
 protected:
+	void loadImages(const QString normalPath, const QString darkPath);
 	void paintEvent(QPaintEvent *);
 
 };

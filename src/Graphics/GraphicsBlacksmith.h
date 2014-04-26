@@ -5,12 +5,18 @@
 #include "Graphics/GraphicsPlace.h"
 #include "System/Blacksmith.h"
 #include "System/Place.h"
+/*
+ * Graphics Blacksmith nie moze dziedzyc po GraphicsPlace i GraphicsEquipmentExchange
+ * jednoczesnie, nie mozna dziedziczyc po 2 QObjectach :( 
+ */
 
-class GraphicsBlacksmith : public GraphicsPlace, public GraphicsEquipmentExchange
+class GraphicsBlacksmith : public GraphicsPlace
 {
 	Q_OBJECT;
 public:
 	GraphicsBlacksmith(Blacksmith * blacksmith, QWidget * parent = 0);
+private:
+	GraphicsEquipmentExchange *eqWidget_;
 };
 
 #endif // GRAPHICSBLACKSMITH_H

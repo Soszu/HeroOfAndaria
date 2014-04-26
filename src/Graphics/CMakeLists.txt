@@ -17,6 +17,7 @@ set (HOAGraphics_SRCS
 )
 
 set (HOAGraphics_HDRS
+	GraphicsEquipmentExchange.h
 	GraphicsBlacksmith.h
 	GraphicsInn.h
 	GraphicsGlobalMap.h

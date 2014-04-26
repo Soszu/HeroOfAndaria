@@ -81,3 +81,8 @@ GraphicsMap * GraphicsFactory::get(Map *map)
 
 	return graphicsMap;
 }
+
+GraphicsItem * GraphicsFactory::get(Item *item)
+{
+	return new GraphicsItem(item);
+}

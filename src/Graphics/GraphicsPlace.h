@@ -11,10 +11,10 @@ Q_OBJECT;
 public:
 	GraphicsPlace(Place * p, QWidget * parent = 0);
 	QPushButton* exitButton();
-
+	QVBoxLayout * layout();
 private:
 	Place * place_;
-	QHBoxLayout * layout_;
+	QVBoxLayout * layout_;
 	QPushButton * exitButton_;
 
 };
