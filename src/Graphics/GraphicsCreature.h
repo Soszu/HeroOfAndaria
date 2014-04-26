@@ -9,24 +9,36 @@ class GraphicsCreature : public GraphicsObject
 public:
 	GraphicsCreature(Creature *creature);
 
-	QPolygonF weaponShape() const;
-	QPainterPath figureShape() const;
-	QPainterPath shape() const;
+	virtual QPolygonF weaponShape() const;
+	virtual QPainterPath figureShape() const;
+	virtual QPainterPath shape() const;
 
-private:
+	virtual int creatureSize() const;
+
+	static void triggerHealthVisibility();
+	static bool healthVisibilityEnabled();
+	static void triggerBoundingBoxesVisibility();
+	static bool boundingBoxesVisibilityEnabled();
+
+protected:
 	QPixmap *pixmap_;
-	QPixmap *weaponPixmap_;
+	QPixmap *pixmapDead_;
 
-	QPointF weaponVector_;
-	qreal weaponAngle_;
+	virtual void initPixmap();  /** invoke this function in constructor of every derived class */
 
-	qreal scale() const;               // change from loaded image to pixmap on the screen
-	QPointF pointZero() const;         // top left point
-	QPointF weaponAttachPoint() const;
+	qreal scale() const;               /** change from loaded image to pixmap on the screen */
+	QPointF pointZero() const;         /** top left point */
 
-	QRectF boundingRect() const;
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
-	void advance();
+	virtual QPointF weaponAttachPoint() const;
+
+	virtual void paintFigure(QPainter *painter);
+	virtual void paintWeapon(QPainter *painter);
+	virtual void paintBoundingBoxes(QPainter *painter);
+	virtual void paintHealth(QPainter *painter);
+
+	virtual QRectF boundingRect() const;
+	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
+	virtual void advance();
 };
 
 #endif // GRAPHICSCREATURE_H

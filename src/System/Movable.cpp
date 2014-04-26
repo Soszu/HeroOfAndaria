@@ -1,5 +1,5 @@
 #include "System/Movable.h"
-#include "System/Utils.h"
+#include "System/Utils/Math.h"
 
 /**
  * \class Movable
@@ -49,12 +49,13 @@ void Movable::advance()
 		Q_ASSERT(movementManager_ != nullptr);
 		QPoint vector = speed() * realAdvanceTimeout();
 
-		if (movementManager_->canMakeMove(this, vector))
+		if (movementManager_->canMakeMove(this, vector)) {
 			setPosition(position() + vector);
 
-		//HACK
-		if (!movementManager_->canMakeMove(this, {0, 0}))
-			setPosition(position() - vector);
+			//HACK
+			if (!movementManager_->canMakeMove(this, {0, 0}))
+				setPosition(position() - vector);
+		}
 	}
 	Object::advance();
 }

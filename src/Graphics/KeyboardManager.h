@@ -21,6 +21,9 @@ namespace HOA {
 		CameraUp,
 		CameraDown,
 
+		TriggerHealthVisibility,
+		TriggerBoundingBoxesVisibility,
+
 		Inventory,
 		Skills,
 		Quests,

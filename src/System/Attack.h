@@ -1,16 +1,11 @@
 #ifndef ATTACK_H
 #define ATTACK_H
 
-namespace HOA {
-	enum class AttackType {
-		Melee,
-		Distance,
-		Magic,
-	};
-}
+#include <QtWidgets>
+#include "System/Weapon.h"
+#include "System/CommonStrings.h"
 
 class Creature;
-class Weapon;
 
 class Attack
 {

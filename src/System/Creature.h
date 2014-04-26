@@ -2,7 +2,7 @@
 #define CREATURE_H
 
 #include "System/Attack.h"
-#include "System/CreatureBase.h"
+#include "System/Bases/CreatureBase.h"
 #include "System/EquipmentCarrier.h"
 #include "System/Movable.h"
 #include "System/Uid.h"
@@ -16,9 +16,6 @@ namespace HOA {
 	};
 }
 
-/**
- * \class Creature
- */
 class Creature : public Movable, public EquipmentCarrier
 {
 Q_OBJECT;
@@ -28,10 +25,6 @@ public:
 	~Creature();
 
 	virtual HOA::ObjectType objectType() const;
-
-	//TODO ekhm. Not private?
-	void initStats();
-	void initActions();
 
 	void setBase(const CreatureBase *base);
 
@@ -72,8 +65,13 @@ signals:
 	void hitPointsChanged();
 
 private:
+	void initStats();
+	void initActions();
+
 	const CreatureBase *base_;
 	int hitPoints_;
+
+	QVector <HOA::Effect> effects_;
 
 	QTimeLine actionTimeLine_;
 	HOA::CreatureAction currentAction_;

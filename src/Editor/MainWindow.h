@@ -12,6 +12,7 @@
 #include "Editor/Strings.h"
 #include "Editor/ContentEditor.h"
 #include "Editor/CreatureEditor.h"
+#include "Editor/ItemEditor.h"
 
 class MainWindow : public QMainWindow
 {

@@ -1,4 +1,5 @@
 #include "System/LocalMap.h"
+#include "System/Monster.h"
 
 /**
  * \class LocalMap
@@ -18,7 +19,7 @@ void LocalMap::exitLocation()
 
 void LocalMap::test()
 {
-	Creature *creature = new Creature();
+	Monster *creature = new Monster();
 	creature->setPosition({300, 300});
 	creature->setRotation({150, 600});
 	addObject(creature);

@@ -28,6 +28,21 @@ namespace HOAEditor {
 		const QString CratureEditorName      = QObject::tr("Creatures");
 		const QString AddCreatureButton      = QObject::tr("Add Creature");
 		const QString RemoveCreatureButton   = QObject::tr("Remove Creature");
+
+		const QString ItemEditorName     = QObject::tr("Items");
+		const QString AddItemButton      = QObject::tr("Add Item");
+		const QString RemoveItemButton   = QObject::tr("Remove Item");
+		const QString AddEffectButton    = QObject::tr("Add Effect");
+		const QString RemoveEffectButton = QObject::tr("Remove Effect");
+
+		const QString ItemsListLabel     = QObject::tr("Items list");
+		const QString ItemNameLabel      = QObject::tr("Item name");
+		const QString ItemTypeLabel      = QObject::tr("Item type");
+		const QString ItemDetailsLabel   = QObject::tr("Item details");
+		const QString WeaponDetailsLabel = QObject::tr("Weapon details");
+		const QString ItemEffectsLabel   = QObject::tr("Item effects");
+		const QString EffectsListLabel   = QObject::tr("Effects list");
+		const QString EffectDetailsLabel = QObject::tr("Effect details");
 	}
 }
 

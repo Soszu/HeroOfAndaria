@@ -46,6 +46,10 @@ namespace Data {
 		LocationKennel,
 
 		Player,
+		Wolf,
+
+		PlayerDead,
+		WolfDead,
 
 		Sword,
 

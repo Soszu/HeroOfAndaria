@@ -1,6 +1,4 @@
 #include "System/Attack.h"
-#include "System/Creature.h"
-#include "System/Weapon.h"
 
 static int currentUid = 0;
 

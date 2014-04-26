@@ -3,10 +3,12 @@
 
 #include "System/Creature.h"
 
-class Monster :  Creature
+class Monster : public Creature
 {
 public:
 	Monster();
+
+	virtual HOA::ObjectType objectType() const;
 };
 
 #endif // MONSTER_H

@@ -56,6 +56,36 @@ void Object::setRotation(const QPoint &rotation)
 	emit rotationSet();
 }
 
+const QVector <HOA::Effect> Object::effects()
+{
+	return effects_;
+}
+
+void Object::addEffect(const HOA::Effect &effect)
+{
+	effects_.append(effect);
+}
+
+void Object::removeEffect(const HOA::Effect &effect)
+{
+	for (int i = 0; i < effects_.size(); ++i) {
+		if (effects_[i] == effect) {
+			effects_.remove(i);
+			--i;
+		}
+	}
+}
+
+void Object::removeEffect(const HOA::EffectType effectType)
+{
+	for (int i = 0; i < effects_.size(); ++i) {
+		if (effects_[i].type == effectType) {
+			effects_.remove(i);
+			--i;
+		}
+	}
+}
+
 int Object::advanceTimeout()
 {
 	static const int ADVANCE_TIMEOUT = 40;
@@ -75,7 +105,7 @@ int Object::realAdvanceTimeout()
 
 void Object::advance()
 {
-	//TODO static changes
+	//TODO static changes (effects expiring...)
 	emit advanced();
 }
 

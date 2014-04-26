@@ -1,5 +1,6 @@
-set (HOAGraphics_SRCS
+set (HOAGraphics_SRCS GraphicsMonster.cpp
 	GraphicsBlacksmith.cpp
+	GraphicsCharacter.cpp
 	GraphicsCreature.cpp
 	GraphicsEquipmentExchange.cpp
 	GraphicsGlobalMap.cpp

@@ -1,9 +1,11 @@
 #include "Graphics/GraphicsBlacksmith.h"
+#include "Graphics/GraphicsCharacter.h"
 #include "Graphics/GraphicsCreature.h"
 #include "Graphics/GraphicsFactory.h"
 #include "Graphics/GraphicsInn.h"
 #include "Graphics/GraphicsItem.h"
 #include "Graphics/GraphicsLocalMap.h"
+#include "Graphics/GraphicsMonster.h"
 #include "Graphics/GraphicsTown.h"
 
 QHash <const Object *, GraphicsObject *> GraphicsFactory::map_;
@@ -16,9 +18,15 @@ GraphicsObject * GraphicsFactory::get(Object *object)
 	const Object *constObject = (const Object *)object;
 	if (!map_.contains(constObject)) {
 		switch (object->objectType()) {
-			case HOA::ObjectType::Human:
 			case HOA::ObjectType::Creature:
 				graphicsObject = new GraphicsCreature((Creature *)object);
+				break;
+			case HOA::ObjectType::Monster:
+				graphicsObject = new GraphicsMonster((Monster *)object);
+				break;
+			case HOA::ObjectType::Character:
+			case HOA::ObjectType::Human:
+				graphicsObject = new GraphicsCharacter((Character *)object);
 				break;
 			case HOA::ObjectType::Item:
 				graphicsObject = new GraphicsItem((Item *)object);

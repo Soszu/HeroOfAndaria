@@ -1,8 +1,7 @@
 #include "Editor/ContentEditor.h"
 
 ContentEditor::ContentEditor(const QString& name) : name_(name)
-{
-}
+{}
 
 QString ContentEditor::name() const
 {
