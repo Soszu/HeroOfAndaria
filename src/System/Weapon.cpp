@@ -1,6 +1,12 @@
 #include "Weapon.h"
 
-Weapon::Weapon(const WeaponBase* base) : base_(base)
+Weapon::Weapon(const WeaponBase* weaponBase, const ItemBase* itemBase) : Item(itemBase), base_(weaponBase)
+{}
+
+Weapon::Weapon(const QString& name) : Weapon(WeaponModel::weapon(name), ItemModel::item(name))
+{}
+
+Weapon::Weapon(UID uid): Weapon(WeaponModel::weapon(uid), ItemModel::item(uid))
 {}
 
 HOA::ObjectType Weapon::objectType() const
@@ -16,11 +22,6 @@ void Weapon::setBase(const WeaponBase* base)
 UID Weapon::uid() const
 {
 	return base_->uid();
-}
-
-QString Weapon::name() const
-{
-	return base_->name();
 }
 
 HOA::WeaponType Weapon::type() const

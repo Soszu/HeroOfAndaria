@@ -13,20 +13,25 @@ bool HOA::Effect::operator==(const Effect &effect) const
 
 QString HOA::Effect::description()
 {
-	return HOA::EffectTypeLabels[type] + QString(" ") + QString::number(magnitude);
+	return EffectTypeLabels[type] +
+	QString("(M: ") + QString::number(magnitude) +
+	QString("; D: ") + QString::number(duration) + QString(")");
 }
 
-QDataStream & operator<<(QDataStream &out, const HOA::Effect &effect)
+QDataStream & HOA::operator << (QDataStream &out, const HOA::Effect &effect)
 {
-	out << static_cast<quint16>(effect.type) << effect.duration << effect.magnitude;
+	out << QVariant(effect.type);
+	out << effect.magnitude << effect.duration;
+
 	return out;
 }
-
-QDataStream & operator>>(QDataStream &in, HOA::Effect &effect)
+QDataStream & HOA::operator >> (QDataStream &in, HOA::Effect &effect)
 {
-	quint16 typeV;
-	in >> typeV >> effect.duration >> effect.magnitude;
-	effect.type = static_cast<HOA::EffectType>(typeV);
+	QVariant var;
+	in >> var;
+	in >> effect.magnitude >> effect.duration;
+	effect.type = static_cast<HOA::EffectType>(var.toInt());
+
 	return in;
 }
 
@@ -37,15 +42,14 @@ QDataStream & operator>>(QDataStream &in, HOA::Effect &effect)
 ItemBase::ItemBase() : ItemBase(MinUid, QString())
 {}
 
-ItemBase::ItemBase(UID uid, const QString &name) :
-	uid_(uid),
-	name_(name),
-	type_(HOA::ItemType::Armor), //weapon as default type is not recommended
-	weight_(0),
-	price_(0),
-	minStrength_(0),
-	minAgility_(0),
-	minIntelligence_(0)
+ItemBase::ItemBase(UID uid, const QString &name) : uid_(uid),
+                                                   name_(name),
+                                                   type_(HOA::ItemType::Armor), //Weapon as default type is not recommended
+                                                   weight_(0),
+                                                   price_(0),
+                                                   minStrength_(0),
+                                                   minAgility_(0),
+                                                   minIntelligence_(0)
 {}
 
 UID ItemBase::uid() const
@@ -136,21 +140,23 @@ void ItemBase::setMinIntelligence(int intelligence)
 QDataStream & operator << (QDataStream &out, const ItemBase &item)
 {
 	out << item.uid() << item.name();
-// 	out << item.type();
+ 	out << QVariant(item.type());
 	out << item.weight() << item.price();
 	out << item.minStrength() << item.minAgility() << item.minIntelligence();
-// 	out << item.effects();
+	out << item.effects();
 
 	return out;
 }
 
 QDataStream & operator >> (QDataStream &in, ItemBase &item)
 {
+	QVariant var;
 	in >> item.uid_ >> item.name_;
-// 	in >> item.type_;
+	in >> var;
+	item.type_ = static_cast<HOA::ItemType>(var.toInt());
 	in >> item.weight_ >> item.price_;
 	in >> item.minStrength_ >> item.minAgility_ >> item.minIntelligence_;
-// 	in >> item.effects_;
+	in >> item.effects_;
 
 	return in;
 }

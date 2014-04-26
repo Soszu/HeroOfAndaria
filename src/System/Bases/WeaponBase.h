@@ -7,6 +7,7 @@
 #include "System/Uid.h"
 #include "System/CommonStrings.h"
 #include "System/Models/WeaponModel.h"
+#include "System/Bases/ItemBase.h"
 
 namespace HOA {
 	enum AttackType : quint8 {
@@ -15,7 +16,7 @@ namespace HOA {
 		Magic
 	};
 
-	const QHash <HOA::AttackType, QString> AttackTypeLabels = {
+	const QMap <HOA::AttackType, QString> AttackTypeLabels = {
 		{HOA::AttackType::Melee,    HOA::Strings::AttackTypeMelee},
 		{HOA::AttackType::Distance, HOA::Strings::AttackTypeDistance},
 		{HOA::AttackType::Magic,    HOA::Strings::AttackTypeMagic}
@@ -26,7 +27,7 @@ namespace HOA {
 		TwoHanded
 	};
 
-	const QHash <HOA::WeaponType, QString> WeaponTypeLabels = {
+	const QMap <HOA::WeaponType, QString> WeaponTypeLabels = {
 		{HOA::WeaponType::OneHanded, HOA::Strings::WeaponTypeOneHanded},
 		{HOA::WeaponType::TwoHanded, HOA::Strings::WeaponTypeTwoHanded}
 	};
@@ -36,12 +37,11 @@ class WeaponBase
 {
 public:
 	WeaponBase();
-	WeaponBase(UID uid, QString name);
+	WeaponBase(UID uid);
+
+	ItemBase * itemBase();
 
 	UID uid() const;
-
-	QString name() const;
-	void setName(const QString &name);
 
 	HOA::WeaponType type() const;
 	void setType(HOA::WeaponType type);
@@ -72,7 +72,6 @@ public:
 
 private:
 	UID uid_;
-	QString name_;
 
 	HOA::WeaponType weaponType_;
 	HOA::AttackType attackType_;

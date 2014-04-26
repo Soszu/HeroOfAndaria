@@ -10,6 +10,8 @@ class Item : public Carriable, public Movable
 {
 public:
 	Item(const ItemBase *base = nullptr);
+	Item(const QString &name);
+	Item(UID uid);
 
 	virtual HOA::ObjectType objectType() const;
 

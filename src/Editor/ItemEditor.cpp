@@ -161,20 +161,14 @@ void EffectsListWidget::initLayout()
 	buttonsLayout->addStretch();
 }
 
-ItemEditor::ItemEditor() : ContentEditor(HOAEditor::Strings::ItemEditorName)
+ItemEditor::ItemEditor() : ContentEditor(HOAEditor::Strings::ItemEditorName), weaponsMapped(false)
 {
 	initModels();
 	initEditPart();
 	initViewPart();
 	initLayout();
 
-	initItemMapper();
-	initWeaponMappper();
-}
-
-ItemEditor::~ItemEditor()
-{
-	delete itemMapper;
+	initMappers();
 }
 
 void ItemEditor::clear()
@@ -210,7 +204,8 @@ void ItemEditor::initModels()
 {
 	itemModel = &ItemModel::instance();
 	weaponModel = &WeaponModel::instance();
-	itemMapper = new QDataWidgetMapper();
+	itemMapper = new QDataWidgetMapper(this);
+	weaponMapper = new QDataWidgetMapper(this);
 }
 
 void ItemEditor::initLayout()
@@ -330,7 +325,7 @@ void ItemEditor::initViewPart()
 	viewLayout->addLayout(buttonsLayout);
 }
 
-void ItemEditor::initItemMapper()
+void ItemEditor::initMappers()
 {
 	itemMapper->setModel(itemModel);
 	itemMapper->setSubmitPolicy(QDataWidgetMapper::AutoSubmit);
@@ -344,12 +339,20 @@ void ItemEditor::initItemMapper()
 	itemMapper->addMapping(minIntelligenceEdit, ItemModel::MinIntelligence);
  	itemMapper->addMapping(itemEffects,         ItemModel::Effects);
 
-	connect(itemsList->selectionModel(), &QItemSelectionModel::currentRowChanged, itemMapper, &QDataWidgetMapper::setCurrentModelIndex);
-}
+	weaponMapper->setModel(weaponModel);
+	weaponMapper->setSubmitPolicy(QDataWidgetMapper::AutoSubmit);
 
-void ItemEditor::initWeaponMappper()
-{
-	//TODO
+	weaponMapper->addMapping(weaponTypeEdit,           WeaponModel::Type, "currentIndex");
+	weaponMapper->addMapping(weaponAttackTypeEdit,     WeaponModel::AttackType, "currentIndex");
+	weaponMapper->addMapping(damageEdit,               WeaponModel::Damage);
+	weaponMapper->addMapping(hitRatioEdit,             WeaponModel::HitRatio);
+	weaponMapper->addMapping(reachEdit,                WeaponModel::Reach);
+	weaponMapper->addMapping(strengthModifierEdit,     WeaponModel::StrengthModifier);
+	weaponMapper->addMapping(agilityModifierEdit,      WeaponModel::AgilityModifier);
+	weaponMapper->addMapping(intelligenceModifierEdit, WeaponModel::IntelligenceModifier);
+
+	connect(itemsList->selectionModel(), &QItemSelectionModel::currentRowChanged, itemMapper, &QDataWidgetMapper::setCurrentModelIndex);
+	connect(itemMapper, &QDataWidgetMapper::currentIndexChanged, this, &ItemEditor::adjustWeaponMapper);
 }
 
 void ItemEditor::alignForm(QFormLayout* form)
@@ -366,20 +369,30 @@ void ItemEditor::itemTypeChanged(int index)
 	if (var == QVariant::Invalid)
 		return;
 
+	const ItemBase * item = ItemModel::item(itemsList->currentIndex());
+
 	if (var == HOA::ItemType::Weapon) {
 		weaponDetails->setEnabled(true);
-		return;
-		///add/removeWeapon (UID)
+		WeaponModel::addWeapon(item->uid());
+		weaponMapper->setCurrentIndex(WeaponModel::uidToIndex(item->uid()));
 	}
+	else {
+		weaponDetails->setEnabled(false);
+		WeaponModel::removeWeapon(item->uid());
+	}
+}
 
-	weaponDetails->setEnabled(false);
+void ItemEditor::adjustWeaponMapper(int index)
+{
+	const ItemBase * item = ItemModel::item(itemsList->currentIndex());
+
+	if (item->type() == HOA::ItemType::Weapon)
+		weaponMapper->setCurrentIndex(WeaponModel::uidToIndex(item->uid()));
 }
 
 void ItemEditor::addItem()
 {
 	itemModel->insertRows(itemModel->rowCount(), 1);
-	//TODO sprawdz uid i stwórz weapon
-	//addWeapon (UID) /ewentualnie
 }
 
 void ItemEditor::removeItem()
@@ -389,6 +402,4 @@ void ItemEditor::removeItem()
 		return;
 
 	itemModel->removeRows(selected.row(), 1);
-	//TODO sprawdz UID i ewentualnie usun weapon
-	///removeWeapon (UID) /ewentualnie
 }

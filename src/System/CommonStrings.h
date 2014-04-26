@@ -42,8 +42,6 @@ namespace HOA {
 		const QString EffectTypeArmorBonus            = QObject::tr("Armor bonus");
 		const QString EffectTypeHitRatioBonus         = QObject::tr("Hit ratio bonus");
 
-		const QString DefaultNewWeaponName = QObject::tr("Weapon");
-
 		const QString WeaponName                 = QObject::tr("Name");
 		const QString WeaponType                 = QObject::tr("Type");
 		const QString WeaponAttackType           = QObject::tr("Attack type");

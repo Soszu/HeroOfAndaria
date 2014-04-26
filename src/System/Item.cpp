@@ -3,6 +3,12 @@
 Item::Item(const ItemBase *base) : base_(base)
 {}
 
+Item::Item(const QString& name) : base_(ItemModel::item(name))
+{}
+
+Item::Item(UID uid) : base_(ItemModel::item(uid))
+{}
+
 HOA::ObjectType Item::objectType() const
 {
 	return HOA::ObjectType::Item;

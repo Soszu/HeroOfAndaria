@@ -9,14 +9,15 @@ class WeaponBase;
 class Weapon : public Item
 {
 public:
-	Weapon(const WeaponBase *base = nullptr);
+	Weapon(const WeaponBase *weaponBase = nullptr, const ItemBase *itemBase = nullptr);
+	Weapon(const QString &name);
+	Weapon(UID uid);
 
 	virtual HOA::ObjectType objectType() const;
 
 	void setBase(const WeaponBase *base);
 
 	UID uid() const;
-	QString name() const;
 
 	HOA::WeaponType type() const;
 	HOA::AttackType attackType() const;

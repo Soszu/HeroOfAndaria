@@ -1,34 +1,22 @@
 #include "WeaponBase.h"
 
-WeaponBase::WeaponBase() : WeaponBase(MinUid, QString())
+WeaponBase::WeaponBase() : WeaponBase(MinUid)
 {}
 
-WeaponBase::WeaponBase(UID uid, QString name) :
-	uid_(uid),
-	name_(name),
-	weaponType_(HOA::WeaponType::OneHanded),
-	attackType_(HOA::AttackType::Melee),
-	damage_(0),
-	hitRatio_(0),
-	reach_(0),
-	strengthModifier_(0),
-	agilityModifier_(0),
-	intelligenceModifier_(0)
+WeaponBase::WeaponBase(UID uid) : uid_(uid),
+                                  weaponType_(HOA::WeaponType::OneHanded),
+                                  attackType_(HOA::AttackType::Melee),
+                                  damage_(0),
+                                  hitRatio_(0),
+                                  reach_(0),
+                                  strengthModifier_(0),
+                                  agilityModifier_(0),
+                                  intelligenceModifier_(0)
 {}
 
 UID WeaponBase::uid() const
 {
 	return uid_;
-}
-
-QString WeaponBase::name() const
-{
-	return name_;
-}
-
-void WeaponBase::setName(const QString& name)
-{
-	name_ = name;
 }
 
 HOA::WeaponType WeaponBase::type() const
@@ -113,8 +101,8 @@ void WeaponBase::setIntelligenceModifier(int intelligenceModifier)
 
 QDataStream & operator << (QDataStream &out, const WeaponBase &weapon)
 {
-	out << weapon.uid() << weapon.name();
-	//out << weapon.type() << weapon.attackType();
+	out << weapon.uid();
+	out << QVariant(weapon.type()) << QVariant(weapon.attackType());
 	out << weapon.damage() << weapon.hitRatio() << weapon.reach();
 	out << weapon.strengthModifier() << weapon.agilityModifier() << weapon.intelligenceModifier();
 
@@ -123,8 +111,12 @@ QDataStream & operator << (QDataStream &out, const WeaponBase &weapon)
 
 QDataStream & operator >> (QDataStream &in, WeaponBase &weapon)
 {
-	in >> weapon.uid_ >> weapon.name_;
-	//in >> weapon.weaponType_ >> weapon.attackType_;
+	QVariant var;
+	in >> weapon.uid_;
+	in >> var;
+	weapon.weaponType_ = static_cast<HOA::WeaponType>(var.toInt());
+	in >> var;
+	weapon.attackType_ = static_cast<HOA::AttackType>(var.toInt());
 	in >> weapon.damage_ >> weapon.hitRatio_ >> weapon.reach_;
 	in >> weapon.strengthModifier_ >> weapon.agilityModifier_ >> weapon.intelligenceModifier_;
 

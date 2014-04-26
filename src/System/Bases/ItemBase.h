@@ -16,7 +16,7 @@ namespace HOA {
 		Armor
 	};
 
-	const QHash <HOA::ItemType, QString> ItemTypeLabels = {
+	const QMap <HOA::ItemType, QString> ItemTypeLabels = {
 		{HOA::ItemType::Weapon,   HOA::Strings::ItemTypeWeapon},
 		{HOA::ItemType::Shield,   HOA::Strings::ItemTypeShield},
 		{HOA::ItemType::Artefact, HOA::Strings::ItemTypeArtefact},
@@ -35,7 +35,7 @@ namespace HOA {
 		HitRatioBonus
 	};
 
-	const QHash <HOA::EffectType, QString> EffectTypeLabels = {
+	const QMap <HOA::EffectType, QString> EffectTypeLabels = {
 		{HOA::EffectType::MaxHitPointsBonus,     HOA::Strings::EffectTypeMaxHitPointsBonus},
 		{HOA::EffectType::StrengthBonus,         HOA::Strings::EffectTypeStrengthBonus},
 		{HOA::EffectType::AgilityBonus,          HOA::Strings::EffectTypeAgilityBonus},
@@ -58,9 +58,10 @@ namespace HOA {
 
 		QString description();
 	};
+
+	QDataStream & operator << (QDataStream &out, const HOA::Effect &effect);
+	QDataStream & operator >> (QDataStream &in, HOA::Effect &effect);
 }
-QDataStream & operator<<(QDataStream &out, const HOA::Effect &effect);
-QDataStream & operator>>(QDataStream &in, HOA::Effect &effect);
 
 Q_DECLARE_METATYPE(HOA::Effect)
 

@@ -4,6 +4,7 @@
 #define ITEMEDITOR_H
 
 #include <QtWidgets>
+#include <QDebug>
 #include "Editor/ContentEditor.h"
 #include "Editor/Strings.h"
 #include "System/CommonStrings.h"
@@ -58,7 +59,6 @@ class ItemEditor : public ContentEditor
 
 public:
 	ItemEditor();
-	~ItemEditor();
 	void clear();
 	void loadFromStream(QDataStream& in);
 	void saveToStream(QDataStream& out) const;
@@ -76,8 +76,7 @@ private:
 	void initWeaponDetails(QGroupBox *groupBox);
 	void initViewPart();
 	void initLayout();
-	void initItemMapper();
-	void initWeaponMappper();
+	void initMappers();
 
 	void alignForm(QFormLayout *form);
 
@@ -86,7 +85,9 @@ private:
 
 	ItemModel *itemModel;
 	QDataWidgetMapper *itemMapper;
+	QDataWidgetMapper *weaponMapper;
 	WeaponModel *weaponModel;
+	bool weaponsMapped;
 
 	//--- Item name ---
 	QLineEdit *nameEdit;
@@ -124,6 +125,7 @@ private:
 
 private slots:
 	void itemTypeChanged(int index);
+	void adjustWeaponMapper(int index);
 
 	void addItem();
 	void removeItem();

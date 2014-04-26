@@ -18,7 +18,6 @@ QVariant WeaponModel::data(const QModelIndex &index, int role) const
 	if (role == Qt::DisplayRole || role == Qt::EditRole) {
 		const WeaponBase *weapon = weapons_[index.row()];
 		switch (index.column()) {
-			case Name:                     return weapon->name();
 			case Type:                     return weapon->type();
 			case AttackType:               return weapon->attackType();
 			case Damage:                   return weapon->damage();
@@ -40,7 +39,6 @@ bool WeaponModel::setData(const QModelIndex &index, const QVariant &value, int r
 
 	WeaponBase *weapon = weapons_[index.row()];
 	switch (index.column()) {
-		case Name:                     weapon->setName(value.toString()); break;
 		case Type:                     weapon->setType(static_cast<HOA::WeaponType>(value.toInt())); break;
 		case AttackType:               weapon->setAttackType(static_cast<HOA::AttackType>(value.toInt())); break;
 		case Damage:                   weapon->setDamage(value.toInt()); break;
@@ -63,34 +61,6 @@ Qt::ItemFlags WeaponModel::flags(const QModelIndex &index) const
 	return Qt::ItemIsEnabled | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 }
 
-bool WeaponModel::insertRows(int row, int count, const QModelIndex &parent)
-{
-	int nameSuffix = 0;
-	beginInsertRows(QModelIndex(), row, row + count - 1);
-	for (int i = 0; i < count; ++i) {
-		QString weaponName;
-		do {
-			++nameSuffix;
-			weaponName = QString("%1 %2").arg(HOA::Strings::DefaultNewWeaponName).arg(nameSuffix);
-		} while (hasWeapon(weaponName));
-
-		weapons_.insert(row + i, new WeaponBase(nextUid++, weaponName));
-	}
-	endInsertRows();
-
-	return true;
-}
-
-bool WeaponModel::removeRows(int row, int count, const QModelIndex &parent)
-{
-	beginRemoveRows(QModelIndex(), row, row + count - 1);
-	for (int i = 0; i < count; ++i)
-		removeWeaponFromRow(row);
-	endRemoveRows();
-
-	return true;
-}
-
 int WeaponModel::rowCount(const QModelIndex &parent) const
 {
 	return weapons_.count();
@@ -98,9 +68,12 @@ int WeaponModel::rowCount(const QModelIndex &parent) const
 
 void WeaponModel::reset()
 {
-	removeRows(0, rowCount());
-	nextUid = MinUid;
+	beginResetModel();
 	changed_ = false;
+	qDeleteAll(weapons_);
+	weapons_.clear();
+	uidToWeapon.clear();
+	endResetModel();
 }
 
 bool WeaponModel::isChanged() const
@@ -119,17 +92,32 @@ WeaponModel & WeaponModel::instance()
 	return *instance;
 }
 
-void WeaponModel::addNewWeapon(){
-	instance().insertRows(weapons_.count(), 1);
+bool WeaponModel::addWeapon(UID uid){
+	if (hasWeapon(uid))
+		return false;
+
+	int row = weapons_.count();
+
+	instance().beginInsertRows(QModelIndex(), row, row);
+
+	WeaponBase *weapon = new WeaponBase(uid);
+	weapons_.insert(row, weapon);
+	uidToWeapon[uid] = weapon;
+
+	instance().endInsertRows();
+	return true;
 }
 
 bool WeaponModel::empty(){
 	return weapons_.empty();
 }
 
-const WeaponBase * WeaponModel::weaponInRow(int row)
+int WeaponModel::uidToIndex(UID uid)
 {
-	return weapons_[row];
+	for (int i = 0; i < weapons_.count();++i)
+		if (weapons_[i]->uid() == uid)
+			return i;
+	return -1;
 }
 
 const WeaponBase * WeaponModel::weapon(UID uid)
@@ -144,11 +132,7 @@ const WeaponBase * WeaponModel::weapon(const QModelIndex &index)
 
 const WeaponBase * WeaponModel::weapon(const QString &name)
 {
-	for (const WeaponBase * weapon : weapons_)
-		if (weapon->name() == name)
-			return weapon;
-
-		return nullptr;
+	return weapon(ItemModel::item(name)->uid());
 }
 
 const QList <WeaponBase *> & WeaponModel::weapons()
@@ -161,23 +145,28 @@ bool WeaponModel::hasWeapon(const QString &name)
 	return weapon(name) != nullptr;
 }
 
-void WeaponModel::removeWeapon(UID uid)
+bool WeaponModel::hasWeapon(UID uid)
 {
-	WeaponModel &wModel = instance();
-
-	for (int i = 0; i < weapons_.count(); ++i) {
-		if (weapons_[i]->uid() == uid) {
-			wModel.beginRemoveRows(QModelIndex(), i, i);
-			delete weapons_.takeAt(i);
-			wModel.endRemoveRows();
-
-			uidToWeapon.remove(uid);
-			return;
-		}
-	}
+	return weapon(uid) != nullptr;
 }
 
-WeaponModel::WeaponModel(QObject *parent) : QAbstractTableModel(parent), changed_(false), nextUid(MinUid)
+bool WeaponModel::removeWeapon(UID uid)
+{
+	for (int i = 0; i < weapons_.count(); ++i) {
+		if (weapons_[i]->uid() == uid) {
+			instance().beginRemoveRows(QModelIndex(), i, i);
+
+			delete weapons_.takeAt(i);
+			uidToWeapon.remove(uid);
+
+			instance().endRemoveRows();
+			return true;
+		}
+	}
+	return false;
+}
+
+WeaponModel::WeaponModel(QObject *parent) : QAbstractTableModel(parent), changed_(false)
 {
 	auto modelChanged = [this]{
 		this->changed_ = true;
@@ -194,21 +183,9 @@ WeaponModel::~WeaponModel()
 	qDeleteAll(weapons_);
 }
 
-void WeaponModel::addWeapon(int row, WeaponBase* weapon)
-{
-	weapons_.insert(row, weapon);
-	uidToWeapon[weapon->uid()] = weapon;
-}
-
-void WeaponModel::removeWeaponFromRow(int row)
-{
-	uidToWeapon.remove(weapons_[row]->uid());
-	delete weapons_.takeAt(row);
-}
-
 QDataStream & operator << (QDataStream &out, const WeaponModel &wModel)
 {
-	out << wModel.nextUid << static_cast<UID>(wModel.weapons_.count());
+	out << static_cast<UID>(wModel.weapons_.count());
 	for (const WeaponBase *weapon : wModel.weapons_)
 		out << *weapon;
 	return out;
@@ -222,11 +199,12 @@ QDataStream & operator >> (QDataStream &in, WeaponModel &wModel)
 	wModel.uidToWeapon.clear();
 
 	UID count;
-	in >> wModel.nextUid >> count;
+	in >> count;
 	for (UID i = 0; i < count; ++i) {
 		WeaponBase *weapon = new WeaponBase;
- 		in >> *weapon;
-		wModel.addWeapon(i, weapon);
+		in >> *weapon;
+		wModel.weapons_.insert(i, weapon);
+		wModel.uidToWeapon[weapon->uid()] = weapon;
 	}
 	wModel.endResetModel();
 
