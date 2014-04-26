@@ -1,22 +1,26 @@
 #1
-skrót do wyświetlania życia na mapie: trigger i chwilowy (hold 'H')
-podobnie bounding boxy (dla eleganckiego debugu)
-wilk
 AI do wilka
-okno wymiany ekwipunku
-edytor map
-ładowanie map, gracza, przedmiotów, kreaturek itp.
+okno wymiany ekwipunku (Andrzej)
+Ładne okno wymiany ekwipunku (Andrzej)
+edytor map (Soszu)
+ładowanie map, gracza, przedmiotów, kreaturek itp. (Soszu?)
+edytor kreatur: ścieżka do obrazka + najlepiej podgląd obrazka (jak będą sprity to się wyświetli stały fragment) (Soszu)
+edytor itemów: jak wyżej (Soszu)
+obrazki do broni, itemków itp itd. W szczególności obrazki do broni można wykorzystać również w oknie handlu/wymiany (Azras?)
 
 #2
 Skille#1
 skoki
 ukształtowanie terenu
 efekty (trucizna, zamrożenie)
-fix memleaks heh
-poprawić trawę. Jest Brzydka.
+fix memleaks heh (Fynx)
+poprawić trawę. Jest Brzydka. (Fynx)
+edytor kreatur: wybranie AI/klasy kreatury (Soszu)
+system questów
 
 #3
-rozdzielenie QGraphicsScene i systemu kolizji - to jest jednak kiepskie
+Generowanie mapy
 
 #4
 cursor
+dialogi może jakieś
