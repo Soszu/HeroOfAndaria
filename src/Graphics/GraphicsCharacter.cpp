@@ -50,7 +50,7 @@ void GraphicsCharacter::initPixmap()
 	weaponPixmap_ = DataManager::pixmap(Data::ImagePath::Sword);
 }
 
-void GraphicsCharacter::paintWeapon(QPainter* painter)
+void GraphicsCharacter::paintWeapon(QPainter *painter)
 {
 	painter->save();
 	painter->translate(weaponAttachPoint() + pointZero());

@@ -27,7 +27,7 @@ bool GraphicsMap::canMakeMove(const Movable *object, const QPoint &vector) const
 
 	QPoint finalPosition = object->position() + vector;
 	if (finalPosition.x() < BORDER_SIZE || finalPosition.y() < BORDER_SIZE
-	    || finalPosition.x() > map_->width() * Grid::tileSize() - BORDER_SIZE
+	    || finalPosition.x() > map_->width()  * Grid::tileSize() - BORDER_SIZE
 	    || finalPosition.y() > map_->height() * Grid::tileSize() - BORDER_SIZE)
 		return false;
 
@@ -35,41 +35,59 @@ bool GraphicsMap::canMakeMove(const Movable *object, const QPoint &vector) const
 	auto collisions = graphicsObject->collisions(vector);
 
 	for (GraphicsObject *x : collisions)
-		if (!map_->canCollide(object, x->object()))
+		if ((collisionType(object, x->object()) & HOA::CollisionType::Simple)
+		    && !map_->canCollide(object, x->object()))
 			return false;
 	return true;
 }
 
-void GraphicsMap::attack(const Attack &attack)
+int GraphicsMap::collisionType(const Object *lhs, const Object *rhs) const
 {
-// 	QPoint attackPosition = attack.attacker()->position();
-// 	QPoint attackRotation = attack.attacker()->rotation();
+	GraphicsObject *lhsGraphicsObject = GraphicsFactory::get(lhs);
+	GraphicsObject *rhsGraphicsObject = GraphicsFactory::get(rhs);
 
-	//TODO put it in the weapon or something. And attack area is NOT just a little triangle.
+	int result = HOA::CollisionType::None;
 
-// 	QPolygon attackArea;
+	QPolygon lhsObjectArea = lhsGraphicsObject->figureShape()
+	                         .toFillPolygon().toPolygon()
+	                         .translated(lhsGraphicsObject->pos().toPoint());
 
-	/*
-	QPointF vector = HOA::lengthenVector(attackRotation - attackPosition, attack.weapon()->reach() * Grid::tileSize());
-	attackArea << attackPosition
-	           << (vector + attackPosition).toPoint()
-		   << (HOA::rotateVector(vector, 0.1) + attackPosition).toPoint();
-	*/
+	QPolygon rhsObjectArea = rhsGraphicsObject->figureShape()
+	                         .toFillPolygon().toPolygon()
+	                         .translated(rhsGraphicsObject->pos().toPoint());
 
-// 	GraphicsCreature *graphicsAttacker = static_cast<GraphicsCreature *>(GraphicsFactory::get(attack.attacker()));
-// 	attackArea = mapView_->mapToScene(graphicsAttacker->weaponShape().toPolygon()).toPolygon();
-/*
-	qDebug() << attackArea;
+	if (!lhsObjectArea.intersected(rhsObjectArea).isEmpty())
+		result |= HOA::CollisionType::Simple;
 
-	QList <QGraphicsItem *> intersecting = mapView_->scene()->items(attackArea);
+	if (HOA::creatureTypes.contains(lhs->objectType())) {
+		GraphicsCreature *lhsGraphicsCreature = static_cast<GraphicsCreature *>(GraphicsFactory::get(lhs));
 
-	for (QGraphicsItem *item : intersecting) {
-		Object *object = (static_cast<GraphicsObject *>(item))->object();
-		//TODO riposte or something like that
-		if (object != attack.attacker())
-			object->receiveAttack(attack);
-	}*/
+		QPolygon weaponArea = lhsGraphicsCreature->weaponShape()
+			.toPolygon()
+			.translated(lhsGraphicsCreature->pos().toPoint());
+
+		if (!weaponArea.intersected(rhsObjectArea).isEmpty())
+			result |= HOA::CollisionType::Attack;
+	}
+
+	return result;
 }
+
+void GraphicsMap::collide(Object *lhs, Object *rhs)
+{
+	int type = collisionType(lhs, rhs);
+
+	if (HOA::creatureTypes.contains(lhs->objectType())) {
+		Creature *lhsCreature = static_cast<Creature *>(lhs);
+
+		if (lhsCreature->currentAction() == HOA::CreatureAction::Attack
+		    && type & HOA::CollisionType::Attack)
+			rhs->receiveAttack(lhsCreature->currentAttack());
+	}
+}
+
+void GraphicsMap::attack(const Attack &attack)
+{}
 
 static int keyFunctionToDirectionValue(HOA::KeyFunction mapAction)
 {
@@ -123,7 +141,6 @@ void GraphicsMap::mousePressEvent(QMouseEvent *event)
 	if (event->button() & Qt::LeftButton)
 		map_->player()->attack(Attack(HOA::AttackType::Melee));
 }
-
 
 void GraphicsMap::keyPressEvent(QKeyEvent *event)
 {
@@ -256,7 +273,10 @@ void GraphicsMap::onCollision(QObject *object)
 
 	Object *obj = graphicsObject->object();
 
-	if ((obj->objectType() == HOA::ObjectType::Creature || obj->objectType() == HOA::ObjectType::Human)
+	for (GraphicsObject *col : collisions)
+		collide(obj, col->object());
+
+	/**if ((obj->objectType() == HOA::ObjectType::Creature || obj->objectType() == HOA::ObjectType::Human)
 	    && ((Creature *)obj)->currentAction() == HOA::CreatureAction::Attack) {
 		GraphicsCreature *gCreature = static_cast<GraphicsCreature *>(graphicsObject);
 		for (GraphicsObject *col : collisions) {
@@ -265,7 +285,7 @@ void GraphicsMap::onCollision(QObject *object)
 			if (!dangerArea.intersected(objectArea).isEmpty())
 				col->object()->receiveAttack(((Creature *)obj)->currentAttack());
 		}
-	}
+	}*/
 }
 
 void GraphicsMap::onObjectAdded()

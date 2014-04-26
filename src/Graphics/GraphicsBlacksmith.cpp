@@ -1,9 +1,9 @@
 #include "Graphics/GraphicsBlacksmith.h"
 
-GraphicsBlacksmith::GraphicsBlacksmith(Blacksmith* blacksmith, QWidget * parent) :
+GraphicsBlacksmith::GraphicsBlacksmith(Blacksmith *blacksmith, QWidget *parent) :
 	GraphicsPlace((Place *)blacksmith, parent)
 {
-	//TEMP 
+	//TEMP
 	EquipmentCarrier *a = new EquipmentCarrier();
 	EquipmentCarrier *b = new EquipmentCarrier();
 	GraphicsEquipment *gEa = new GraphicsEquipment(a, 3, this);

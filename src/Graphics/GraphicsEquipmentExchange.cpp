@@ -19,14 +19,14 @@ GraphicsEquipmentExchange::GraphicsEquipmentExchange(GraphicsEquipment *l, Graph
 {
 	connect(l, &GraphicsEquipment::sigReset, r, &GraphicsEquipment::reset);
 	connect(r, &GraphicsEquipment::sigReset, l, &GraphicsEquipment::reset);
-	
+
 	connect(this, &GraphicsEquipmentExchange::sigReset, l, &GraphicsEquipment::reset);
 	connect(this, &GraphicsEquipmentExchange::sigReset, r, &GraphicsEquipment::reset);
-	
+
 	connect(this->exchangeButton_, &ImageButton::clicked, this, &GraphicsEquipmentExchange::exchange);
 	connect(l, &GraphicsEquipment::sigActive, this, &GraphicsEquipmentExchange::setActive);
 	connect(r, &GraphicsEquipment::sigActive, this, &GraphicsEquipmentExchange::setActive);
-	
+
 	this->layout_->addWidget(this->exchangeButton_);
 
 	this->layout_->addWidget(this->l_);
@@ -35,7 +35,7 @@ GraphicsEquipmentExchange::GraphicsEquipmentExchange(GraphicsEquipment *l, Graph
 	//this->layout_->addLayout(this->GElayout_);
 }
 
-GraphicsEquipment *GraphicsEquipmentExchange::notActive()
+GraphicsEquipment * GraphicsEquipmentExchange::notActive()
 {
 	if (this->active_ == nullptr)
 		return active_;
@@ -48,7 +48,7 @@ GraphicsEquipment *GraphicsEquipmentExchange::notActive()
 
 void GraphicsEquipmentExchange::exchange()
 {
-	if ((this->active_ == nullptr) 
+	if ((this->active_ == nullptr)
 		|| (this->active_->activeSlot() == nullptr)
 		|| (this->active_->activeSlot()->gItem() == nullptr)){
 		return;
@@ -89,11 +89,11 @@ GraphicsEquipment::GraphicsEquipment(EquipmentCarrier *eq, int span, QWidget *pa
 		this->addSlot(nullptr);
 	}
 	connect(
-		this->buttonMapper_, 
+		this->buttonMapper_,
 		static_cast<void (QSignalMapper::*)(QWidget *)>(&QSignalMapper::mapped),
 		this,
 		&GraphicsEquipment::processClick
-		);
+	);
 }
 
 void GraphicsEquipment::paintEvent(QPaintEvent *event)
@@ -101,7 +101,7 @@ void GraphicsEquipment::paintEvent(QPaintEvent *event)
 	this->QWidget::paintEvent(event);
 }
 
-void GraphicsEquipment::rearangeSlots()
+void GraphicsEquipment::rearrangeSlots()
 {
 }
 
@@ -149,7 +149,7 @@ bool GraphicsEquipment::receiveItem(GraphicsEquipment *from, GraphicsItem *gItem
 			for (int i = 0; i < this->span_-1; i++) {
 				addSlot(nullptr);
 			}
-			this->rearangeSlots();
+			this->rearrangeSlots();
 		}
 		else {
 			for (auto sb : this->gButtons_) {

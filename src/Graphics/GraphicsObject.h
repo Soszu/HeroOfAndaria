@@ -16,6 +16,7 @@ public:
 
 	Object * object();
 
+	virtual QPainterPath figureShape() const;
 	virtual QPainterPath shape() const;
 
 	QVector <GraphicsObject *> collisions(const QPoint &vector = QPoint(0, 0));

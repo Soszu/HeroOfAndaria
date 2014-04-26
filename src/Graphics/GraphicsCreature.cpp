@@ -70,7 +70,7 @@ void GraphicsCreature::initPixmap()
 
 qreal GraphicsCreature::scale() const
 {
-	return qreal(creatureSize()) / qreal(pixmap_->width());;
+	return qreal(creatureSize()) / qreal(pixmap_->width());
 }
 
 QPointF GraphicsCreature::pointZero() const
@@ -87,13 +87,13 @@ void GraphicsCreature::paintFigure(QPainter *painter)
 {
 	if (((Creature *)object_)->hitPoints() > 0)
 		painter->drawPixmap(pointZero().toPoint(),
-		                    pixmap_->scaled(creatureSize(),
-		                                    creatureSize(),
+		                    pixmap_->scaled(pixmap_->width()  * scale(),
+		                                    pixmap_->height() * scale(),
 		                                    Qt::KeepAspectRatio));
 	else
 		painter->drawPixmap(pointZero().toPoint(),
-		                    pixmapDead_->scaled(creatureSize(),
-		                                        creatureSize(),
+		                    pixmapDead_->scaled(pixmapDead_->width()  * scale(),
+		                                        pixmapDead_->height() * scale(),
 		                                        Qt::KeepAspectRatio));
 }
 
@@ -142,10 +142,10 @@ void GraphicsCreature::paintHealth(QPainter *painter)
 
 QRectF GraphicsCreature::boundingRect() const
 {
-	return QRectF(-creatureSize(),
-	              -creatureSize(),
-	              creatureSize() * 2,
-	              creatureSize() * 2);
+	return QRectF(-creatureSize() * 3 / 2,
+	              -creatureSize() * 3 / 2,
+	              creatureSize() * 3,
+	              creatureSize() * 3);
 }
 
 void GraphicsCreature::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)

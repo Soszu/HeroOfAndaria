@@ -13,7 +13,6 @@ MainWindow::MainWindow()
 MainWindow::~MainWindow()
 {}
 
-
 void MainWindow::initMenu()
 {
 	menu_ = new Menu();
@@ -41,6 +40,7 @@ void MainWindow::initActions()
 void MainWindow::initPlayer()
 {
 	//TODO Soszu? save & load
+	//TODO Azras load from menu if new game (in onNewGameActivated)
 	player_ = new Human();
 }
 

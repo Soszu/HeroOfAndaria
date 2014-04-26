@@ -23,6 +23,8 @@ public:
 	~GraphicsMap();
 
 	virtual bool canMakeMove(const Movable *object, const QPoint &vector) const;
+	virtual int collisionType(const Object *lhs, const Object *rhs) const;
+	virtual void collide(Object *lhs, Object *rhs);
 	virtual void attack(const Attack &attack);
 
 	static HOA::Direction keysToDirection(HOA::KeyFunction horizontal, HOA::KeyFunction vertical);

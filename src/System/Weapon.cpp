@@ -42,7 +42,7 @@ int Weapon::maxSpeed() const
 int Weapon::damage() const
 {
 	//TODO
-	return 20;
+	return 5;
 // 	return base_->damage();
 }
 

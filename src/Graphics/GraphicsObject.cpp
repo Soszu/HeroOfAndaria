@@ -19,11 +19,16 @@ Object * GraphicsObject::object()
 	return object_;
 }
 
-QPainterPath GraphicsObject::shape() const
+QPainterPath GraphicsObject::figureShape() const
 {
 	QPainterPath path;
 	path.addRect(boundingRect());
 	return path;
+}
+
+QPainterPath GraphicsObject::shape() const
+{
+	return figureShape();
 }
 
 QVector <GraphicsObject *> GraphicsObject::collisions(const QPoint &vector)

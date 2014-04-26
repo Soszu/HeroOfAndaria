@@ -26,7 +26,7 @@ QPainterPath GraphicsMonster::figureShape()
 
 int GraphicsMonster::creatureSize() const
 {
-	static const int MONSTER_SIZE = 80;
+	static const int MONSTER_SIZE = 40;
 	return MONSTER_SIZE;
 }
 

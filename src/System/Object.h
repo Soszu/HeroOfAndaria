@@ -18,6 +18,13 @@ namespace HOA {
 		Location,
 		Town,
 	};
+
+	const QVector <ObjectType> creatureTypes {
+		ObjectType::Creature,
+		ObjectType::Monster,
+		ObjectType::Character,
+		ObjectType::Human,
+	};
 }
 
 class Attack;
