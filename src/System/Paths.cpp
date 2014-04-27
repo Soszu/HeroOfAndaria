@@ -48,8 +48,8 @@ QString Data::path(ImagePath name)
 	static const QString Player = ImgPreffix + "/player.svg";
 	static const QString Wolf   = ImgPreffix + "/wolf.svg";
 
-	static const QString PlayerDead = ImgPreffix + "/playerDead.svg";
-	static const QString WolfDead   = ImgPreffix + "/wolfDead.svg";
+	static const QString PlayerDead = ImgPreffix + "/deadPlayer.svg";
+	static const QString WolfDead   = ImgPreffix + "/deadWolf.svg";
 
 	static const QString Sword = ImgPreffix + "/sword.svg";
 
