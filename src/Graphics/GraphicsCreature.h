@@ -4,6 +4,8 @@
 #include "Graphics/GraphicsObject.h"
 #include "System/Creature.h"
 
+class QSvgRenderer;
+
 class GraphicsCreature : public GraphicsObject
 {
 public:
@@ -13,7 +15,8 @@ public:
 	virtual QPainterPath figureShape() const;
 	virtual QPainterPath shape() const;
 
-	virtual int creatureSize() const;
+	virtual int creatureWidth() const;
+	virtual int creatureHeight() const;
 
 	static void triggerHealthVisibility();
 	static bool healthVisibilityEnabled();
@@ -21,12 +24,14 @@ public:
 	static bool boundingBoxesVisibilityEnabled();
 
 protected:
-	QPixmap *pixmap_;
-	QPixmap *pixmapDead_;
 
-	virtual void initPixmap();  /** invoke this function in constructor of every derived class */
+	QSvgRenderer *renderer_;
+	QSvgRenderer *rendererDead_;
 
-	qreal scale() const;               /** change from loaded image to pixmap on the screen */
+	virtual void initRenderer();  /** invoke this function in constructor of every derived class */
+
+	qreal widthScale() const;               /** change from loaded image to pixmap on the screen */
+	qreal heightScale() const;
 	QPointF pointZero() const;         /** top left point */
 
 	virtual QPointF weaponAttachPoint() const;

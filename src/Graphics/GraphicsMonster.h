@@ -10,12 +10,12 @@ public:
 	GraphicsMonster(Monster *monster);
 
 	virtual QPolygonF weaponShape();
-	virtual QPainterPath figureShape();
 
-	virtual int creatureSize() const;
+	virtual int creatureWidth() const;
+	virtual int creatureHeight() const;
 
 protected:
-	virtual void initPixmap();
+	virtual void initRenderer();
 
 	virtual QPointF weaponAttachPoint();
 

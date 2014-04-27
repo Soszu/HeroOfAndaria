@@ -4,7 +4,7 @@
 GraphicsCreature::GraphicsCreature(Creature *creature) :
 	GraphicsObject((Object *)creature)
 {
-	initPixmap();
+	initRenderer();
 }
 
 QPolygonF GraphicsCreature::weaponShape() const
@@ -15,10 +15,8 @@ QPolygonF GraphicsCreature::weaponShape() const
 QPainterPath GraphicsCreature::figureShape() const
 {
 	QPainterPath figure;
-	figure.addEllipse(pointZero().x() - 3.0,
-			  pointZero().y() - 3.0,
-	                  scale() * pixmap_->width()  + 6.0,
-	                  scale() * pixmap_->height() + 6.0);
+	figure.addEllipse(pointZero().x() - 3.0, pointZero().y() - 3.0,
+			creatureWidth()  + 6.0, creatureHeight() + 6.0);
 	return figure;
 }
 
@@ -32,10 +30,16 @@ QPainterPath GraphicsCreature::shape() const
 	return path;
 }
 
-int GraphicsCreature::creatureSize() const
+int GraphicsCreature::creatureHeight() const
 {
-	static const int CREATURE_SIZE = 60;
-	return CREATURE_SIZE;
+	static const int CREATURE_HEIGHT = 60;
+	return CREATURE_HEIGHT;
+}
+
+int GraphicsCreature::creatureWidth() const
+{
+	static const int CREATURE_WIDTH = 60;
+	return CREATURE_WIDTH;
 }
 
 static bool healthVisibilityEnabled_ = false;
@@ -62,39 +66,38 @@ bool GraphicsCreature::boundingBoxesVisibilityEnabled()
 	return boundingBoxesVisibilityEnabled_;
 }
 
-void GraphicsCreature::initPixmap()
+void GraphicsCreature::initRenderer()
 {
-	pixmap_     = DataManager::pixmap(Data::ImagePath::Wolf);
-	pixmapDead_ = DataManager::pixmap(Data::ImagePath::WolfDead);
+	renderer_     = DataManager::renderer(Data::ImagePath::Wolf);
+	rendererDead_ = DataManager::renderer(Data::ImagePath::WolfDead);
 }
 
-qreal GraphicsCreature::scale() const
+qreal GraphicsCreature::heightScale() const
 {
-	return qreal(creatureSize()) / qreal(pixmap_->width());
+	return qreal(creatureHeight()) / qreal(renderer_->viewBoxF().height());
+}
+
+qreal GraphicsCreature::widthScale() const
+{
+	return qreal(creatureWidth()) / qreal(renderer_->viewBoxF().width());
 }
 
 QPointF GraphicsCreature::pointZero() const
 {
-	return {qreal(-creatureSize() / 2), qreal(-creatureSize() / 2)};
+	return {qreal(-creatureWidth() / 2), qreal(-creatureHeight() / 2)};
 }
 
 QPointF GraphicsCreature::weaponAttachPoint() const
 {
-	return {scale() * 4.0, scale() * 18.0};
+	return {widthScale() * 8.0, heightScale() * 22.0};
 }
 
 void GraphicsCreature::paintFigure(QPainter *painter)
 {
 	if (((Creature *)object_)->hitPoints() > 0)
-		painter->drawPixmap(pointZero().toPoint(),
-		                    pixmap_->scaled(pixmap_->width()  * scale(),
-		                                    pixmap_->height() * scale(),
-		                                    Qt::KeepAspectRatio));
+		renderer_->render(painter, QRectF(pointZero().x(), pointZero().y(), creatureWidth(), creatureHeight()));
 	else
-		painter->drawPixmap(pointZero().toPoint(),
-		                    pixmapDead_->scaled(pixmapDead_->width()  * scale(),
-		                                        pixmapDead_->height() * scale(),
-		                                        Qt::KeepAspectRatio));
+		rendererDead_->render(painter, QRectF(pointZero().x(), pointZero().y(), creatureWidth(), creatureHeight()));
 }
 
 void GraphicsCreature::paintWeapon(QPainter *painter)
@@ -142,10 +145,10 @@ void GraphicsCreature::paintHealth(QPainter *painter)
 
 QRectF GraphicsCreature::boundingRect() const
 {
-	return QRectF(-creatureSize() * 3 / 2,
-	              -creatureSize() * 3 / 2,
-	              creatureSize() * 3,
-	              creatureSize() * 3);
+	return QRectF(-creatureWidth() * 5 / 2,
+				  -creatureHeight() * 5 / 2,
+				  creatureWidth() * 5,
+				  creatureHeight() * 5);
 }
 
 void GraphicsCreature::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
@@ -154,8 +157,8 @@ void GraphicsCreature::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 		paintHealth(painter);
 	if (GraphicsCreature::boundingBoxesVisibilityEnabled())
 		paintBoundingBoxes(painter);
-	paintFigure(painter);
 	paintWeapon(painter);
+	paintFigure(painter);
 }
 
 void GraphicsCreature::advance()

@@ -4,7 +4,7 @@
 GraphicsCharacter::GraphicsCharacter(Character *character) :
 	GraphicsCreature(character)
 {
-	initPixmap();
+	initRenderer();
 	weaponVector_ = {0.0, 0.0};
 	weaponAngle_  = 0.0;
 }
@@ -13,9 +13,9 @@ QPolygonF GraphicsCharacter::weaponShape() const
 {
 	QPolygonF weapon;
 
-	QPointF left   = QPointF(scale() * -20.0, scale() * +15.0);
-	QPointF right  = QPointF(scale() * +20.0, scale() * +15.0);
-	QPointF bottom = QPointF(scale() * +0.0,  scale() * +85.0);
+	QPointF left   = QPointF(widthScale() * -20.0, heightScale() * +15.0);
+	QPointF right  = QPointF(widthScale() * +20.0, heightScale() * +15.0);
+	QPointF bottom = QPointF(widthScale() * +0.0,  heightScale() * +85.0);
 
 	weapon << left << right << bottom << left;
 
@@ -27,27 +27,23 @@ QPolygonF GraphicsCharacter::weaponShape() const
 	return weaponRotationMatrix.map(weapon);
 }
 
-QPainterPath GraphicsCharacter::figureShape() const
+int GraphicsCharacter::creatureHeight() const
 {
-	QPainterPath figure;
-	figure.addEllipse(pointZero().x() - 3.0,
-	                  pointZero().y() - 3.0,
-	                  scale() * pixmap_->width()  + 6.0,
-	                  scale() * pixmap_->height() + 6.0);
-	return figure;
+	static const int CHARACTER_HEIGHT = 36;
+	return CHARACTER_HEIGHT;
 }
 
-int GraphicsCharacter::creatureSize() const
+int GraphicsCharacter::creatureWidth() const
 {
-	static const int CHARACTER_SIZE = 40;
-	return CHARACTER_SIZE;
+	static const int CHARACTER_WIDTH = 70;
+	return CHARACTER_WIDTH;
 }
 
-void GraphicsCharacter::initPixmap()
+void GraphicsCharacter::initRenderer()
 {
-	pixmap_       = DataManager::pixmap(Data::ImagePath::Player);
-	pixmapDead_   = DataManager::pixmap(Data::ImagePath::PlayerDead);
-	weaponPixmap_ = DataManager::pixmap(Data::ImagePath::Sword);
+	renderer_     = DataManager::renderer(Data::ImagePath::Player);
+	rendererDead_ = DataManager::renderer(Data::ImagePath::PlayerDead);
+	weaponRender_ = DataManager::renderer(Data::ImagePath::Sword);
 }
 
 void GraphicsCharacter::paintWeapon(QPainter *painter)
@@ -55,9 +51,9 @@ void GraphicsCharacter::paintWeapon(QPainter *painter)
 	painter->save();
 	painter->translate(weaponAttachPoint() + pointZero());
 	painter->rotate(weaponAngle_);
-	painter->drawPixmap(QPointF(scale() * -18.0, scale() * -5.0),
-	                    weaponPixmap_->scaled(qreal(weaponPixmap_->width())  * scale(),
-	                                          qreal(weaponPixmap_->height()) * scale()));
+	weaponRender_->render(painter, QRectF(widthScale() * -18.0, heightScale() * -5.0,
+			weaponRender_->viewBoxF().width() * widthScale(),
+			weaponRender_->viewBoxF().height() * heightScale()));
 	painter->restore();
 }
 

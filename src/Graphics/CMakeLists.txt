@@ -33,4 +33,4 @@ set (HOAGraphics_HDRS
 qt5_wrap_cpp (HOAGraphics_SRCS ${HOAGraphics_HDRS})
 
 add_library (HOAGraphics ${HOAGraphics_SRCS})
-target_link_libraries (HOAGraphics ${Qt5Widgets_LIBRARIES} HOASystem)
+target_link_libraries (HOAGraphics ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} HOASystem)

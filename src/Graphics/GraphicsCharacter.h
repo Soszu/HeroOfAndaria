@@ -10,19 +10,19 @@ public:
 	GraphicsCharacter(Character *character);
 
 	virtual QPolygonF weaponShape() const;
-	virtual QPainterPath figureShape() const;
 
-	virtual int creatureSize() const;
+	virtual int creatureWidth() const;
+	virtual int creatureHeight() const;
 
 protected:
-	virtual void initPixmap();
+	virtual void initRenderer();
 
 	virtual void paintWeapon(QPainter *painter);
 
 	virtual void advance();
 
 private:
-	QPixmap *weaponPixmap_;
+	QSvgRenderer *weaponRender_;
 
 	QPointF weaponVector_;
 	qreal weaponAngle_;

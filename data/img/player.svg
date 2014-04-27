@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="70"
+   height="36"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="player.svg">
+  <defs
+     id="defs4">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient4149">
+      <stop
+         style="stop-color:#333333;stop-opacity:1"
+         offset="0"
+         id="stop4151" />
+      <stop
+         style="stop-color:#b3b3b3;stop-opacity:1"
+         offset="1"
+         id="stop4153" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4149"
+       id="radialGradient4155"
+       cx="154.55334"
+       cy="44.011551"
+       fx="154.55334"
+       fy="44.011551"
+       r="1.830355"
+       gradientTransform="matrix(-3.1051762e-6,-26.126342,15.014961,5.8678407e-6,-553.57149,4108.1977)"
+       gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4149"
+       id="radialGradient3934"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-3.1051762e-6,-26.126342,15.014961,5.8678407e-6,-542.9631,4118.0503)"
+       cx="154.55334"
+       cy="44.011551"
+       fx="154.55334"
+       fy="44.011551"
+       r="1.830355" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3132"
+       id="radialGradient3138"
+       cx="-212.85715"
+       cy="850.03461"
+       fx="-212.85715"
+       fy="850.03461"
+       r="55.005203"
+       gradientTransform="matrix(-1.1599395,2.2275255,-0.94122015,-0.84863278,580.94535,2162.3675)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3132">
+      <stop
+         style="stop-color:#2b0000;stop-opacity:1;"
+         offset="0"
+         id="stop3134" />
+      <stop
+         style="stop-color:#800000;stop-opacity:1"
+         offset="1"
+         id="stop3136" />
+    </linearGradient>
+    <radialGradient
+       r="55.005203"
+       fy="850.03461"
+       fx="-212.85715"
+       cy="850.03461"
+       cx="-212.85715"
+       gradientTransform="matrix(-0.96077828,-1.7721687,-0.77961295,0.67515297,563.801,106.49153)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient4040"
+       xlink:href="#linearGradient3132"
+       inkscape:collect="always" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2"
+     inkscape:cx="26.327982"
+     inkscape:cy="-5.68447"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer3"
+     showgrid="false"
+     inkscape:window-width="1366"
+     inkscape:window-height="744"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="mie"
+     transform="translate(0,-1016.3622)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="cia"
+     transform="translate(0,-1016.3622)">
+    <path
+       style="fill:#181818;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 69.179777,1028.7359 c -1.322094,-6.9889 -15.358242,-10.6812 -34.031402,-10.7462 -18.657774,-0.065 -28.4319358,1.1831 -33.3703467,7.5622 -1.3125439,1.6955 -1.86306725,10.3359 0.3145028,12.0531 5.4872382,4.3272 19.6876099,6.3722 33.0558439,6.3722 13.026736,0 26.315967,-1.1455 31.962462,-5.294 2.447547,-1.7984 2.474224,-7.8048 2.06894,-9.9473 z"
+       id="path2998"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="sssssss" />
+  </g>
+  <g
+     inkscape:label="glowa"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1016.3622)">
+    <path
+       style="fill:#e9c6af;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 56.714914,1034.7877 c 0,-8.2458 -9.540286,-14.9306 -21.308848,-14.9306 -11.768558,0 -21.308862,6.6848 -21.308862,14.9306 0,7.7726 7.095672,14.1581 17.92517,14.8655 0.372335,0.023 1.194091,2.1514 2.475684,2.0824 0.987487,-0.053 2.488506,-2.3046 2.782398,-2.3046 11.768562,0 19.434458,-6.3975 19.434458,-14.6433 z"
+       id="path2985"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="sssssss"
+       inkscape:export-filename="/home/azras/Pulpit/graf/andria/player.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.94841444;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="path2989"
+       sodipodi:cx="101.52033"
+       sodipodi:cy="82.994545"
+       sodipodi:rx="2.5253813"
+       sodipodi:ry="1.8940361"
+       d="m 104.04571,82.994545 c 0,1.046047 -1.13065,1.894036 -2.52538,1.894036 -1.39473,0 -2.525379,-0.847989 -2.525379,-1.894036 0,-1.046047 1.130649,-1.894036 2.525379,-1.894036 1.39473,0 2.52538,0.847989 2.52538,1.894036 z"
+       transform="matrix(1.5625701,0,0,-1.1116913,-130.92142,1135.0837)"
+       inkscape:export-filename="/home/azras/Pulpit/graf/andria/player.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       d="m 104.04571,82.994545 c 0,1.046047 -1.13065,1.894036 -2.52538,1.894036 -1.39473,0 -2.525379,-0.847989 -2.525379,-1.894036 0,-1.046047 1.130649,-1.894036 2.525379,-1.894036 1.39473,0 2.52538,0.847989 2.52538,1.894036 z"
+       sodipodi:ry="1.8940361"
+       sodipodi:rx="2.5253813"
+       sodipodi:cy="82.994545"
+       sodipodi:cx="101.52033"
+       id="path2993"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.95937914;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       sodipodi:type="arc"
+       transform="matrix(1.5625701,0,0,-1.0864255,-115.51018,1133.0714)"
+       inkscape:export-filename="/home/azras/Pulpit/graf/andria/player.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#552200;stroke:#000000;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 19.702852,1035.5286 c -2.025889,0.9473 -4.595894,0.1687 -6.973642,0 l 3.196253,-1.9972 c -2.267321,-0.015 -4.399526,-0.1614 -5.520793,-1.3822 -1.9504163,-1.0629 -0.6056048,-1.6277 0,-2.3043 2.130828,-0.5951 2.091327,-0.8202 4.222158,0.1876 -0.03454,-1.8063 1.771797,-2.3091 -1.316482,-3.1061 2.138829,-0.2362 4.062447,0.7918 2.758547,-1.4464 3.046904,-1.4246 3.390122,-1.6684 3.3434,-2.5478 1.428704,-0.8608 4.305504,-1.5304 2.905677,-2.7649 0.96559,-0.9432 4.162346,-1.1784 6.973661,-1.5363 -2.61127,1.2981 0.777452,1.4428 2.033981,1.9971 1.793382,-0.7403 0.998358,-1.5946 6.973655,-2.1506 3.002547,0 6.005093,-0.7294 9.00764,0.7681 1.198504,1.2175 5.520035,1.239 2.65821,3.6309 3.500106,-0.5631 1.851193,1.5672 3.153151,2.3599 2.229647,0.3575 6.21481,1.3513 7.318112,2.3044 -2.276097,-0.1007 -4.306279,0.781 -5.438338,1.8883 1.249263,0.8474 2.621732,1.6667 5.416759,2.1053 -1.084996,1.5006 -1.483694,3.2178 -0.322896,4.9157 -2.830344,-0.3753 -5.447274,-1.0893 -9.00762,-0.307 -2.86675,-0.4834 -5.519158,-1.0797 -5.520776,-3.0724 -2.151962,1.0394 -2.75737,2.215 -6.973689,3.0724 -0.777595,-1.3299 -2.333241,-2.2485 -5.811363,-2.1507 0.07088,1.6225 -2.84911,1.4004 -4.939671,1.6898 -2.579962,-0.4001 -4.841973,-1.6408 -8.135934,-0.1536 z"
+       id="path3000"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccccccccccccccccccc"
+       inkscape:export-filename="/home/azras/Pulpit/graf/andria/player.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:29.32437325;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="path3118"
+       sodipodi:cx="98.142632"
+       sodipodi:cy="73.619064"
+       sodipodi:rx="3.8196392"
+       sodipodi:ry="3.2514286"
+       d="m 101.96227,73.619064 c 0,1.795715 -1.71011,3.251429 -3.819638,3.251429 -2.109529,0 -3.81964,-1.455714 -3.81964,-3.251429 0,-1.795714 1.710111,-3.251428 3.81964,-3.251428 2.109528,0 3.819638,1.455714 3.819638,3.251428 z"
+       transform="matrix(0.06456897,0,0,-0.02814095,20.99701,1046.0147)"
+       inkscape:export-filename="/home/azras/Pulpit/graf/andria/player.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       transform="matrix(0.06456897,0,0,-0.02814095,37.032113,1046.0805)"
+       d="m 101.96227,73.619064 c 0,1.795715 -1.71011,3.251429 -3.819638,3.251429 -2.109529,0 -3.81964,-1.455714 -3.81964,-3.251429 0,-1.795714 1.710111,-3.251428 3.81964,-3.251428 2.109528,0 3.819638,1.455714 3.819638,3.251428 z"
+       sodipodi:ry="3.2514286"
+       sodipodi:rx="3.8196392"
+       sodipodi:cy="73.619064"
+       sodipodi:cx="98.142632"
+       id="path3120"
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:29.32437325;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       sodipodi:type="arc"
+       inkscape:export-filename="/home/azras/Pulpit/graf/andria/player.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>

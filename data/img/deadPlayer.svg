@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="70"
+   height="36"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="deadPlayer.svg">
+  <defs
+     id="defs4">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient4149">
+      <stop
+         style="stop-color:#333333;stop-opacity:1"
+         offset="0"
+         id="stop4151" />
+      <stop
+         style="stop-color:#b3b3b3;stop-opacity:1"
+         offset="1"
+         id="stop4153" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4149"
+       id="radialGradient3934"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-3.1051762e-6,-26.126342,15.014961,5.8678407e-6,-542.9631,4118.0503)"
+       cx="154.55334"
+       cy="44.011551"
+       fx="154.55334"
+       fy="44.011551"
+       r="1.830355" />
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3132">
+      <stop
+         style="stop-color:#2b0000;stop-opacity:1;"
+         offset="0"
+         id="stop3134" />
+      <stop
+         style="stop-color:#800000;stop-opacity:1"
+         offset="1"
+         id="stop3136" />
+    </linearGradient>
+    <radialGradient
+       r="55.005203"
+       fy="850.03461"
+       fx="-212.85715"
+       cy="850.03461"
+       cx="-212.85715"
+       gradientTransform="matrix(-1.652428,0.89170337,0.62953468,0.72356287,-833.06159,610.8139)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient4040"
+       xlink:href="#linearGradient3132"
+       inkscape:collect="always" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2"
+     inkscape:cx="26.327982"
+     inkscape:cy="14.31553"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1366"
+     inkscape:window-height="744"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="mie"
+     transform="translate(0,-1016.3622)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="cia"
+     transform="translate(0,-1016.3622)" />
+  <g
+     inkscape:label="glowa"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1016.3622)">
+    <path
+       style="fill:url(#radialGradient4040);fill-opacity:1;stroke:#000000;stroke-width:0.99999982px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+       d="m 47.629606,1020.5795 c -9.299338,-1.574 -18.693224,-1.0331 -27.388433,1.356 -8.095008,2.2241 -21.09152451,7.9086 -18.160152,14.5632 5.7174906,12.9796 13.774268,11.7396 16.212859,11.9646 7.250503,0.6692 8.584442,4.144 23.499257,-1.4671 11.285792,-4.2458 19.381545,-12.5861 20.236306,-21.5309 0.394699,-4.1298 -9.017743,-3.975 -14.399837,-4.8858 z"
+       id="path3114"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="sssssss"
+       inkscape:export-filename="/home/azras/Pulpit/graf/andria/deadPlayer.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#333333;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 27.109005,1042.7444 c -5.699867,-0.3852 -13.313739,0.2015 -22.0795387,-1.3851 -1.845564,-0.1223 -2.1151303,0.7328 -4.13645781,-0.4836 -0.5190852,-1.9603 -0.6373177,-3.591 0.35283251,-4.3109 7.1427139,0.066 15.058321,-1.0117 21.121558,-0.6392 0.396843,-0.8497 2.516822,-1.1544 0.670512,-2.717 -9.380739,1.3969 -14.9854048,0.6421 -21.6961226,1.0034 -0.2372109,-1.3863 -1.55526971,-2.0784 0.4308771,-4.8923 8.9549895,-0.3878 18.1910155,-1.0643 27.4437265,-1.758 0.301269,4.1678 0.122335,8.7628 -2.107387,15.1827 z"
+       id="path4064"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccc"
+       inkscape:export-filename="/home/azras/Pulpit/graf/andria/deadPlayer.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#333333;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 55.271171,1039.5481 c -0.02704,0.9697 -0.06154,1.9946 -0.191615,3.0898 -6.547262,5.4775 -17.128415,3.6605 -24.031214,5.1839 -3.26985,-4.3985 -3.498482,-5.8287 -0.700257,-4.3047 l 14.817288,-2.2643 -11.452977,1.3556 c -2.156624,-0.2992 -3.935332,0.3357 -6.028639,0.03 -1.766028,-4.8989 -0.681795,-10.4319 0,-15.8753 l 5.124738,-1.8113 c 5.824441,0.097 4.511856,-0.4133 10.68055,1.5983 2.853151,-0.8244 -6.745404,-1.9046 -10.332939,-1.8707 -2.84019,2.1841 -5.593938,0.5203 -2.174992,-3.1772 5.599351,1.1013 15.625427,-1.1268 21.224778,2.5974 0.632189,1.4007 2.097787,1.5484 2.729976,5.7001 0.151148,4.1886 0.417544,6.8396 0.335303,9.7488 z"
+       id="path4059"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccccccsc"
+       inkscape:export-filename="/home/azras/Pulpit/graf/andria/deadPlayer.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#552200;fill-opacity:1;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 47.851525,1030.5832 c 2.489781,5.4 1.254401,9.619 0.574751,15.3103 l 3.448416,-2.8266 c 0.996584,0.7044 2.033729,1.1595 2.682143,4.0044 l 3.065279,-0.9423 c 1.762577,-0.3352 3.184723,0.4458 4.406303,1.8844 2.232058,0.1532 2.358775,-2.2819 2.873665,-4.2398 l 2.299006,-1.6488 -1.724255,-2.3554 1.724255,-3.0621 c 0.269379,-2.4082 1.335803,-3.3465 2.298912,-4.4754 -2.449966,-1.224 -2.466004,-3.3458 -3.2568,-5.1818 l -2.490528,-1.4134 c -0.894296,-1.853 -0.496707,-2.7531 -0.574752,-4.0042 l -3.065279,-1.8843 c 0,0 -2.107391,4.2398 -2.682142,3.062 -0.574752,-1.1777 -1.53264,-5.653 -2.68205,-3.7687 -1.149503,1.8844 -2.299006,4.0043 -2.299006,4.0043 l -2.107391,1.6488 -1.915776,-0.7066 -2.298912,2.5909 z"
+       id="path3255"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccccccccssccccc"
+       inkscape:export-filename="/home/azras/Pulpit/graf/andria/deadPlayer.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>
