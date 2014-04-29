@@ -4,6 +4,7 @@
 #include <QtWidgets>
 #include "Graphics/GraphicsObject.h"
 #include "Graphics/KeyboardManager.h"
+#include "System/AI/AI.h"
 #include "System/Map.h"
 #include "Panels.h"
 
@@ -14,7 +15,7 @@ class TileScene;
  * \class GraphicsMap
  * Graphical representation of a Map.
  */
-class GraphicsMap : public QStackedWidget, public MovementManager, public AttackManager
+class GraphicsMap : public QStackedWidget, public MovementManager, public AttackManager, public VisibilityManager
 {
 Q_OBJECT;
 
@@ -25,7 +26,10 @@ public:
 	virtual bool canMakeMove(const Movable *object, const QPoint &vector) const;
 	virtual int collisionType(const Object *lhs, const Object *rhs) const;
 	virtual void collide(Object *lhs, Object *rhs);
+
 	virtual void attack(const Attack &attack);
+
+	virtual QVector <Object *> objectsInCircle(const QPoint &center, int ray);
 
 	static HOA::Direction keysToDirection(HOA::KeyFunction horizontal, HOA::KeyFunction vertical);
 

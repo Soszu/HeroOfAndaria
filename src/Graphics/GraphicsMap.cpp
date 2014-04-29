@@ -89,6 +89,21 @@ void GraphicsMap::collide(Object *lhs, Object *rhs)
 void GraphicsMap::attack(const Attack &attack)
 {}
 
+QVector <Object *> GraphicsMap::objectsInCircle(const QPoint &center, int ray)
+{
+	QVector <Object *> result;
+
+	QPainterPath area;
+	area.addEllipse(center, ray, ray);
+
+	QList <QGraphicsItem *> graphicsItems = mapView_->items(area);
+
+	for (QGraphicsItem *item : graphicsItems)
+		result.append((static_cast<GraphicsObject *>(item))->object());
+
+	return result;
+}
+
 static int keyFunctionToDirectionValue(HOA::KeyFunction mapAction)
 {
 	switch (mapAction) {
@@ -132,6 +147,7 @@ HOA::Direction GraphicsMap::keysToDirection(HOA::KeyFunction horizontalDirection
 
 void GraphicsMap::reinit()
 {
+	AI::setVisibilityManager(this);
 	mapView_->reinit();
 	initObject(map_->player());
 }
@@ -275,17 +291,6 @@ void GraphicsMap::onCollision(QObject *object)
 
 	for (GraphicsObject *col : collisions)
 		collide(obj, col->object());
-
-	/**if ((obj->objectType() == HOA::ObjectType::Creature || obj->objectType() == HOA::ObjectType::Human)
-	    && ((Creature *)obj)->currentAction() == HOA::CreatureAction::Attack) {
-		GraphicsCreature *gCreature = static_cast<GraphicsCreature *>(graphicsObject);
-		for (GraphicsObject *col : collisions) {
-			QPolygon dangerArea = gCreature->weaponShape().toPolygon().translated(gCreature->pos().toPoint());
-			QPolygon objectArea = col->shape().toFillPolygon().toPolygon().translated(col->pos().toPoint());
-			if (!dangerArea.intersected(objectArea).isEmpty())
-				col->object()->receiveAttack(((Creature *)obj)->currentAttack());
-		}
-	}*/
 }
 
 void GraphicsMap::onObjectAdded()

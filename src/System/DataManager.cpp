@@ -26,7 +26,7 @@ QSvgRenderer * DataManager::renderer(const QString &path)
 	if (!renderersMap.contains(path)) {
 		QSvgRenderer *render = new QSvgRenderer();
 		if (!render->load(path)) {
-			qCritical() << "Error wihile loading file " << path;
+			qCritical() << "Error while loading file " << path;
 			exit(EXIT_FAILURE);
 		}
 		renderersMap[path] = render;

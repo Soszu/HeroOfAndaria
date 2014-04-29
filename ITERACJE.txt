@@ -1,5 +1,6 @@
 #1
 AI do wilka
+AIFactory
 okno wymiany ekwipunku (Andrzej)
 Ładne okno wymiany ekwipunku (Andrzej)
 edytor map (Soszu)

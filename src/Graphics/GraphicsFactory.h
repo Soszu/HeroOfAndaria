@@ -14,11 +14,11 @@ public:
 	static GraphicsObject * get(Object *object);
 	static GraphicsObject * get(const Object *object);
 
-	static GraphicsPlace * get(Place * place);
+	static GraphicsPlace * get(Place *place);
 
 	static GraphicsMap * get(Map *map);
 
-	static GraphicsItem * get(Item * item);//TODO
+	static GraphicsItem * get(Item *item);//TODO
 
 private:
 	GraphicsFactory() = delete;

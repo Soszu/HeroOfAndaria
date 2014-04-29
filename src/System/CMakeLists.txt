@@ -1,4 +1,5 @@
 set (HOASystem_SRCS
+	AI/AI.cpp
 	Attack.cpp
 	Bases/CreatureBase.cpp
 	Bases/ItemBase.cpp
