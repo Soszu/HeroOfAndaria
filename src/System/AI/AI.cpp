@@ -1,4 +1,5 @@
 #include "System/AI/AI.h"
+#include "System/Utils/Math.h"
 
 /**
  * \class AI
@@ -21,5 +22,47 @@ void AI::setVisibilityManager(VisibilityManager *visibilityManager)
 
 QHash <Creature *, AI *> AIFactory::map_;
 
-//TODO AI * ai(Creature *creature) {} // perhaps const Creature *
+AI * AIFactory::ai(Creature *creature)
+{
+	if (!map_.contains(creature)) {
+		map_[creature] = new FollowerAI(creature);  //TODO jak creature umiera trzeba to zwolnic
+	}
+	return map_[creature];
+}
 
+/**
+ * \class FollowerAI
+ */
+
+FollowerAI::FollowerAI(Creature *creature) :
+	AI(creature)
+{
+}
+
+void FollowerAI::detectPlayer()
+{
+	//TODO load ray from creature base
+	QVector <Object *> objects = visibilityManager_->objectsInCircle(creature_->position(), 500);
+
+	for (Object *object : objects)  {
+		if (object->objectType() == HOA::ObjectType::Human) {
+			seesPlayer = true;
+			playerPos = object->position();
+		}
+	}
+}
+
+QVector<AI::Behaviour> FollowerAI::act()
+{
+	QVector<Behaviour> answer;
+	detectPlayer();
+	if (seesPlayer) {
+		answer.push_back({HOA::AIBehaviour::Rotate, (int)playerPos.x(), (int)playerPos.y()});
+		if (HOA::vectorLength(creature_->position() - playerPos) > 100) {
+			answer.push_back({HOA::AIBehaviour::Walk});
+		} else {
+			answer.push_back({HOA::AIBehaviour::PrimaryAttack});
+		}
+	}
+	return answer;
+}

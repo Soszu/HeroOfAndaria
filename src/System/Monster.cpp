@@ -1,4 +1,5 @@
 #include "System/Monster.h"
+#include "AI/AI.h"
 
 Monster::Monster()
 {}
@@ -10,6 +11,18 @@ HOA::ObjectType Monster::objectType() const
 
 void Monster::advance()
 {
-	Movable::move(HOA::Direction::Front);
+	if (hitPoints() > 0) {
+		AI *ai = AIFactory::ai(this);
+		QVector<AI::Behaviour> behaviours = ai->act();;
+		stop();
+		for (AI::Behaviour b : behaviours) {
+			if (b.behaviour == HOA::AIBehaviour::Walk || b.behaviour == HOA::AIBehaviour::Run) {
+				move(HOA::Direction::Front);
+			}
+			if (b.behaviour == HOA::AIBehaviour::Rotate) {
+				setRotation({b.first, b.second}); //TODO check if won't collide after rotating
+			}
+		}
+	}
 	Movable::advance();
 }

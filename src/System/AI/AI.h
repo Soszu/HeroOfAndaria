@@ -9,6 +9,7 @@ namespace HOA {
 		Walk,
 		Run,
 		Jump,
+		Rotate,
 
 		PrimaryAttack,
 		SecondaryAttack,
@@ -48,7 +49,7 @@ public:
 		int second;
 	};
 
-	virtual Behaviour act() = 0;
+	virtual QVector<Behaviour> act() = 0;
 
 protected:
 	/** Note that visibilityManager must be set each time the map is changed! */
@@ -70,6 +71,21 @@ private:
 	AIFactory(const AIFactory &) = delete;
 
 	static QHash <Creature *, AI *> map_;
+};
+
+/**
+ * \class FollowerAI
+ */
+class FollowerAI : public AI
+{
+public:
+	FollowerAI(Creature *creature);
+	virtual QVector<Behaviour> act();
+private:
+	bool seesPlayer;
+	QPointF playerPos;
+
+	void detectPlayer();
 };
 
 #endif // AI_H
