@@ -3,6 +3,8 @@
 Map::Map(int width, int height, Human *player) :
 	Grid(width, height), player_(player)
 {
+	advanceTimer_ = new QTimer(this);
+
 	//TODO
 	test();
 }
@@ -32,9 +34,21 @@ void Map::onCollision(Object *object, const QVector <Object *> &collisions)
 
 void Map::addObject(Object *object)
 {
+	Q_ASSERT(!objects_.contains(object));
+	connect(advanceTimer_, &QTimer::timeout, object, &Object::advance);
 	objects_.append(object);
 	newestObject_ = object;
 	emit objectAdded();
+}
+
+void Map::activate()
+{
+	advanceTimer_->start(Object::advanceTimeout());
+}
+
+void Map::deactivate()
+{
+	advanceTimer_->stop();
 }
 
 void Map::test()

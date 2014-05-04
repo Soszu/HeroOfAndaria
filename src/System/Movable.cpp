@@ -5,8 +5,10 @@
  * \class Movable
  */
 
+const MovementManager * Movable::movementManager_ = nullptr;
+
 Movable::Movable() :
-	movementManager_(nullptr), speed_({0, 0}), moveDirection_(HOA::Direction::None)
+	speed_({0, 0}), moveDirection_(HOA::Direction::None)
 {}
 
 bool Movable::isMovable() const

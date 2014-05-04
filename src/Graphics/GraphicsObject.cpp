@@ -1,7 +1,7 @@
 #include "Graphics/GraphicsObject.h"
 
-GraphicsObject::GraphicsObject(Object *object)
-	: object_(object)
+GraphicsObject::GraphicsObject(Object *object) :
+	object_(object)
 {
 	connect(object_, &Object::positionSet, this, &GraphicsObject::adjustPosition);
 	connect(object_, &Object::rotationSet, this, &GraphicsObject::adjustRotation);

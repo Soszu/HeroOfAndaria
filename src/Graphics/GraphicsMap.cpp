@@ -32,6 +32,9 @@ bool GraphicsMap::canMakeMove(const Movable *object, const QPoint &vector) const
 		return false;
 
 	GraphicsObject *graphicsObject = GraphicsFactory::get(object);
+
+	Q_ASSERT(graphicsObject != nullptr);
+
 	auto collisions = graphicsObject->collisions(vector);
 
 	for (GraphicsObject *x : collisions)
@@ -45,6 +48,8 @@ int GraphicsMap::collisionType(const Object *lhs, const Object *rhs) const
 {
 	GraphicsObject *lhsGraphicsObject = GraphicsFactory::get(lhs);
 	GraphicsObject *rhsGraphicsObject = GraphicsFactory::get(rhs);
+
+	Q_ASSERT(lhsGraphicsObject != nullptr && rhsGraphicsObject != nullptr);
 
 	int result = HOA::CollisionType::None;
 
@@ -147,9 +152,8 @@ HOA::Direction GraphicsMap::keysToDirection(HOA::KeyFunction horizontalDirection
 
 void GraphicsMap::reinit()
 {
-	AI::setVisibilityManager(this);
+	initManagement();
 	mapView_->reinit();
-	initObject(map_->player());
 }
 
 void GraphicsMap::mousePressEvent(QMouseEvent *event)
@@ -256,10 +260,19 @@ void GraphicsMap::wheelEvent(QWheelEvent *event)
 
 void GraphicsMap::initMap()
 {
+	initManagement();
+
 	for (Object *obj : map_->objects())
 		initObject(obj);
 
 	connect(map_, &Map::objectAdded, this, &GraphicsMap::onObjectAdded);
+}
+
+void GraphicsMap::initManagement()
+{
+	AI::setVisibilityManager(this);
+	Movable::setMovementManager(this);
+	Object::setAttackManager(this);
 }
 
 void GraphicsMap::initView()
@@ -275,11 +288,7 @@ void GraphicsMap::initLayout()
 {}
 
 void GraphicsMap::initObject(Object *object)
-{
-	object->setAttackManager(this);
-	if (object->isMovable())
-		((Movable *)object)->setMovementManager(this);
-}
+{}
 
 void GraphicsMap::onCollision(QObject *object)
 {
@@ -375,7 +384,6 @@ void MapView::initGraphicsObjects()
 	for (Object *object : map_->objects())
 		if (!items().contains(GraphicsFactory::get(object)))
 			addGraphicsObject(GraphicsFactory::get(object));
-	map_->player();
 }
 
 void MapView::initCursor()

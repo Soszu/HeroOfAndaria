@@ -23,6 +23,9 @@ public:
 
 	virtual void addObject(Object *object);
 
+	void activate();
+	void deactivate();
+
 signals:
 	void objectAdded();
 
@@ -30,6 +33,8 @@ protected:
 	QVector <Object *> objects_;
 	Object *newestObject_;
 	Human *player_;
+
+	QTimer *advanceTimer_;
 
 private:
 	void test();

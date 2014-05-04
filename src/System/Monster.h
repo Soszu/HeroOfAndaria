@@ -9,6 +9,9 @@ public:
 	Monster();
 
 	virtual HOA::ObjectType objectType() const;
+
+protected:
+	void advance();
 };
 
 #endif // MONSTER_H

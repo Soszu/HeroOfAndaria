@@ -41,9 +41,11 @@ public:
 	virtual HOA::ObjectType objectType() const = 0;
 	virtual bool isMovable() const;
 
+	static int advanceTimeout();
+
 	/** Attacks */
 
-	void setAttackManager(AttackManager *attackManager);
+	static void setAttackManager(AttackManager *attackManager);
 	virtual void receiveAttack(const Attack &attack);
 
 	/** Position and rotation */
@@ -61,18 +63,17 @@ public:
 	void removeEffect(const HOA::Effect &effect);
 	void removeEffect(const HOA::EffectType effectType);
 
+public slots:
+	virtual void advance();
+
 protected:
-	static int advanceTimeout();
 	static int timeDivisor();
 	static int realAdvanceTimeout();
 
-	AttackManager *attackManager_;
+	static AttackManager *attackManager_;
 	QVector <int> registeredAttacks_; //TODO with global timer remove attacks some time ago in advance()
 
 	QVector <HOA::Effect> effects_;
-
-protected slots:
-	virtual void advance();
 
 signals:
 	void positionSet();
@@ -83,10 +84,6 @@ signals:
 private:
 	QPoint position_;
 	QPoint rotation_;
-
-	static QTimer advanceTimer_;
-
-	static void initTimer();
 };
 
 #endif // OBJECT_H

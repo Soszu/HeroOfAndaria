@@ -50,6 +50,8 @@ GraphicsObject * GraphicsFactory::get(Object *object)
 
 GraphicsObject * GraphicsFactory::get(const Object *object)
 {
+	if (!map_.contains(object))
+		qDebug() << "no graphics object for:" << (long long)object;
 	Q_ASSERT(map_.contains(object));
 	return map_[object];
 }

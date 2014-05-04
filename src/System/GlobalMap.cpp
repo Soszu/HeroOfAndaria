@@ -63,8 +63,8 @@ void GlobalMap::enterTown(Town *town)
 
 void GlobalMap::exitTown(Town *town)
 {
-	currentTown_ = nullptr;
 	emit townExited();
+	currentTown_ = nullptr;
 }
 
 QVector <Location *> GlobalMap::locations() const
@@ -89,8 +89,8 @@ void GlobalMap::enterLocation(Location *location)
 
 void GlobalMap::exitLocation(Location *location)
 {
-	currentLocation_ = nullptr;
 	emit locationExited();
+	currentLocation_ = nullptr;
 }
 
 void GlobalMap::test()

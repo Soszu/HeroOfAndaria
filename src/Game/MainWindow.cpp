@@ -51,6 +51,8 @@ void MainWindow::initGlobalMap()
 	graphicsGlobalMap_ = new GraphicsGlobalMap(globalMap_);
 
 	connect(graphicsGlobalMap_, &GraphicsGlobalMap::menuActivated, this, &MainWindow::onMenuActivated);
+
+	globalMap_->activate();
 }
 
 void MainWindow::initLayout()

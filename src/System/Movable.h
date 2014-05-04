@@ -31,7 +31,7 @@ public:
 
 	virtual bool isMovable() const;
 
-	void setMovementManager(const MovementManager *movement);
+	static void setMovementManager(const MovementManager *movement);
 
 	QPoint speed() const;
 	virtual int maxSpeed() const = 0;
@@ -40,10 +40,11 @@ public:
 	void stop();
 
 protected:
+	static const MovementManager *movementManager_;
+
 	void advance();
 
 private:
-	const MovementManager *movementManager_;
 	QPoint speed_;
 	HOA::Direction moveDirection_;
 };

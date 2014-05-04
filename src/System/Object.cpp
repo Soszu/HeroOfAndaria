@@ -1,18 +1,10 @@
 #include "System/Attack.h"
 #include "System/Object.h"
 
-QTimer Object::advanceTimer_;
+AttackManager * Object::attackManager_ = nullptr;
 
-Object::Object() :
-	attackManager_(nullptr)
-{
-	static bool timerInitialized = false;
-	if (!timerInitialized) {
-		initTimer();
-		timerInitialized = true;
-	}
-	connect(&advanceTimer_, &QTimer::timeout, this, &Object::advance);
-}
+Object::Object()
+{}
 
 Object::~Object()
 {
@@ -22,6 +14,12 @@ Object::~Object()
 bool Object::isMovable() const
 {
 	return false;
+}
+
+int Object::advanceTimeout()
+{
+	static const int ADVANCE_TIMEOUT = 40;
+	return ADVANCE_TIMEOUT;
 }
 
 void Object::setAttackManager(AttackManager *attackManager)
@@ -86,10 +84,10 @@ void Object::removeEffect(const HOA::EffectType effectType)
 	}
 }
 
-int Object::advanceTimeout()
+void Object::advance()
 {
-	static const int ADVANCE_TIMEOUT = 40;
-	return ADVANCE_TIMEOUT;
+	//TODO static changes (effects expiring...)
+	emit advanced();
 }
 
 int Object::timeDivisor()
@@ -101,15 +99,4 @@ int Object::timeDivisor()
 int Object::realAdvanceTimeout()
 {
 	return advanceTimeout() / timeDivisor();
-}
-
-void Object::advance()
-{
-	//TODO static changes (effects expiring...)
-	emit advanced();
-}
-
-void Object::initTimer()
-{
-	advanceTimer_.start(advanceTimeout());
 }

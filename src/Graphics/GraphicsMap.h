@@ -58,6 +58,7 @@ protected slots:
 
 private:
 	void initMap();
+	void initManagement();
 	void initView();
 	void initLayout();
 	void initObject(Object *object);

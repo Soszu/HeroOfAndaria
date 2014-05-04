@@ -81,6 +81,7 @@ void GraphicsGlobalMap::tryEnterLocation()
 
 void GraphicsGlobalMap::onTownEntered()
 {
+	map_->deactivate();
 	const Town *currentTown = ((GlobalMap *)map_)->currentTown();
 	GraphicsTown *graphicsTown =
 		static_cast<GraphicsTownObject *>(GraphicsFactory::get(currentTown))->graphicsTown();
@@ -92,10 +93,12 @@ void GraphicsGlobalMap::onTownExited()
 {
 	QStackedWidget::setCurrentIndex(MAP_INDEX);
 	townWidget_->layout()->removeItem(townWidget_->layout()->itemAt(0));
+	map_->activate();
 }
 
 void GraphicsGlobalMap::onLocationEntered()
 {
+	map_->deactivate();
 	const Location *currentLocation = ((GlobalMap *)map_)->currentLocation();
 	locationPosition_ = currentLocation->position();
 
@@ -106,14 +109,20 @@ void GraphicsGlobalMap::onLocationEntered()
 	locationWidget_->layout()->addWidget(graphicsLocalMap);
 	graphicsLocalMap->reinit();
 	QStackedWidget::setCurrentIndex(LOCATION_INDEX);
+
+	currentLocation->localMap()->activate();
 }
 
 void GraphicsGlobalMap::onLocationExited()
 {
+	((GlobalMap *)map_)->currentLocation()->localMap()->deactivate();
+
 	QStackedWidget::setCurrentIndex(MAP_INDEX);
 
 	locationWidget_->layout()->removeItem(locationWidget_->layout()->itemAt(0));
 
 	map_->player()->setPosition(locationPosition_);
 	reinit();
+
+	map_->activate();
 }
