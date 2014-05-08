@@ -68,7 +68,7 @@ int GraphicsMap::collisionType(const Object *lhs, const Object *rhs) const
 		GraphicsCreature *lhsGraphicsCreature = static_cast<GraphicsCreature *>(GraphicsFactory::get(lhs));
 
 		QPolygon weaponArea = lhsGraphicsCreature->weaponShape()
-			.toPolygon()
+			.toFillPolygon().toPolygon()
 			.translated(lhsGraphicsCreature->pos().toPoint());
 
 		if (!weaponArea.intersected(rhsObjectArea).isEmpty())

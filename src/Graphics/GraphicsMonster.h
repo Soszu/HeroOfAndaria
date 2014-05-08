@@ -9,7 +9,7 @@ class GraphicsMonster : public GraphicsCreature
 public:
 	GraphicsMonster(Monster *monster);
 
-	virtual QPolygonF weaponShape();
+	virtual QPainterPath weaponShape() const;
 
 	virtual int creatureWidth() const;
 	virtual int creatureHeight() const;
@@ -17,7 +17,7 @@ public:
 protected:
 	virtual void initRenderer();
 
-	virtual QPointF weaponAttachPoint();
+	virtual QPointF weaponAttachPoint() const;
 
 	virtual void advance();
 };

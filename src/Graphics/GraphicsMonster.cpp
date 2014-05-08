@@ -7,20 +7,22 @@ GraphicsMonster::GraphicsMonster(Monster *monster) :
 	initRenderer();
 }
 
-QPolygonF GraphicsMonster::weaponShape()
+QPainterPath GraphicsMonster::weaponShape() const
 {
-	return QPolygonF();
+	QPainterPath weapon;
+	weapon.addEllipse(weaponAttachPoint(), creatureWidth() / 2, creatureHeight() / 4);
+	return weapon;
 }
 
 int GraphicsMonster::creatureHeight() const
 {
-	static const int MONSTER_HEIGHT = 120;
+	static const int MONSTER_HEIGHT = 100;
 	return MONSTER_HEIGHT;
 }
 
 int GraphicsMonster::creatureWidth() const
 {
-	static const int MONSTER_WIDTH = 50;
+	static const int MONSTER_WIDTH = 30;
 	return MONSTER_WIDTH;
 }
 
@@ -30,9 +32,9 @@ void GraphicsMonster::initRenderer()
 	rendererDead_ = DataManager::renderer(Data::ImagePath::WolfDead);
 }
 
-QPointF GraphicsMonster::weaponAttachPoint()
+QPointF GraphicsMonster::weaponAttachPoint() const
 {
-	return {0.0, 0.0};
+	return {0.0, qreal(creatureHeight()) * 0.28};
 }
 
 void GraphicsMonster::advance()

@@ -11,7 +11,7 @@ class GraphicsCreature : public GraphicsObject
 public:
 	GraphicsCreature(Creature *creature);
 
-	virtual QPolygonF weaponShape() const;
+	virtual QPainterPath weaponShape() const;
 	virtual QPainterPath figureShape() const;
 	virtual QPainterPath shape() const;
 
@@ -28,11 +28,11 @@ protected:
 	QSvgRenderer *renderer_;
 	QSvgRenderer *rendererDead_;
 
-	virtual void initRenderer();  /** invoke this function in constructor of every derived class */
+	virtual void initRenderer();            /** invoke this function in constructor of every derived class */
 
 	qreal widthScale() const;               /** change from loaded image to pixmap on the screen */
 	qreal heightScale() const;
-	QPointF pointZero() const;         /** top left point */
+	QPointF pointZero() const;              /** top left point */
 
 	virtual QPointF weaponAttachPoint() const;
 

@@ -9,15 +9,17 @@ GraphicsCharacter::GraphicsCharacter(Character *character) :
 	weaponAngle_  = 0.0;
 }
 
-QPolygonF GraphicsCharacter::weaponShape() const
+QPainterPath GraphicsCharacter::weaponShape() const
 {
-	QPolygonF weapon;
+	QPainterPath weapon;
+	QPolygonF weaponMainFrame;
 
 	QPointF left   = QPointF(widthScale() * -20.0, heightScale() * +15.0);
 	QPointF right  = QPointF(widthScale() * +20.0, heightScale() * +15.0);
 	QPointF bottom = QPointF(widthScale() * +0.0,  heightScale() * +85.0);
 
-	weapon << left << right << bottom << left;
+	weaponMainFrame << left << right << bottom << left;
+	weapon.addPolygon(weaponMainFrame);
 
 	QTransform weaponRotationMatrix;
 	weaponRotationMatrix.translate(weaponAttachPoint().x() + pointZero().x(),
@@ -52,8 +54,8 @@ void GraphicsCharacter::paintWeapon(QPainter *painter)
 	painter->translate(weaponAttachPoint() + pointZero());
 	painter->rotate(weaponAngle_);
 	weaponRender_->render(painter, QRectF(widthScale() * -18.0, heightScale() * -5.0,
-			weaponRender_->viewBoxF().width() * widthScale(),
-			weaponRender_->viewBoxF().height() * heightScale()));
+	                      weaponRender_->viewBoxF().width() * widthScale(),
+	                      weaponRender_->viewBoxF().height() * heightScale()));
 	painter->restore();
 }
 

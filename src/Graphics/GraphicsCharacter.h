@@ -9,7 +9,7 @@ class GraphicsCharacter : public GraphicsCreature
 public:
 	GraphicsCharacter(Character *character);
 
-	virtual QPolygonF weaponShape() const;
+	virtual QPainterPath weaponShape() const;
 
 	virtual int creatureWidth() const;
 	virtual int creatureHeight() const;

@@ -7,9 +7,9 @@ GraphicsCreature::GraphicsCreature(Creature *creature) :
 	initRenderer();
 }
 
-QPolygonF GraphicsCreature::weaponShape() const
+QPainterPath GraphicsCreature::weaponShape() const
 {
-	return QPolygonF();
+	return QPainterPath();
 }
 
 QPainterPath GraphicsCreature::figureShape() const
@@ -25,7 +25,7 @@ QPainterPath GraphicsCreature::shape() const
 	QPainterPath path;
 
 	path.addPath(figureShape());
-	path.addPolygon(weaponShape());
+	path.addPath(weaponShape());
 
 	return path;
 }
@@ -145,10 +145,10 @@ void GraphicsCreature::paintHealth(QPainter *painter)
 
 QRectF GraphicsCreature::boundingRect() const
 {
-	return QRectF(-creatureWidth() * 5 / 2,
-				  -creatureHeight() * 5 / 2,
-				  creatureWidth() * 5,
-				  creatureHeight() * 5);
+	return QRectF(-creatureWidth()  * 5 / 2,
+	              -creatureHeight() * 5 / 2,
+	               creatureWidth()  * 5,
+	               creatureHeight() * 5);
 }
 
 void GraphicsCreature::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
