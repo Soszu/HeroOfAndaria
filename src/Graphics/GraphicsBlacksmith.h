@@ -5,7 +5,7 @@
 #include "Graphics/GraphicsPlace.h"
 #include "System/Blacksmith.h"
 #include "System/Place.h"
-
+#include "System/Weapon.h"
 class GraphicsBlacksmith : public GraphicsPlace
 {
 Q_OBJECT;

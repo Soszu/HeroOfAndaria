@@ -22,6 +22,8 @@ private:
 	ImageButton *exchangeButton_;
 	QVBoxLayout *layout_;
 	QHBoxLayout *GElayout_;
+	QScrollArea *rscrollarea_;
+	QScrollArea *lscrollarea_;
 
 	void setActive(GraphicsEquipment *active);
 	GraphicsEquipment * notActive();
@@ -40,7 +42,8 @@ public:
 	GraphicsEquipment(EquipmentCarrier *eq, int span, QWidget *parent = nullptr);
 	EquipmentCarrier * eq();
 	SlotButton * activeSlot();
-
+	int span();
+	QSize sizeHint() const;
 private:
 	EquipmentCarrier *eq_;
 	QVector <SlotButton *> gButtons_;
@@ -55,7 +58,7 @@ private:
 	void rearrangeSlots();
 
 protected:
-	void paintEvent(QPaintEvent *event);
+	//void paintEvent(QPaintEvent *event);
 
 public slots:
 	void processClick(QWidget *sB);
@@ -79,6 +82,7 @@ public:
 	void setGItem(GraphicsItem *gi);
 
 private:
+	void paintEvent(QPaintEvent *event);
 	GraphicsItem *gItem_;
 };
 

@@ -10,10 +10,10 @@ set (HOAGraphics_SRCS GraphicsMonster.cpp
 	GraphicsLocalMap.cpp
 	GraphicsMap.cpp
 	GraphicsObject.cpp
- 	GraphicsPlace.cpp
- 	GraphicsTown.cpp
- 	ImageButton.cpp
- 	KeyboardManager.cpp
+	GraphicsPlace.cpp
+	GraphicsTown.cpp
+	ImageButton.cpp
+	KeyboardManager.cpp
 	Panels.cpp
 )
 

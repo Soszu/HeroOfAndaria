@@ -8,6 +8,7 @@ Creature::Creature(const CreatureBase *base) :
 
 	//TODO
 	setCurrentWeapon(new Weapon);
+	this->addItem(this->currentWeapon());
 }
 
 Creature::~Creature()

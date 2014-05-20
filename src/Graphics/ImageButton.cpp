@@ -79,3 +79,18 @@ void ImageButton::paintEvent(QPaintEvent *)
 	painter.setFont(font);
 	painter.drawText(rect(), Qt::AlignCenter, text());
 }
+
+QPixmap * ImageButton::normalImage()
+{
+	return this->normalImage_;
+}
+
+QPixmap * ImageButton::darkImage()
+{
+	return this->darkImage_;
+}
+
+int ImageButton::fontPointSize()
+{
+	return this->fontPointSize_;
+}

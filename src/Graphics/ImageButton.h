@@ -26,6 +26,7 @@ public:
 private:
 	QPixmap *normalImage_;
 	QPixmap *darkImage_;
+
 	int fontPointSize_;
 	static const int DEFAULT_FONT_SIZE = 11;
 
@@ -33,6 +34,9 @@ private:
 protected:
 	void loadImages(const QString normalPath, const QString darkPath);
 	void paintEvent(QPaintEvent *);
+	QPixmap *normalImage();
+	QPixmap *darkImage();
+	int fontPointSize();
 
 };
 

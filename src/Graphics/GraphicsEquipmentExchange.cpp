@@ -15,7 +15,9 @@ GraphicsEquipmentExchange::GraphicsEquipmentExchange(GraphicsEquipment *l, Graph
 	"",
 	this)),
 	layout_(new QVBoxLayout(this)),
-	GElayout_(new QHBoxLayout())
+	GElayout_(new QHBoxLayout()),
+	rscrollarea_(new QScrollArea()),
+	lscrollarea_(new QScrollArea())
 {
 	connect(l, &GraphicsEquipment::sigReset, r, &GraphicsEquipment::reset);
 	connect(r, &GraphicsEquipment::sigReset, l, &GraphicsEquipment::reset);
@@ -29,10 +31,16 @@ GraphicsEquipmentExchange::GraphicsEquipmentExchange(GraphicsEquipment *l, Graph
 
 	this->layout_->addWidget(this->exchangeButton_);
 
-	this->layout_->addWidget(this->l_);
-	this->layout_->addWidget(this->r_);
+	this->rscrollarea_->setWidget(r_);
+	this->lscrollarea_->setWidget(l_);
 
-	//this->layout_->addLayout(this->GElayout_);
+	this->GElayout_->addWidget(this->lscrollarea_);
+	this->GElayout_->addWidget(this->rscrollarea_);
+	this->GElayout_->setSizeConstraint(QLayout::SetFixedSize);
+	//this->GElayout_->addWidget(this->l_);
+	//this->GElayout_->addWidget(this->r_);
+
+	this->layout_->addLayout(this->GElayout_);
 }
 
 GraphicsEquipment * GraphicsEquipmentExchange::notActive()
@@ -81,6 +89,11 @@ GraphicsEquipment::GraphicsEquipment(EquipmentCarrier *eq, int span, QWidget *pa
 {
 	this->layout_->setHorizontalSpacing(0);
 	this->layout_->setVerticalSpacing(0);
+	this->layout_->setSizeConstraint(QLayout::SetFixedSize);
+//	this->addLayout(this->layout_);
+//	this->setSizePolicy(QLayout::SetMinAndMaxSize);
+//	this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
+//	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 	for (auto i : eq->itemList()) {
 		this->addSlot(GraphicsFactory::get(i));
 	}
@@ -96,10 +109,16 @@ GraphicsEquipment::GraphicsEquipment(EquipmentCarrier *eq, int span, QWidget *pa
 	);
 }
 
-void GraphicsEquipment::paintEvent(QPaintEvent *event)
+QSize GraphicsEquipment::sizeHint() const
 {
-	this->QWidget::paintEvent(event);
+	return QSize(this->gButtons_[0]->sizeHint().width() * this->span_, this->gButtons_[0]->sizeHint().height() * this->gButtons_.size() / this->span_);
 }
+
+//
+//void GraphicsEquipment::paintEvent(QPaintEvent *event)
+//{
+//	this->QScrollArea::paintEvent(event);
+//}
 
 void GraphicsEquipment::rearrangeSlots()
 {
@@ -144,7 +163,7 @@ void GraphicsEquipment::reset()
 bool GraphicsEquipment::receiveItem(GraphicsEquipment *from, GraphicsItem *gItem)
 {
 	if (moveItem(from->eq(), this->eq(), gItem->item())) {
-		if (this->eq()->itemList().size() == this->gButtons_.size()) {
+		if (this->eq()->itemList().size() > this->gButtons_.size()) {
 			addSlot(gItem);
 			for (int i = 0; i < this->span_-1; i++) {
 				addSlot(nullptr);
@@ -169,6 +188,10 @@ void GraphicsEquipment::removeItem(SlotButton *sb)
 	sb->setGItem(nullptr);
 }
 
+int GraphicsEquipment::span()
+{
+	return this->span_;
+}
 
 SlotButton *GraphicsEquipment::activeSlot()
 {
@@ -186,6 +209,7 @@ SlotButton::SlotButton(QWidget *parent) :
 	parent),
 	gItem_(nullptr)
 {
+	this->setText("Empty");
 }
 
 SlotButton::SlotButton(GraphicsItem *gi, QWidget *parent) :
@@ -195,6 +219,8 @@ SlotButton::SlotButton(GraphicsItem *gi, QWidget *parent) :
 	parent),
 	gItem_(gi)
 {
+	if (gi == nullptr)
+		this->setText("Empty");
 }
 
 void SlotButton::setGItem(GraphicsItem *gi)
@@ -215,4 +241,23 @@ void SlotButton::setGItem(GraphicsItem *gi)
 GraphicsItem * SlotButton::gItem()
 {
 	return this->gItem_;
+}
+
+void SlotButton::paintEvent(QPaintEvent *)
+{
+	QPainter painter(this);
+	if (isDown() || !isEnabled() || hasFocus())
+		painter.drawPixmap(rect(), *(this->darkImage()));
+	else
+		painter.drawPixmap(rect(), *(this->normalImage()));
+
+	QFont font = QApplication::font();
+	font.setPointSize(fontPointSize());
+	if (hasFocus())
+		font.setBold(true);
+
+	QPen pen(Qt::black);
+	painter.setPen(pen);
+	painter.setFont(font);
+	painter.drawText(rect(), Qt::AlignCenter, text());
 }
