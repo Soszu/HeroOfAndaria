@@ -1,4 +1,5 @@
 #include "System/Creature.h"
+#include "System/Utils/Math.h"
 
 Creature::Creature(const CreatureBase *base) :
 	base_(base), hitPoints_(0)
@@ -21,7 +22,7 @@ void Creature::initStats()
 
 void Creature::initActions()
 {
-	freezed_ = false;
+	freezed_   = false;
 	currentAction_ = HOA::CreatureAction::None;
 	connect(&actionTimeLine_, &QTimeLine::finished, this, &Creature::onActionFinished);
 }
@@ -54,6 +55,11 @@ UID Creature::uid() const
 
 QString Creature::name() const
 {
+	//TODO
+	if (objectType() == HOA::ObjectType::Monster)
+		return "monster";
+	else
+		return "humano";
 	return base_->name();
 }
 
@@ -132,7 +138,11 @@ void Creature::receiveAttack(const Attack &attack)
 	//TODO no it's not perfect
 	setHitPoints(qMax(hitPoints() - attack.weapon()->damage(), 0));
 
-	freezed_ = true;
+	freezed_   = true;
+
+	QPoint attackerPosition = attack.attacker()->position();
+	QPoint vectorToAttacker = HOA::lengthenVector(attackerPosition, 200.0).toPoint();
+	recoilDirection_        = HOA::rotateVector(vectorToAttacker, qDegreesToRadians(180.0f)).toPoint();
 
 	if (hitPoints() == 0)
 		return;
@@ -141,6 +151,9 @@ void Creature::receiveAttack(const Attack &attack)
 
 	//TODO
 	currentAction_ = HOA::CreatureAction::Recoil;
+
+	if (currentAction_ == HOA::CreatureAction::Recoil)
+		qDebug() << "now currentAction = Recoil";
 
 	int recoilDuration = 500;
 	actionTimeLine_.setDuration(recoilDuration);
@@ -196,8 +209,29 @@ QDataStream & operator >> (QDataStream &in, Creature &creature)
 	return in;
 }
 
+void Creature::advance()
+{
+	if (currentAction() == HOA::CreatureAction::Recoil) {
+
+		//TODO 1. depending on power of strike, 2. emmm... this is a sword, not an elephant...
+		// a = 1 / 400000, b = -11/40000, c = -11/200, d = 50
+		qreal x1 = (qreal)actionTimeLine_.currentTime();
+		qreal x2 = x1 + (qreal)advanceTimeout();
+		qreal v1 = x1 * x1 * x1  / 400000 + x1 * x1 * -11 / 40000 + x1 * -11 / 200 + 50;
+		qreal v2 = x2 * x2 * x2  / 400000 + x2 * x2 * -11 / 40000 + x2 * -11 / 200 + 50;
+
+		QPointF vector = HOA::lengthenVector(recoilDirection_, v2 - v1);
+
+		if (movementManager_->canMakeMove(this, vector.toPoint()))
+			setPosition(position() + vector.toPoint());
+	}
+	Movable::advance();
+}
+
 void Creature::onActionFinished()
 {
-	freezed_ = false;
+	if (currentAction_ == HOA::CreatureAction::Recoil)
+		qDebug() << "on action finished";
+	freezed_       = false;
 	currentAction_ = HOA::CreatureAction::None;
 }

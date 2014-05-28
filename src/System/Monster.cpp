@@ -17,12 +17,14 @@ void Monster::advance()
 		stop();
 		for (AI::Behaviour b : behaviours) {
 			if (b.behaviour == HOA::AIBehaviour::Walk || b.behaviour == HOA::AIBehaviour::Run) {
-				move(HOA::Direction::Front);
+				if (!freezed_)
+					move(HOA::Direction::Front);
 			}
 			if (b.behaviour == HOA::AIBehaviour::Rotate) {
-				setRotation({b.first, b.second}); //TODO check if won't collide after rotating
+				if (!freezed_)
+					setRotation({b.first, b.second}); //TODO check if won't collide after rotating
 			}
 		}
 	}
-	Movable::advance();
+	Creature::advance();
 }

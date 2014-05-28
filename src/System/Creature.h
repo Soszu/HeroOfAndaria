@@ -61,6 +61,9 @@ public:
 	friend QDataStream & operator << (QDataStream &out, const Creature &creature);
 	friend QDataStream & operator >> (QDataStream &in, Creature &creature);
 
+public slots:
+	virtual void advance();
+
 signals:
 	void hitPointsChanged();
 
@@ -80,6 +83,9 @@ private:
 	Weapon *currentWeapon_;
 
 	Attack currentAttack_;
+
+	//TODO looks like in wrong place?
+	QPoint recoilDirection_;
 
 private slots:
 	void onActionFinished();
