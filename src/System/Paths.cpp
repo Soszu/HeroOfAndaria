@@ -45,13 +45,16 @@ QString Data::path(ImagePath name)
 
 	static const QString LocationKennel = ImgPreffix + "/kennel.png";
 
-	static const QString Player = ImgPreffix + "/player.svg";
-	static const QString Wolf   = ImgPreffix + "/wolf.svg";
+	static const QString Player    = ImgPreffix + "/player.svg";
+	static const QString Barbarian = ImgPreffix + "/barbarian.svg";
+	static const QString Wolf      = ImgPreffix + "/wolf.svg";
 
-	static const QString PlayerDead = ImgPreffix + "/deadPlayer.svg";
-	static const QString WolfDead   = ImgPreffix + "/deadWolf.svg";
+	static const QString PlayerDead    = ImgPreffix + "/deadPlayer.svg";
+	static const QString BarbarianDead = ImgPreffix + "/deadBarbarian.svg";
+	static const QString WolfDead      = ImgPreffix + "/deadWolf.svg";
 
 	static const QString Sword = ImgPreffix + "/sword.svg";
+	static const QString Axe   = ImgPreffix + "/axe.svg";
 
 	static const QString EmptySlotNormal = ImgPreffix + "/emptySlotNormal.png";
 	static const QString EmptySlotDark = ImgPreffix + "/emptySlotDark.png";
@@ -102,13 +105,16 @@ QString Data::path(ImagePath name)
 
 		case ImagePath::LocationKennel: return LocationKennel;
 
-		case ImagePath::Player: return Player;
-		case ImagePath::Wolf:   return Wolf;
+		case ImagePath::Player:      return Player;
+		case ImagePath::Wolf:        return Wolf;
+		case ImagePath::Barbarian:   return Barbarian;
 
-		case ImagePath::PlayerDead: return PlayerDead;
-		case ImagePath::WolfDead:   return WolfDead;
+		case ImagePath::PlayerDead:    return PlayerDead;
+		case ImagePath::BarbarianDead: return BarbarianDead;
+		case ImagePath::WolfDead:      return WolfDead;
 
 		case ImagePath::Sword: return Sword;
+		case ImagePath::Axe:   return Axe;
 
 		case ImagePath::EmptySlotNormal: return EmptySlotNormal;
 		case ImagePath::EmptySlotDark: return EmptySlotDark;

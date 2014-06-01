@@ -1,15 +1,15 @@
-#include "Graphics/GraphicsCharacter.h"
+#include "GraphicsBarbarian.h"
 #include "System/DataManager.h"
 
-GraphicsCharacter::GraphicsCharacter(Character *character) :
-	GraphicsCreature(character)
+GraphicsBarbarian::GraphicsBarbarian(Barbarian *barbarian) :
+	GraphicsCreature(barbarian)
 {
 	initRenderer();
 	weaponVector_ = {0.0, 0.0};
 	weaponAngle_  = 0.0;
 }
 
-QPainterPath GraphicsCharacter::weaponShape() const
+QPainterPath GraphicsBarbarian::weaponShape() const
 {
 	QPainterPath weapon;
 	QPolygonF weaponMainFrame;
@@ -23,36 +23,35 @@ QPainterPath GraphicsCharacter::weaponShape() const
 
 	QTransform weaponRotationMatrix;
 	weaponRotationMatrix.translate(weaponAttachPoint().x() + pointZero().x(),
-	                               weaponAttachPoint().y() + pointZero().y());
+								   weaponAttachPoint().y() + pointZero().y());
 	weaponRotationMatrix.rotate(weaponAngle_);
 
 	return weaponRotationMatrix.map(weapon);
 }
 
-int GraphicsCharacter::creatureHeight() const
+int GraphicsBarbarian::creatureHeight() const
 {
 	static const int CHARACTER_HEIGHT = 36;
 	return CHARACTER_HEIGHT;
 }
 
-int GraphicsCharacter::creatureWidth() const
+int GraphicsBarbarian::creatureWidth() const
 {
 	static const int CHARACTER_WIDTH = 70;
 	return CHARACTER_WIDTH;
 }
 
-void GraphicsCharacter::initRenderer()
+void GraphicsBarbarian::initRenderer()
 {
-	renderer_     = DataManager::renderer(Data::ImagePath::Player);
-	rendererDead_ = DataManager::renderer(Data::ImagePath::PlayerDead);
-	weaponRender_ = DataManager::renderer(Data::ImagePath::Sword);
+	renderer_     = DataManager::renderer(Data::ImagePath::Barbarian);
+	rendererDead_ = DataManager::renderer(Data::ImagePath::BarbarianDead);
+	weaponRender_ = DataManager::renderer(Data::ImagePath::Axe);
 }
 
-void GraphicsCharacter::paintWeapon(QPainter *painter)
+void GraphicsBarbarian::paintWeapon(QPainter *painter)
 {
 	if (((Creature *)object_)->hitPoints() > 0) {
 		painter->save();
-
 		painter->translate(weaponAttachPoint() + pointZero());
 		painter->rotate(weaponAngle_);
 		weaponRender_->render(painter, QRectF(widthScale() * -18.0, heightScale() * -5.0,
@@ -62,7 +61,7 @@ void GraphicsCharacter::paintWeapon(QPainter *painter)
 	}
 }
 
-void GraphicsCharacter::advance()
+void GraphicsBarbarian::advance()
 {
 	//TODO EKHEM. This... "stabbing"... can actually be done better. :)
 	//TODO attack, recoil
@@ -70,7 +69,7 @@ void GraphicsCharacter::advance()
 		// y - degrees, x - timedelta from 0 to 1
 		// y = 60x3 - 160x2 + 100x
 		qreal x = qreal(((Creature *)object_)->currentActionTime())
-		          / qreal(((Creature *)object_)->currentActionTotalTime());
+				  / qreal(((Creature *)object_)->currentActionTotalTime());
 		weaponAngle_ = ((60.0 * x - 160.0) * x + 100.0) * x * 5 - 15;
 	} else {
 		weaponAngle_ = -15;

@@ -19,6 +19,7 @@ set (HOASystem_SRCS
 	Map.cpp
 # 	Mission.cpp
 	Monster.cpp
+	Barbarian.cpp
 	Models/CreatureModel.cpp
 	Models/ItemModel.cpp
 	Models/WeaponModel.cpp

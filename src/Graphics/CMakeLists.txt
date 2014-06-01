@@ -1,4 +1,5 @@
 set (HOAGraphics_SRCS GraphicsMonster.cpp
+	GraphicsBarbarian.cpp
 	GraphicsBlacksmith.cpp
 	GraphicsCharacter.cpp
 	GraphicsCreature.cpp

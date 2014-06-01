@@ -6,6 +6,7 @@
 #include "Graphics/GraphicsItem.h"
 #include "Graphics/GraphicsLocalMap.h"
 #include "Graphics/GraphicsMonster.h"
+#include "Graphics/GraphicsBarbarian.h"
 #include "Graphics/GraphicsTown.h"
 
 QHash <const Object *, GraphicsObject *> GraphicsFactory::map_;
@@ -23,6 +24,9 @@ GraphicsObject * GraphicsFactory::get(Object *object)
 				break;
 			case HOA::ObjectType::Monster:
 				graphicsObject = new GraphicsMonster((Monster *)object);
+				break;
+			case HOA::ObjectType::Barbarian:
+				graphicsObject = new GraphicsBarbarian((Barbarian *)object);
 				break;
 			case HOA::ObjectType::Character:
 			case HOA::ObjectType::Human:

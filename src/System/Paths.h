@@ -46,12 +46,15 @@ namespace Data {
 		LocationKennel,
 
 		Player,
+		Barbarian,
 		Wolf,
 
 		PlayerDead,
+		BarbarianDead,
 		WolfDead,
 
 		Sword,
+		Axe,
 
 		EmptySlotNormal,
 		EmptySlotDark,

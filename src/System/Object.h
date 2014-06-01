@@ -9,6 +9,7 @@ namespace HOA {
 	enum class ObjectType : quint8 {
 		Creature,
 		Monster,
+		Barbarian,
 		Character,
 		Human,
 
@@ -22,6 +23,7 @@ namespace HOA {
 	const QVector <ObjectType> creatureTypes {
 		ObjectType::Creature,
 		ObjectType::Monster,
+		ObjectType::Barbarian,
 		ObjectType::Character,
 		ObjectType::Human,
 	};
