@@ -23,7 +23,7 @@ QPainterPath GraphicsBarbarian::weaponShape() const
 
 	QTransform weaponRotationMatrix;
 	weaponRotationMatrix.translate(weaponAttachPoint().x() + pointZero().x(),
-								   weaponAttachPoint().y() + pointZero().y());
+	                               weaponAttachPoint().y() + pointZero().y());
 	weaponRotationMatrix.rotate(weaponAngle_);
 
 	return weaponRotationMatrix.map(weapon);
@@ -55,8 +55,8 @@ void GraphicsBarbarian::paintWeapon(QPainter *painter)
 		painter->translate(weaponAttachPoint() + pointZero());
 		painter->rotate(weaponAngle_);
 		weaponRender_->render(painter, QRectF(widthScale() * -18.0, heightScale() * -5.0,
-							  weaponRender_->viewBoxF().width() * widthScale(),
-							  weaponRender_->viewBoxF().height() * heightScale()));
+		                                      weaponRender_->viewBoxF().width() * widthScale(),
+		                                      weaponRender_->viewBoxF().height() * heightScale()));
 		painter->restore();
 	}
 }

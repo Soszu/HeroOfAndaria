@@ -34,3 +34,8 @@ QPointF HOA::lengthenVector(const QPointF &vector, qreal length)
 
 	return {x, y};
 }
+
+qreal HOA::rotationToAngle(const QPointF &rotation)
+{
+	return QLineF(QPointF(0.0, 0.0), QPointF(rotation.x(), -rotation.y())).angle() + 270.0;
+}

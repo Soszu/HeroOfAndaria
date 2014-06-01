@@ -15,8 +15,8 @@ QPainterPath GraphicsCreature::weaponShape() const
 QPainterPath GraphicsCreature::figureShape() const
 {
 	QPainterPath figure;
-	figure.addEllipse(pointZero().x() - 3.0, pointZero().y() - 3.0,
-			creatureWidth()  + 6.0, creatureHeight() + 6.0);
+	figure.addEllipse(pointZero().x()  - 3.0, pointZero().y()  - 3.0,
+	                  creatureWidth()  + 6.0, creatureHeight() + 6.0);
 	return figure;
 }
 
@@ -157,7 +157,8 @@ void GraphicsCreature::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 		paintHealth(painter);
 	if (GraphicsCreature::boundingBoxesVisibilityEnabled())
 		paintBoundingBoxes(painter);
-	paintWeapon(painter);
+	if (((Creature *)object())->hitPoints() > 0)
+		paintWeapon(painter);
 	paintFigure(painter);
 }
 

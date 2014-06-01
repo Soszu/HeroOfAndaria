@@ -152,9 +152,6 @@ void Creature::receiveAttack(const Attack &attack)
 	//TODO
 	currentAction_ = HOA::CreatureAction::Recoil;
 
-	if (currentAction_ == HOA::CreatureAction::Recoil)
-		qDebug() << "now currentAction = Recoil";
-
 	int recoilDuration = 500;
 	actionTimeLine_.setDuration(recoilDuration);
 
@@ -230,8 +227,6 @@ void Creature::advance()
 
 void Creature::onActionFinished()
 {
-	if (currentAction_ == HOA::CreatureAction::Recoil)
-		qDebug() << "on action finished";
 	freezed_       = false;
 	currentAction_ = HOA::CreatureAction::None;
 }

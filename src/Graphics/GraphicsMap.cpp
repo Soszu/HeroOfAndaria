@@ -26,9 +26,9 @@ bool GraphicsMap::canMakeMove(const Movable *object, const QPoint &vector) const
 	static const int BORDER_SIZE = 20;
 
 	QPoint finalPosition = object->position() + vector;
-	if (finalPosition.x() < BORDER_SIZE || finalPosition.y() < BORDER_SIZE
-	    || finalPosition.x() > map_->width()  * Grid::tileSize() - BORDER_SIZE
-	    || finalPosition.y() > map_->height() * Grid::tileSize() - BORDER_SIZE)
+	if (finalPosition.x() < BORDER_SIZE || finalPosition.y() < BORDER_SIZE ||
+	    finalPosition.x() > map_->width()  * Grid::tileSize() - BORDER_SIZE ||
+	    finalPosition.y() > map_->height() * Grid::tileSize() - BORDER_SIZE)
 		return false;
 
 	GraphicsObject *graphicsObject = GraphicsFactory::get(object);
@@ -53,13 +53,23 @@ int GraphicsMap::collisionType(const Object *lhs, const Object *rhs) const
 
 	int result = HOA::CollisionType::None;
 
-	QPolygon lhsObjectArea = lhsGraphicsObject->figureShape()
-	                         .toFillPolygon().toPolygon()
-	                         .translated(lhsGraphicsObject->pos().toPoint());
+	QMatrix lhsMatrix;
+	lhsMatrix.translate((qreal)lhs->position().x(), (qreal)lhs->position().y());
+	lhsMatrix.rotate(HOA::rotationToAngle(lhs->rotation() - lhs->position()));
 
-	QPolygon rhsObjectArea = rhsGraphicsObject->figureShape()
-	                         .toFillPolygon().toPolygon()
-	                         .translated(rhsGraphicsObject->pos().toPoint());
+	QMatrix rhsMatrix;
+	rhsMatrix.translate((qreal)rhs->position().x(), (qreal)rhs->position().y());
+	rhsMatrix.rotate(HOA::rotationToAngle(rhs->rotation() - rhs->position()));
+
+	QPolygon lhsObjectArea =
+		lhsGraphicsObject->figureShape()
+		.toFillPolygon().toPolygon();
+	lhsObjectArea = lhsMatrix.map(lhsObjectArea);
+
+	QPolygon rhsObjectArea =
+		rhsGraphicsObject->figureShape()
+		.toFillPolygon().toPolygon();
+	rhsObjectArea = rhsMatrix.map(rhsObjectArea);
 
 	if (!lhsObjectArea.intersected(rhsObjectArea).isEmpty())
 		result |= HOA::CollisionType::Simple;
@@ -68,8 +78,8 @@ int GraphicsMap::collisionType(const Object *lhs, const Object *rhs) const
 		GraphicsCreature *lhsGraphicsCreature = static_cast<GraphicsCreature *>(GraphicsFactory::get(lhs));
 
 		QPolygon weaponArea = lhsGraphicsCreature->weaponShape()
-			.toFillPolygon().toPolygon()
-			.translated(lhsGraphicsCreature->pos().toPoint());
+			.toFillPolygon().toPolygon();
+		weaponArea = lhsMatrix.map(weaponArea);
 
 		if (!weaponArea.intersected(rhsObjectArea).isEmpty())
 			result |= HOA::CollisionType::Attack;
