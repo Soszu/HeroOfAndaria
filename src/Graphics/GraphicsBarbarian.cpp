@@ -52,6 +52,7 @@ void GraphicsBarbarian::paintWeapon(QPainter *painter)
 {
 	if (((Creature *)object_)->hitPoints() > 0) {
 		painter->save();
+
 		painter->translate(weaponAttachPoint() + pointZero());
 		painter->rotate(weaponAngle_);
 		weaponRender_->render(painter, QRectF(widthScale() * -18.0, heightScale() * -5.0,
@@ -68,11 +69,10 @@ void GraphicsBarbarian::advance()
 	if (((Creature *)object_)->currentAction() == HOA::CreatureAction::Attack) {
 		// y - degrees, x - timedelta from 0 to 1
 		// y = 60x3 - 160x2 + 100x
-		qreal x = qreal(((Creature *)object_)->currentActionTime())
-				  / qreal(((Creature *)object_)->currentActionTotalTime());
-		weaponAngle_ = ((60.0 * x - 160.0) * x + 100.0) * x * 5 - 15;
+		qreal x = qreal(creature()->effect(HOA::PerformingAction).duration) / 500.0; //TODO this should be dependent on what is in Creature, no? ;)
+		weaponAngle_ = ((60.0 * x - 160.0) * x + 100.0) * x * 5.0 - 15.0;
 	} else {
-		weaponAngle_ = -15;
+		weaponAngle_ = -15.0;
 	}
 	GraphicsCreature::advance();
 }

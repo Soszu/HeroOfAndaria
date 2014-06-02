@@ -4,7 +4,7 @@
 #include <QtWidgets>
 #include "System/Object.h"
 
-//TODO along with functions from Movable take all math-like ones and put into one file
+//TODO Z value
 
 class GraphicsObject : public QGraphicsObject
 {
@@ -20,8 +20,6 @@ public:
 	virtual QPainterPath shape() const;
 
 	QVector <GraphicsObject *> collisions(const QPointF &vector = QPointF(0.0, 0.0), qreal angle = 0.0);
-
-	static qreal vectorAngle(const QPointF &middle, const QPointF &vector);
 
 signals:
 	void collided();

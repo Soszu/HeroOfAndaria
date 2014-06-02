@@ -38,7 +38,7 @@ bool GraphicsMap::canMove(const Movable *object, const QPointF &vector, qreal an
 	auto collisions = graphicsObject->collisions(vector, angle);
 
 	for (GraphicsObject *x : collisions)
-		if ((collisionType(object, x->object()) & HOA::CollisionType::Simple)
+		if ((collisionType(object, x->object()) & HOA::Collision::Simple)
 		    && !map_->canCollide(object, x->object()))
 			return false;
 	return true;
@@ -56,7 +56,7 @@ int GraphicsMap::collisionType(const Object *lhs, const Object *rhs) const
 
 	Q_ASSERT(lhsGraphicsObject != nullptr && rhsGraphicsObject != nullptr);
 
-	int result = HOA::CollisionType::None;
+	int result = HOA::Collision::None;
 
 	QMatrix lhsMatrix;
 	lhsMatrix.translate((qreal)lhs->position().x(), (qreal)lhs->position().y());
@@ -77,7 +77,7 @@ int GraphicsMap::collisionType(const Object *lhs, const Object *rhs) const
 	rhsObjectArea = rhsMatrix.map(rhsObjectArea);
 
 	if (!lhsObjectArea.intersected(rhsObjectArea).isEmpty())
-		result |= HOA::CollisionType::Simple;
+		result |= HOA::Collision::Simple;
 
 	if (HOA::creatureTypes.contains(lhs->objectType())) {
 		GraphicsCreature *lhsGraphicsCreature = static_cast<GraphicsCreature *>(GraphicsFactory::get(lhs));
@@ -87,7 +87,7 @@ int GraphicsMap::collisionType(const Object *lhs, const Object *rhs) const
 		weaponArea = lhsMatrix.map(weaponArea);
 
 		if (!weaponArea.intersected(rhsObjectArea).isEmpty())
-			result |= HOA::CollisionType::Attack;
+			result |= HOA::Collision::Attack;
 	}
 
 	return result;
@@ -101,7 +101,7 @@ void GraphicsMap::collide(Object *lhs, Object *rhs)
 		Creature *lhsCreature = static_cast<Creature *>(lhs);
 
 		if (lhsCreature->currentAction() == HOA::CreatureAction::Attack
-		    && type & HOA::CollisionType::Attack)
+		    && type & HOA::Collision::Attack)
 			rhs->receiveAttack(lhsCreature->currentAttack());
 	}
 }

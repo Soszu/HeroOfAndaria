@@ -22,8 +22,9 @@ void Creature::initStats()
 
 void Creature::initActions()
 {
-	freezed_   = false;
 	currentAction_ = HOA::CreatureAction::None;
+
+	//TODO no need for this
 	connect(&actionTimeLine_, &QTimeLine::finished, this, &Creature::onActionFinished);
 	actionTimeLine_.setCurveShape(QTimeLine::LinearCurve);
 }
@@ -56,7 +57,7 @@ UID Creature::uid() const
 
 QString Creature::name() const
 {
-	//TODO
+	//TODO print it on the screen!
 	if (objectType() == HOA::ObjectType::Monster)
 		return "monster";
 	else
@@ -106,9 +107,9 @@ int Creature::endurance() const
 
 void Creature::attack(const Attack &attack)
 {
-	//TODO
+	//TODO attack interval not working FIX IT
 
-	if (freezed_)
+	if (!canPerformAction(HOA::CreatureAction::Attack))
 		return;
 
 	currentAction_ = HOA::CreatureAction::Attack;
@@ -122,13 +123,10 @@ void Creature::attack(const Attack &attack)
 
 	attackManager_->attack(fullAttack);
 
-	freezed_ = true;
-
 	int attackDuration = 500;
-	actionTimeLine_.setDuration(attackDuration);
 
-	actionTimeLine_.stop();
-	actionTimeLine_.start();
+	addEffect({HOA::EffectType::PerformingAction, attackDuration});
+	addEffect({HOA::EffectType::CannotAttack,     attackDuration * 2});
 }
 
 void Creature::receiveAttack(const Attack &attack)
@@ -139,24 +137,21 @@ void Creature::receiveAttack(const Attack &attack)
 	//TODO no it's not perfect
 	setHitPoints(qMax(hitPoints() - attack.weapon()->damage(), 0));
 
-	freezed_   = true;
-
 	QPointF attackerPosition = attack.attacker()->position();
-	QPointF vectorToAttacker = HOA::lengthenVector(attackerPosition, 200.0);
-	recoilDirection_         = HOA::rotateVector(vectorToAttacker, qDegreesToRadians(180.0f));
+	QPointF vectorToAttacker = HOA::lengthenVector(attackerPosition - position(), 200.0);
+	recoilDirection_         = HOA::rotateVector(vectorToAttacker, qDegreesToRadians(180.0)) + position();
 
-	if (hitPoints() == 0)
+	if (hitPoints() == 0) {
+		addEffect({HOA::EffectType::Immobilised, HOA::Effect::PERMANENT});
 		return;
+	}
 
 	Object::receiveAttack(attack);
 
-	//TODO
-	currentAction_ = HOA::CreatureAction::Recoil;
-
 	int recoilDuration = 500;
-	actionTimeLine_.setDuration(recoilDuration);
-
-	actionTimeLine_.start();
+	addEffect({HOA::EffectType::Recoiling,    recoilDuration});
+	addEffect({HOA::EffectType::Immobilised,  recoilDuration});
+	addEffect({HOA::EffectType::CannotAttack, recoilDuration / 3});
 }
 
 void Creature::setCurrentWeapon(Weapon *weapon)
@@ -172,6 +167,23 @@ Weapon * Creature::currentWeapon() const
 Attack Creature::currentAttack() const
 {
 	return currentAttack_;
+}
+
+bool Creature::canMove() const
+{
+	return !hasEffect(HOA::EffectType::Immobilised) && !hasEffect(HOA::EffectType::Freezed);
+}
+
+bool Creature::canRotate() const
+{
+	return !hasEffect(HOA::EffectType::Immobilised) && !hasEffect(HOA::EffectType::Freezed);
+}
+
+bool Creature::canPerformAction(HOA::CreatureAction action)
+{
+	return !hasEffect(HOA::EffectType::Freezed)
+	    && !hasEffect(HOA::EffectType::PerformingAction)
+	    && !hasEffect(HOA::EffectType::CannotAttack);
 }
 
 HOA::CreatureAction Creature::currentAction() const
@@ -209,25 +221,30 @@ QDataStream & operator >> (QDataStream &in, Creature &creature)
 
 void Creature::advance()
 {
-	if (currentAction() == HOA::CreatureAction::Recoil) {
-
-		//TODO 1. depending on power of strike, 2. emmm... this is a sword, not an elephant...
-		// a = 1 / 400000, b = -11/40000, c = -11/200, d = 50
-		qreal x1 = (qreal)actionTimeLine_.currentTime();
+	if (hasEffect(HOA::EffectType::Recoiling)) {
+		//TODO depending on power of strike
+		qreal x1 = (qreal)effect(HOA::EffectType::Recoiling).duration;
 		qreal x2 = x1 + (qreal)advanceTimeout();
-		qreal v1 = x1 * x1 * x1  / 400000 + x1 * x1 * -11 / 40000 + x1 * -11 / 200 + 50;
-		qreal v2 = x2 * x2 * x2  / 400000 + x2 * x2 * -11 / 40000 + x2 * -11 / 200 + 50;
 
-		QPointF vector = HOA::lengthenVector(recoilDirection_, v2 - v1);
+		auto distance = [](qreal x1, qreal x2) -> qreal {
+			qreal v1 = x1 / 10.0;
+			qreal v2 = x2 / 10.0;
+			return v2 - v1;
+		};
+
+		QPointF vector = HOA::lengthenVector(recoilDirection_, distance(x1, x2));
 
 		if (movementManager_->canMove(this, vector))
 			setPosition(position() + vector);
+		//HACK
+		if (!movementManager_->canMove(this, QPointF(0.0, 0.0)))
+			setPosition(position() - vector);
 	}
 	Movable::advance();
 }
 
 void Creature::onActionFinished()
 {
-	freezed_       = false;
+	//TODO methinks we don't need it
 	currentAction_ = HOA::CreatureAction::None;
 }

@@ -5,7 +5,7 @@
 #include "System/Bases/CreatureBase.h"
 #include "System/EquipmentCarrier.h"
 #include "System/Movable.h"
-#include "System/Uid.h"
+#include "System/Utils/Uid.h"
 #include "System/Weapon.h"
 
 namespace HOA {
@@ -51,9 +51,11 @@ public:
 
 	Attack currentAttack() const;
 
-	//TODO in effects and certainly not in public
-	bool freezed_;
+	virtual bool canMove() const;
+	virtual bool canRotate() const;
+	bool canPerformAction(HOA::CreatureAction action);
 
+	//TODO To the wastebin!
 	HOA::CreatureAction currentAction() const;
 	int currentActionTime() const;
 	int currentActionTotalTime() const;
@@ -84,7 +86,7 @@ private:
 
 	Attack currentAttack_;
 
-	//TODO looks like in wrong place?
+	//TODO looks like in wrong place? // yeah, when the speed momentum works this will be unnecessary
 	QPointF recoilDirection_;
 
 private slots:

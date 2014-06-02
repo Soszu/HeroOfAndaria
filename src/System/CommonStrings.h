@@ -33,6 +33,7 @@ namespace HOA {
 		const QString ItemEffectMagnitude  = QObject::tr("Magnitude");
 		const QString ItemEffectDuration    = QObject::tr("Duration");
 
+		const QString EffectTypeNone                  = QObject::tr("None");
 		const QString EffectTypeMaxHitPointsBonus     = QObject::tr("Max hit points bonus");
 		const QString EffectTypeStrengthBonus         = QObject::tr("Strength bonus");
 		const QString EffectTypeAgilityBonus          = QObject::tr("Agility bonus");
@@ -41,6 +42,11 @@ namespace HOA {
 		const QString EffectTypeDamageResistanceBonus = QObject::tr("Damage Resistance bonus");
 		const QString EffectTypeArmorBonus            = QObject::tr("Armor bonus");
 		const QString EffectTypeHitRatioBonus         = QObject::tr("Hit ratio bonus");
+		const QString EffectTypePerformingAction      = QObject::tr("Performing action");
+		const QString EffectTypeImmobilised           = QObject::tr("Immobilised");
+		const QString EffectTypeFreezed               = QObject::tr("Freezed");
+		const QString EffectTypeRecoiling             = QObject::tr("Recoiling");
+		const QString EffectTypeCannotAttack          = QObject::tr("Cannot attack");
 
 		const QString WeaponName                 = QObject::tr("Name");
 		const QString WeaponType                 = QObject::tr("Type");

@@ -8,9 +8,9 @@
 #define ITEMMODEL_H
 
 #include <QtWidgets>
-#include "System/Uid.h"
-#include "System/CommonStrings.h"
 #include "System/Bases/ItemBase.h"
+#include "System/CommonStrings.h"
+#include "System/Utils/Uid.h"
 
 class ItemBase;
 

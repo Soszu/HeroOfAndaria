@@ -34,6 +34,8 @@ protected:
 	qreal heightScale() const;
 	QPointF pointZero() const;              /** top left point */
 
+	Creature * creature();
+
 	virtual QPointF weaponAttachPoint() const;
 
 	virtual void paintFigure(QPainter *painter);

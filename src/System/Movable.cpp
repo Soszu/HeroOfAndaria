@@ -38,6 +38,16 @@ qreal Movable::rotationSpeed() const
 	return ARBITRARY_ROTATION_SPEED_FOR_ANY_MOVABLE_OBJECT_WITH_A_SEMBLANCE_OF_SELF_RESPECT;
 }
 
+bool Movable::canMove() const
+{
+	return true;
+}
+
+bool Movable::canRotate() const
+{
+	return true;
+}
+
 void Movable::move(HOA::Direction direction)
 {
 	moveDirection_ = direction;
@@ -57,33 +67,35 @@ void Movable::rotate(const QPointF &rotation)
 void Movable::advance()
 {
 	/** Movement */
-	if (moveDirection_ != HOA::Direction::None) {
-		//TODO make some height difference check + effects (awww, this damn rocky terrain, my feet hurt) - virtual function?
 
-		QPointF targetDistance       = rotation() - position();
-// 		qreal   targetDistanceLength = HOA::vectorLength(targetDistance);
+	//TODO make some height difference check + effects (awww, this damn rocky terrain, my feet hurt) - virtual function?
 
-		QPointF dir = HOA::rotateVector(targetDistance, ((qreal)moveDirection_) * (-M_PI / 4.0));
+	QPointF vector = speed() * (qreal)realAdvanceTimeout();
 
-		speed_ = HOA::lengthenVector(dir, qMin((qreal)maxSpeed(), qSqrt(speed().x() * speed().x() + speed().y() * speed().y() + acceleration())));
+	if (movementManager_->canMove(this, vector)) {
+		setPosition(position() + vector);
+		setRotation(rotation() + vector);
+		//HACK
+		if (!movementManager_->canMove(this, {0, 0}))
+			setPosition(position() - vector);
+	}
 
-		QPoint vector = speed().toPoint() * realAdvanceTimeout();
+	/** Speed acceleration */
 
-		if (movementManager_->canMove(this, vector)) {
-			setPosition(position() + vector);
-			setRotation(rotation() + vector);
-
-			//HACK
-// 			if (!movementManager_->canMove(this, {0, 0}))
-// 				setPosition(position() - vector);
-		}
+	if (moveDirection_ != HOA::Direction::None && canMove()) {
+		QPointF dir = HOA::rotateVector(rotation() - position(), ((qreal)moveDirection_) * (-M_PI / 4.0));
+		speed_      = HOA::lengthenVector(dir, qMin((qreal)maxSpeed(), HOA::vectorLength(speed()) + acceleration()));
+	} else {
+		speed_      = HOA::lengthenVector(rotation(), qMax(0.0, HOA::vectorLength(speed()) - acceleration()));
 	}
 
 	static const qreal ROTATION_THRESHOLD = 1.0;
 
 	/** Rotation */
+
 	if (HOA::angleDifference(HOA::rotationToAngle(targetRotation_ - position()),
-	                         HOA::rotationToAngle(rotation() - position())) > ROTATION_THRESHOLD) {
+	                         HOA::rotationToAngle(rotation() - position())) > ROTATION_THRESHOLD
+	   && canRotate()) {
 		qreal dir = HOA::det(targetRotation_, rotation(), position()) > 0
 			? -1.0
 			: +1.0;
@@ -91,6 +103,7 @@ void Movable::advance()
 		qreal angle       = HOA::rotationToAngle(rotation()      - position());
 		qreal targetAngle = HOA::rotationToAngle(targetRotation_ - position());
 
+		QPointF currentRotation = rotation();
 		QPointF rotationToSet;
 
 		if (rotationSpeed() > HOA::angleDifference(angle, targetAngle))
@@ -101,6 +114,9 @@ void Movable::advance()
 
 		if (movementManager_->canRotate(this, HOA::rotationToAngle(rotationToSet - position())))
 			setRotation(rotationToSet);
+		//HACK
+		if (!movementManager_->canRotate(this, HOA::rotationToAngle(rotation() - position())))
+			setRotation(currentRotation);
 	}
 
 	Object::advance();

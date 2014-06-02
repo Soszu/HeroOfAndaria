@@ -4,10 +4,10 @@
 #define WEAPONBASE_H
 
 #include <QtWidgets>
-#include "System/Uid.h"
+#include "System/Bases/ItemBase.h"
 #include "System/CommonStrings.h"
 #include "System/Models/WeaponModel.h"
-#include "System/Bases/ItemBase.h"
+#include "System/Utils/Uid.h"
 
 namespace HOA {
 	enum AttackType : quint8 {

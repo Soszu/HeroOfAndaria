@@ -1,4 +1,5 @@
 #include "Graphics/GraphicsObject.h"
+#include "System/Utils/Math.h"
 
 GraphicsObject::GraphicsObject(Object *object) :
 	object_(object)
@@ -46,15 +47,6 @@ QVector <GraphicsObject *> GraphicsObject::collisions(const QPointF &vector, qre
 	return collisions;
 }
 
-qreal GraphicsObject::vectorAngle(const QPointF &middle, const QPointF &vector)
-{
-	if (vector == middle)
-		return 0;
-	QPointF effVector(vector - middle);
-	qreal radians = qAtan2(-effVector.x(), effVector.y());
-	return qRadiansToDegrees(radians);
-}
-
 QRectF GraphicsObject::boundingRect() const
 {
 	return QRectF();
@@ -84,5 +76,5 @@ void GraphicsObject::adjustPosition()
 
 void GraphicsObject::adjustRotation()
 {
-	QGraphicsObject::setRotation(vectorAngle(object_->position(), object_->rotation()));
+	QGraphicsObject::setRotation(HOA::rotationToAngle(object_->rotation() - object_->position()));
 }
