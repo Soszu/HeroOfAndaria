@@ -68,6 +68,7 @@ public slots:
 
 signals:
 	void hitPointsChanged();
+	void died();
 
 private:
 	void initStats();

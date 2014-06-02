@@ -425,6 +425,7 @@ void MapView::initPanels()
 {
 	BottomPanel *bottomPanel = new BottomPanel(map_->player(), this);
 	SidePanel *sidePanel = new SidePanel(this);
+	GameOverPanel *gameOverPanel = new GameOverPanel(map_->player(), this);
 
 	// connecting panels
 	connect(bottomPanel, &BottomPanel::inventoryPressed, sidePanel, &SidePanel::onInventoryClicked);

@@ -22,6 +22,7 @@ namespace Data {
 
 		BottomPanelBackground,
 		SidePanelBackground,
+		GameOverBackground,
 		PanelCloseButtonNormal,
 		PanelCloseButtonDark,
 		SkillsButtonNormal,

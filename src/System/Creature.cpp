@@ -74,8 +74,12 @@ void Creature::setHitPoints(int hitPoints)
 {
 	bool changed = hitPoints_ != hitPoints;
 	hitPoints_ = hitPoints;
-	if (changed)
+	if (changed) {
 		emit hitPointsChanged();
+		if (hitPoints <= 0) {
+			emit died();
+		}
+	}
 }
 
 int Creature::fullHitPoints() const

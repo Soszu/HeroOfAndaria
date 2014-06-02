@@ -49,6 +49,16 @@ signals:
 
 };
 
+/* ---------------------- GamveOverPanel class -------------- */
+
+class GameOverPanel : public Panel
+{
+Q_OBJECT;
+public:
+	GameOverPanel(Character *player, QWidget *parent = 0);
+
+};
+
 /* -------------------- SidePanel class ----------------- */
 
 class SidePanel : public Panel
