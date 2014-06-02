@@ -146,7 +146,7 @@ void Creature::receiveAttack(const Attack &attack)
 	recoilDirection_         = HOA::rotateVector(vectorToAttacker, qDegreesToRadians(180.0)) + position();
 
 	if (hitPoints() == 0) {
-		addEffect({HOA::EffectType::Immobilised, HOA::Effect::PERMANENT});
+		addEffect({HOA::EffectType::Freezed, HOA::Effect::PERMANENT});
 		return;
 	}
 

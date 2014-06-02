@@ -46,6 +46,9 @@ protected:
 	virtual QRectF boundingRect() const;
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
 	virtual void advance();
+
+protected slots:
+	void onDied();
 };
 
 #endif // GRAPHICSCREATURE_H

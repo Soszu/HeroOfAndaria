@@ -7,6 +7,8 @@ GraphicsCharacter::GraphicsCharacter(Character *character) :
 	initRenderer();
 	weaponVector_ = {0.0, 0.0};
 	weaponAngle_  = 0.0;
+
+	setZValue(HOA::ZValue::HighLevel);
 }
 
 QPainterPath GraphicsCharacter::weaponShape() const

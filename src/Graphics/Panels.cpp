@@ -61,11 +61,10 @@ BottomPanel::BottomPanel(Character *player, QWidget *parent) :
 }
 
 /* -------------------- GameOverPanel class ----------------- */
-GameOverPanel::GameOverPanel(Character *player, QWidget *parent) :
+GameOverPanel::GameOverPanel(QWidget *parent) :
 	Panel(parent)
 {
 	backgroundImage = DataManager::pixmap(Data::ImagePath::GameOverBackground);
-	connect(player, &Creature::died, this, static_cast<void (QWidget::*)()>(&QWidget::show));
 	// positioning on screen
 	QRect screen = QApplication::desktop()->rect();
 	QSize mySize = sizeHint();

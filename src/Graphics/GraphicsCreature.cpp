@@ -5,6 +5,9 @@ GraphicsCreature::GraphicsCreature(Creature *creature) :
 	GraphicsObject((Object *)creature)
 {
 	initRenderer();
+	setZValue(HOA::ZValue::LowLevel);
+
+	connect(creature, &Creature::died, this, &GraphicsCreature::onDied);
 }
 
 QPainterPath GraphicsCreature::weaponShape() const
@@ -170,4 +173,9 @@ void GraphicsCreature::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 void GraphicsCreature::advance()
 {
 	GraphicsObject::advance();
+}
+
+void GraphicsCreature::onDied()
+{
+	setZValue(HOA::ZValue::Ground);
 }

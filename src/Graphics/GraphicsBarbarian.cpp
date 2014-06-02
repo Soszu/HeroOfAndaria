@@ -7,6 +7,7 @@ GraphicsBarbarian::GraphicsBarbarian(Barbarian *barbarian) :
 	initRenderer();
 	weaponVector_ = {0.0, 0.0};
 	weaponAngle_  = 0.0;
+	setZValue(HOA::ZValue::HighLevel);
 }
 
 QPainterPath GraphicsBarbarian::weaponShape() const

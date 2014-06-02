@@ -425,12 +425,14 @@ void MapView::initPanels()
 {
 	BottomPanel *bottomPanel = new BottomPanel(map_->player(), this);
 	SidePanel *sidePanel = new SidePanel(this);
-	GameOverPanel *gameOverPanel = new GameOverPanel(map_->player(), this);
+	GameOverPanel *gameOverPanel = new GameOverPanel(this);
 
 	// connecting panels
 	connect(bottomPanel, &BottomPanel::inventoryPressed, sidePanel, &SidePanel::onInventoryClicked);
 	connect(bottomPanel, &BottomPanel::skillsPressed,    sidePanel, &SidePanel::onSkillsClicked);
 	connect(bottomPanel, &BottomPanel::questsPressed,    sidePanel, &SidePanel::onQuestsClicked);
+
+	connect(map_->player(), &Creature::died, gameOverPanel, static_cast<void (QWidget::*)()>(&QWidget::show));
 }
 
 void MapView::addGraphicsObject(GraphicsObject *graphicsObject)

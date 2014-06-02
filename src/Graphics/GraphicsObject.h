@@ -4,7 +4,19 @@
 #include <QtWidgets>
 #include "System/Object.h"
 
-//TODO Z value
+namespace HOA {
+	namespace ZValue {
+		enum Value {
+			Background = 0,
+			Ground     = 1,
+			LowLevel   = 2,
+			HighLevel  = 3,
+			Building   = 4,
+			Tree       = 5,
+			Clouds     = 6,
+		};
+	}
+}
 
 class GraphicsObject : public QGraphicsObject
 {

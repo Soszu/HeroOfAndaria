@@ -55,8 +55,7 @@ class GameOverPanel : public Panel
 {
 Q_OBJECT;
 public:
-	GameOverPanel(Character *player, QWidget *parent = 0);
-
+	GameOverPanel(QWidget *parent = 0);
 };
 
 /* -------------------- SidePanel class ----------------- */
