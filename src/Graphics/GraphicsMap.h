@@ -23,13 +23,14 @@ public:
 	GraphicsMap(Map *map);
 	~GraphicsMap();
 
-	virtual bool canMakeMove(const Movable *object, const QPoint &vector) const;
+	virtual bool canMove(const Movable *object, const QPointF &vector, qreal angle = 0.0) const;
+	virtual bool canRotate(const Movable *object, qreal angle) const;
 	virtual int collisionType(const Object *lhs, const Object *rhs) const;
 	virtual void collide(Object *lhs, Object *rhs);
 
 	virtual void attack(const Attack &attack);
 
-	virtual QVector <Object *> objectsInCircle(const QPoint &center, int ray);
+	virtual QVector <Object *> objectsInCircle(const QPointF &center, qreal ray);
 
 	static HOA::Direction keysToDirection(HOA::KeyFunction horizontal, HOA::KeyFunction vertical);
 

@@ -42,10 +42,10 @@ HOA::ObjectType Creature::objectType() const
 	return HOA::ObjectType::Creature;
 }
 
-int Creature::maxSpeed() const
+qreal Creature::maxSpeed() const
 {
 	//TODO depending on attributes and skills(?)
-	return 5;
+	return 5.0;
 }
 
 UID Creature::uid() const
@@ -140,9 +140,9 @@ void Creature::receiveAttack(const Attack &attack)
 
 	freezed_   = true;
 
-	QPoint attackerPosition = attack.attacker()->position();
-	QPoint vectorToAttacker = HOA::lengthenVector(attackerPosition, 200.0).toPoint();
-	recoilDirection_        = HOA::rotateVector(vectorToAttacker, qDegreesToRadians(180.0f)).toPoint();
+	QPointF attackerPosition = attack.attacker()->position();
+	QPointF vectorToAttacker = HOA::lengthenVector(attackerPosition, 200.0);
+	recoilDirection_         = HOA::rotateVector(vectorToAttacker, qDegreesToRadians(180.0f));
 
 	if (hitPoints() == 0)
 		return;
@@ -219,8 +219,8 @@ void Creature::advance()
 
 		QPointF vector = HOA::lengthenVector(recoilDirection_, v2 - v1);
 
-		if (movementManager_->canMakeMove(this, vector.toPoint()))
-			setPosition(position() + vector.toPoint());
+		if (movementManager_->canMove(this, vector))
+			setPosition(position() + vector);
 	}
 	Movable::advance();
 }

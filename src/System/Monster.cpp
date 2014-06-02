@@ -13,7 +13,7 @@ void Monster::advance()
 {
 	if (hitPoints() > 0) {
 		AI *ai = AIFactory::ai(this);
-		QVector<AI::Behaviour> behaviours = ai->act();;
+		QVector <AI::Behaviour> behaviours = ai->act();
 		stop();
 		for (AI::Behaviour b : behaviours) {
 			if (b.behaviour == HOA::AIBehaviour::Walk || b.behaviour == HOA::AIBehaviour::Run) {
@@ -21,8 +21,8 @@ void Monster::advance()
 					move(HOA::Direction::Front);
 			}
 			if (b.behaviour == HOA::AIBehaviour::Rotate) {
-				if (!freezed_)
-					setRotation({b.first, b.second}); //TODO check if won't collide after rotating
+				if (!freezed_) //TODO Fynx: not here
+					rotate({(qreal)b.first, (qreal)b.second});
 			}
 		}
 	}

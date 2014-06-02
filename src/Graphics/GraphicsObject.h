@@ -19,9 +19,9 @@ public:
 	virtual QPainterPath figureShape() const;
 	virtual QPainterPath shape() const;
 
-	QVector <GraphicsObject *> collisions(const QPoint &vector = QPoint(0, 0));
+	QVector <GraphicsObject *> collisions(const QPointF &vector = QPointF(0.0, 0.0), qreal angle = 0.0);
 
-	static qreal vectorAngle(const QPoint &middle, const QPoint &vector);
+	static qreal vectorAngle(const QPointF &middle, const QPointF &vector);
 
 signals:
 	void collided();

@@ -26,7 +26,13 @@ Human * Map::player()
 
 bool Map::canCollide(const Movable *lhs, const Object *rhs) const
 {
-	return lhs == rhs;
+	bool can = (lhs == rhs);
+
+	/** Check if dead thing */
+	can |= (HOA::creatureTypes.contains(rhs->objectType())
+	        && ((Creature *)rhs)->hitPoints() == 0);
+
+	return can;
 }
 
 void Map::onCollision(Object *object, const QVector <Object *> &collisions)
@@ -53,7 +59,7 @@ void Map::deactivate()
 
 void Map::test()
 {
-	player_->setPosition({800, 500});
+	player_->setPosition({600, 500});
 	player_->setRotation({25, 800});
 	addObject(player_);
 }

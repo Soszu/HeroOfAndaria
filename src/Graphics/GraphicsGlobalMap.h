@@ -21,7 +21,7 @@ private:
 	static const int TOWN_INDEX     = 1;
 	static const int LOCATION_INDEX = 2;
 
-	QPoint locationPosition_;
+	QPointF locationPosition_;
 
 	void initMap();
 	void initLayout();

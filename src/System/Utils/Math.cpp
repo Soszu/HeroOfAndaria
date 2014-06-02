@@ -1,3 +1,4 @@
+#include <cmath>
 #include "System/Utils/Math.h"
 
 qreal HOA::vectorLength(const QPointF &vector)
@@ -37,5 +38,21 @@ QPointF HOA::lengthenVector(const QPointF &vector, qreal length)
 
 qreal HOA::rotationToAngle(const QPointF &rotation)
 {
-	return QLineF(QPointF(0.0, 0.0), QPointF(rotation.x(), -rotation.y())).angle() + 270.0;
+	return std::fmod(QLineF(QPointF(0.0, 0.0), QPointF(rotation.x(), -rotation.y())).angle() + 270.0, 360.0);
+}
+
+qreal HOA::angleDifference(qreal lhs, qreal rhs)
+{
+	qreal l = std::fmod(lhs, 360.0);
+	qreal r = std::fmod(rhs, 360.0);
+	if (l < 0)
+		l += 360.0;
+	if (r < 0)
+		r += 360.0;
+	return qMin(qAbs(l - r), 360.0 - qAbs(l - r));
+}
+
+qreal HOA::det(const QPointF &a, const QPointF &b, const QPointF &s)
+{
+	return (a.x() - s.x()) * (b.y() - s.y()) - (a.y() - s.y()) * (b.x() - s.x());
 }

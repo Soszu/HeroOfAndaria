@@ -54,15 +54,15 @@ void FollowerAI::detectPlayer()
 
 QVector<AI::Behaviour> FollowerAI::act()
 {
-	QVector<Behaviour> answer;
+	QVector <Behaviour> answer;
 	detectPlayer();
 	if (seesPlayer) {
-		answer.push_back({HOA::AIBehaviour::Rotate, (int)playerPos.x(), (int)playerPos.y()});
+		answer.append({HOA::AIBehaviour::Rotate, (int)playerPos.x(), (int)playerPos.y()});
 		if (HOA::vectorLength(creature_->position() - playerPos) > 50) {
-			answer.push_back({HOA::AIBehaviour::Walk});
+			answer.append({HOA::AIBehaviour::Walk});
 		}
 		if (HOA::vectorLength(creature_->position() - playerPos) < 100) {
-			answer.push_back({HOA::AIBehaviour::PrimaryAttack});
+			answer.append({HOA::AIBehaviour::PrimaryAttack});
 		}
 	}
 	return answer;

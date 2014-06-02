@@ -23,7 +23,7 @@ namespace HOA {
 class VisibilityManager
 {
 public:
-	virtual QVector <Object *> objectsInCircle(const QPoint &center, int ray) = 0;
+	virtual QVector <Object *> objectsInCircle(const QPointF &center, qreal ray) = 0;
 };
 
 /**
@@ -49,7 +49,7 @@ public:
 		int second;
 	};
 
-	virtual QVector<Behaviour> act() = 0;
+	virtual QVector <Behaviour> act() = 0;
 
 protected:
 	/** Note that visibilityManager must be set each time the map is changed! */

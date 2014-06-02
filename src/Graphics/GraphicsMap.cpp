@@ -21,11 +21,11 @@ GraphicsMap::~GraphicsMap()
 	delete mapView_;
 }
 
-bool GraphicsMap::canMakeMove(const Movable *object, const QPoint &vector) const
+bool GraphicsMap::canMove(const Movable *object, const QPointF &vector, qreal angle) const
 {
-	static const int BORDER_SIZE = 20;
+	static const qreal BORDER_SIZE = 20.0;
 
-	QPoint finalPosition = object->position() + vector;
+	QPointF finalPosition = object->position() + vector;
 	if (finalPosition.x() < BORDER_SIZE || finalPosition.y() < BORDER_SIZE ||
 	    finalPosition.x() > map_->width()  * Grid::tileSize() - BORDER_SIZE ||
 	    finalPosition.y() > map_->height() * Grid::tileSize() - BORDER_SIZE)
@@ -35,13 +35,18 @@ bool GraphicsMap::canMakeMove(const Movable *object, const QPoint &vector) const
 
 	Q_ASSERT(graphicsObject != nullptr);
 
-	auto collisions = graphicsObject->collisions(vector);
+	auto collisions = graphicsObject->collisions(vector, angle);
 
 	for (GraphicsObject *x : collisions)
 		if ((collisionType(object, x->object()) & HOA::CollisionType::Simple)
 		    && !map_->canCollide(object, x->object()))
 			return false;
 	return true;
+}
+
+bool GraphicsMap::canRotate(const Movable *object, qreal angle) const
+{
+	return canMove(object, QPointF(0.0, 0.0), angle);
 }
 
 int GraphicsMap::collisionType(const Object *lhs, const Object *rhs) const
@@ -104,7 +109,7 @@ void GraphicsMap::collide(Object *lhs, Object *rhs)
 void GraphicsMap::attack(const Attack &attack)
 {}
 
-QVector <Object *> GraphicsMap::objectsInCircle(const QPoint &center, int ray)
+QVector <Object *> GraphicsMap::objectsInCircle(const QPointF &center, qreal ray)
 {
 	QVector <Object *> result;
 
@@ -362,6 +367,7 @@ int MapView::scrollSpeed()
 
 void MapView::zoom(int delta)
 {
+	//TODO I WOULD LIKE A SMOOTH ZOOM!
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
 	static constexpr qreal SCALE_FACTOR = 1.15;
@@ -489,7 +495,7 @@ void MapView::wheelEvent(QWheelEvent *event)
 void MapView::updateCursor()
 {
 	QPointF cursorPosition_ = mapToScene(cursor().pos());
-	map_->player()->setRotation(cursorPosition_.toPoint());
+	map_->player()->rotate(cursorPosition_);
 }
 
 void MapView::onScroll()

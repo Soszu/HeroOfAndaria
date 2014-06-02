@@ -33,11 +33,16 @@ public:
 
 	static void setMovementManager(const MovementManager *movement);
 
-	QPoint speed() const;
-	virtual int maxSpeed() const = 0;
+	QPointF speed() const;
+	virtual qreal maxSpeed() const = 0;
+	virtual qreal acceleration() const; //TODO make it pure
+
+	qreal rotationSpeed() const;
 
 	void move(HOA::Direction direction);
 	void stop();
+
+	void rotate(const QPointF &rotation);
 
 protected:
 	static const MovementManager *movementManager_;
@@ -45,8 +50,10 @@ protected:
 	void advance();
 
 private:
-	QPoint speed_;
+	QPointF speed_;
 	HOA::Direction moveDirection_;
+
+	QPointF targetRotation_;
 };
 
 /**
@@ -68,7 +75,9 @@ namespace HOA {
 class MovementManager
 {
 public:
-	virtual bool canMakeMove(const Movable *object, const QPoint &vector) const = 0;
+	virtual bool canMove(const Movable *object, const QPointF &vector, qreal angle = 0.0) const = 0;
+	virtual bool canRotate(const Movable *object, qreal angle) const = 0;
+
 	virtual void collide(Object *lhs, Object *rhs) = 0;
 	virtual int collisionType(const Object *lhs, const Object *rhs) const = 0;
 };

@@ -52,11 +52,11 @@ public:
 
 	/** Position and rotation */
 
-	QPoint position() const;
-	void setPosition(const QPoint &position);
+	QPointF position() const;
+	void setPosition(const QPointF &position);
 
-	QPoint rotation() const;
-	void setRotation(const QPoint &rotation);
+	QPointF rotation() const;
+	void setRotation(const QPointF &rotation);
 
 	/** Effects */
 
@@ -84,8 +84,8 @@ signals:
 	void advanced();
 
 private:
-	QPoint position_;
-	QPoint rotation_;
+	QPointF position_;
+	QPointF rotation_;
 };
 
 #endif // OBJECT_H

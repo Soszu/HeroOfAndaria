@@ -120,9 +120,8 @@ void GlobalMap::test()
 	myLocation->setRotation(myLocation->position() + QPoint(0, 10));
 
 	addObject(myLocation);
-	
-	
-	player()->setPosition({700, 200});
+
+	player()->setPosition({400, 200});
 }
 
 void GlobalMap::onTownExited()

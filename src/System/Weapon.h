@@ -25,7 +25,7 @@ public:
 	int damage() const;
 	int reach() const;
 	int hitRatio() const;
-	int maxSpeed() const;
+	qreal maxSpeed() const;
 
 	int strengthModifier() const;
 	int agilityModifier() const;

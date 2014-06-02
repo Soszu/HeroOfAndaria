@@ -32,23 +32,23 @@ void Object::receiveAttack(const Attack &attack)
 	registeredAttacks_.append(attack.uid());
 }
 
-QPoint Object::position() const
+QPointF Object::position() const
 {
 	return position_;
 }
 
-void Object::setPosition(const QPoint &position)
+void Object::setPosition(const QPointF &position)
 {
 	position_ = position;
 	emit positionSet();
 }
 
-QPoint Object::rotation() const
+QPointF Object::rotation() const
 {
 	return rotation_;
 }
 
-void Object::setRotation(const QPoint &rotation)
+void Object::setRotation(const QPointF &rotation)
 {
 	rotation_ = rotation;
 	emit rotationSet();

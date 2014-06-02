@@ -9,6 +9,8 @@ namespace HOA {
 	QPointF lengthenVector(const QPointF &vector, qreal length);
 
 	qreal rotationToAngle(const QPointF &rotation);
+	qreal angleDifference(qreal lhs, qreal rhs);
+	qreal det(const QPointF &a, const QPointF &b, const QPointF &s = QPointF(0.0, 0.0));
 }
 
 #endif // UTILS_H

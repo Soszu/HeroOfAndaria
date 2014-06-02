@@ -34,10 +34,10 @@ HOA::AttackType Weapon::attackType() const
 	return base_->attackType();
 }
 
-int Weapon::maxSpeed() const
+qreal Weapon::maxSpeed() const
 {
 	//TODO fix maxSpeed/hitRatio conflict
-	return 1;
+	return 1.0;
 }
 
 int Weapon::damage() const

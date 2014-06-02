@@ -28,7 +28,7 @@ public:
 
 	void setBase(const CreatureBase *base);
 
-	int maxSpeed() const;
+	qreal maxSpeed() const;
 
 	UID uid() const;
 
@@ -85,7 +85,7 @@ private:
 	Attack currentAttack_;
 
 	//TODO looks like in wrong place?
-	QPoint recoilDirection_;
+	QPointF recoilDirection_;
 
 private slots:
 	void onActionFinished();

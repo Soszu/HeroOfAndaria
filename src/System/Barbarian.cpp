@@ -22,7 +22,7 @@ void Barbarian::advance()
 			}
 			if (b.behaviour == HOA::AIBehaviour::Rotate) {
 				if (!freezed_)
-					setRotation({b.first, b.second}); //TODO check if won't collide after rotating
+					rotate({(qreal)b.first, (qreal)b.second});
 			}
 			if (b.behaviour == HOA::AIBehaviour::PrimaryAttack) {
 				if (!freezed_)
@@ -30,6 +30,8 @@ void Barbarian::advance()
 
 			}
 		}
+
+		//TODO get all checks "freezed_" out of here
 	}
 	Creature::advance();
 }

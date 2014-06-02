@@ -31,24 +31,28 @@ QPainterPath GraphicsObject::shape() const
 	return figureShape();
 }
 
-QVector <GraphicsObject *> GraphicsObject::collisions(const QPoint &vector)
+QVector <GraphicsObject *> GraphicsObject::collisions(const QPointF &vector, qreal angle)
 {
 	QVector <GraphicsObject *> collisions;
 
-	QList <QGraphicsItem *> cs = scene()->items(mapToScene(shape().translated(vector)), Qt::IntersectsItemShape);
+	QMatrix matrix;
+	matrix.translate(vector.x(), vector.y());
+	matrix.rotate(angle);
+
+	QList <QGraphicsItem *> cs = scene()->items(mapToScene(matrix.map(shape())), Qt::IntersectsItemShape);
 	for (QGraphicsItem *item : cs)
 		if (item != static_cast<QGraphicsItem *>(this))
 			collisions.append(static_cast<GraphicsObject *>(item));
 	return collisions;
 }
 
-qreal GraphicsObject::vectorAngle(const QPoint &middle, const QPoint &vector)
+qreal GraphicsObject::vectorAngle(const QPointF &middle, const QPointF &vector)
 {
 	if (vector == middle)
 		return 0;
-	QPoint effVector(vector - middle);
+	QPointF effVector(vector - middle);
 	qreal radians = qAtan2(-effVector.x(), effVector.y());
-	return (int)qRadiansToDegrees(radians);
+	return qRadiansToDegrees(radians);
 }
 
 QRectF GraphicsObject::boundingRect() const
