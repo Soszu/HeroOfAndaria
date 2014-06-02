@@ -34,7 +34,7 @@ qreal Movable::acceleration() const
 
 qreal Movable::rotationSpeed() const
 {
-	static const qreal ARBITRARY_ROTATION_SPEED_FOR_ANY_MOVABLE_OBJECT_WITH_A_SEMBLANCE_OF_SELF_RESPECT = 0.1;
+	static const qreal ARBITRARY_ROTATION_SPEED_FOR_ANY_MOVABLE_OBJECT_WITH_A_SEMBLANCE_OF_SELF_RESPECT = 6.5;
 	return ARBITRARY_ROTATION_SPEED_FOR_ANY_MOVABLE_OBJECT_WITH_A_SEMBLANCE_OF_SELF_RESPECT;
 }
 
@@ -65,7 +65,6 @@ void Movable::advance()
 
 		QPointF dir = HOA::rotateVector(targetDistance, ((qreal)moveDirection_) * (-M_PI / 4.0));
 
-		//speed_ = HOA::lengthenVector(dir, qMin((qreal)maxSpeed(), targetDistanceLength)).toPoint();
 		speed_ = HOA::lengthenVector(dir, qMin((qreal)maxSpeed(), qSqrt(speed().x() * speed().x() + speed().y() * speed().y() + acceleration())));
 
 		QPoint vector = speed().toPoint() * realAdvanceTimeout();
@@ -80,14 +79,16 @@ void Movable::advance()
 		}
 	}
 
+	static const qreal ROTATION_THRESHOLD = 1.0;
+
 	/** Rotation */
 	if (HOA::angleDifference(HOA::rotationToAngle(targetRotation_ - position()),
-	                         HOA::rotationToAngle(rotation() - position())) > 3.0) {
+	                         HOA::rotationToAngle(rotation() - position())) > ROTATION_THRESHOLD) {
 		qreal dir = HOA::det(targetRotation_, rotation(), position()) > 0
 			? -1.0
 			: +1.0;
 
-		qreal angle       = HOA::rotationToAngle(rotation() - position());
+		qreal angle       = HOA::rotationToAngle(rotation()      - position());
 		qreal targetAngle = HOA::rotationToAngle(targetRotation_ - position());
 
 		QPointF rotationToSet;
@@ -95,9 +96,10 @@ void Movable::advance()
 		if (rotationSpeed() > HOA::angleDifference(angle, targetAngle))
 			rotationToSet = targetRotation_;
 		else
-			rotationToSet = HOA::rotateVector(rotation() - position(), rotationSpeed() * dir) + position();
+			rotationToSet = HOA::rotateVector(rotation() - position(),
+			                                  qDegreesToRadians(rotationSpeed() * dir)) + position();
 
-		if (movementManager_->canRotate(this, HOA::rotationToAngle(rotationToSet)))
+		if (movementManager_->canRotate(this, HOA::rotationToAngle(rotationToSet - position())))
 			setRotation(rotationToSet);
 	}
 

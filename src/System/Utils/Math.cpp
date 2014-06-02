@@ -6,13 +6,13 @@ qreal HOA::vectorLength(const QPointF &vector)
 	return qSqrt(vector.x() * vector.x() + vector.y() * vector.y());
 }
 
-QPointF HOA::rotateVector(const QPointF &vector, qreal angle)
+QPointF HOA::rotateVector(const QPointF &vector, qreal radians)
 {
 	qreal x = vector.x();
 	qreal y = vector.y();
 
-	qreal px = x * qCos(angle) - y * qSin(angle);
-	qreal py = x * qSin(angle) + y * qCos(angle);
+	qreal px = x * qCos(radians) - y * qSin(radians);
+	qreal py = x * qSin(radians) + y * qCos(radians);
 
 	return {px, py};
 }

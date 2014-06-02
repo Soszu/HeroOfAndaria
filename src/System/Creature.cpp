@@ -25,6 +25,7 @@ void Creature::initActions()
 	freezed_   = false;
 	currentAction_ = HOA::CreatureAction::None;
 	connect(&actionTimeLine_, &QTimeLine::finished, this, &Creature::onActionFinished);
+	actionTimeLine_.setCurveShape(QTimeLine::LinearCurve);
 }
 
 void Creature::setBase(const CreatureBase* base)

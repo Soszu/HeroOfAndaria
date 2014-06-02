@@ -42,7 +42,7 @@ int GraphicsCreature::creatureWidth() const
 	return CREATURE_WIDTH;
 }
 
-static bool healthVisibilityEnabled_ = false;
+static bool healthVisibilityEnabled_ = true;
 
 void GraphicsCreature::triggerHealthVisibility()
 {

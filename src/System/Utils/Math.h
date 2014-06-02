@@ -5,7 +5,7 @@
 
 namespace HOA {
 	qreal vectorLength(const QPointF &vector);
-	QPointF rotateVector(const QPointF &vector, qreal angle);
+	QPointF rotateVector(const QPointF &vector, qreal radians);
 	QPointF lengthenVector(const QPointF &vector, qreal length);
 
 	qreal rotationToAngle(const QPointF &rotation);
