@@ -40,6 +40,9 @@ QString Data::path(ImagePath name)
 	static const QString LeaveTownButton  = ImgPreffix + "/leaveTownButton.png";
 	static const QString OpenPlaceButton  = ImgPreffix + "/openPlaceButton.png";
 	static const QString TownBackground   = ImgPreffix + "/townBackground.png";
+	static const QString BlacksmithBackground   = ImgPreffix + "/blacksmithBackground.png";
+	static const QString ExitPlaceButtonFocus   = ImgPreffix + "/exitPlaceButtonFocus.png";
+	static const QString ExitPlaceButtonNoFocus   = ImgPreffix + "/exitPlaceButtonNoFocus.png";
 
 	static const QString TownPoor = ImgPreffix + "/townPoor2.png";
 
@@ -100,6 +103,9 @@ QString Data::path(ImagePath name)
 		case ImagePath::LeaveTownButton:  return LeaveTownButton;
 		case ImagePath::OpenPlaceButton:  return OpenPlaceButton;
 		case ImagePath::TownBackground:   return TownBackground;
+		case ImagePath::BlacksmithBackground:   return BlacksmithBackground;
+		case ImagePath::ExitPlaceButtonFocus: 	return ExitPlaceButtonFocus;
+		case ImagePath::ExitPlaceButtonNoFocus: 	return ExitPlaceButtonNoFocus;
 
 		case ImagePath::TownPoor: return TownPoor;
 

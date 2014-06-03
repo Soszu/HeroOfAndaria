@@ -40,6 +40,9 @@ namespace Data {
 		LeaveTownButton,
 		OpenPlaceButton,
 		TownBackground,
+		BlacksmithBackground,
+		ExitPlaceButtonFocus,
+		ExitPlaceButtonNoFocus,
 
 		TownPoor,
 

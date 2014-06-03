@@ -2,7 +2,11 @@
 #define GRAPHICSPLACE_H
 
 #include "System/Place.h"
+#include "System/Paths.h"
+#include "System/DataManager.h"
 #include <QtWidgets>
+
+class ExitPlaceButton;
 
 class GraphicsPlace : public QWidget
 {
@@ -15,8 +19,31 @@ public:
 private:
 	Place * place_;
 	QVBoxLayout * layout_;
-	QPushButton * exitButton_;
+	ExitPlaceButton * exitButton_;
 
 };
+
+class ExitPlaceButton : public QPushButton
+{
+Q_OBJECT;
+
+public:
+	ExitPlaceButton(QWidget *parent = 0);
+
+	QSize minimumSize() const;
+	QSize sizeHint() const;
+	void enterEvent(QEvent *event);
+	void leaveEvent(QEvent *event);
+protected:
+	void paintEvent(QPaintEvent *event);
+
+private:
+	QPixmap *focusImage_;
+	QPixmap *noFocusImage_;
+	int fontPointSize_;
+	static const int DEFAULT_FONT_SIZE = 11;
+	bool isMouseOver_;
+};
+
 
 #endif // GRAPHICSPLACE_H

@@ -7,6 +7,7 @@
 
 class GraphicsEquipment;
 class SlotButton;
+class EquipmentScrollArea;
 
 class GraphicsEquipmentExchange : public QWidget
 {
@@ -22,8 +23,8 @@ private:
 	ImageButton *exchangeButton_;
 	QVBoxLayout *layout_;
 	QHBoxLayout *GElayout_;
-	QScrollArea *rscrollarea_;
-	QScrollArea *lscrollarea_;
+	EquipmentScrollArea *rscrollarea_;
+	EquipmentScrollArea *lscrollarea_;
 
 	void setActive(GraphicsEquipment *active);
 	GraphicsEquipment * notActive();
@@ -84,6 +85,13 @@ public:
 private:
 	void paintEvent(QPaintEvent *event);
 	GraphicsItem *gItem_;
+};
+
+class EquipmentScrollArea : public QScrollArea
+{
+Q_OBJECT;
+public:
+	EquipmentScrollArea(QWidget *parent = nullptr);
 };
 
 #endif // GRAPHICSEQUIPMENTEXCHANGE_H

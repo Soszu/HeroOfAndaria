@@ -16,9 +16,10 @@ GraphicsEquipmentExchange::GraphicsEquipmentExchange(GraphicsEquipment *l, Graph
 	this)),
 	layout_(new QVBoxLayout(this)),
 	GElayout_(new QHBoxLayout()),
-	rscrollarea_(new QScrollArea()),
-	lscrollarea_(new QScrollArea())
+	rscrollarea_(new EquipmentScrollArea()),
+	lscrollarea_(new EquipmentScrollArea())
 {
+	this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	connect(l, &GraphicsEquipment::sigReset, r, &GraphicsEquipment::reset);
 	connect(r, &GraphicsEquipment::sigReset, l, &GraphicsEquipment::reset);
 
@@ -29,16 +30,19 @@ GraphicsEquipmentExchange::GraphicsEquipmentExchange(GraphicsEquipment *l, Graph
 	connect(l, &GraphicsEquipment::sigActive, this, &GraphicsEquipmentExchange::setActive);
 	connect(r, &GraphicsEquipment::sigActive, this, &GraphicsEquipmentExchange::setActive);
 
+	this->layout_->setSizeConstraint(QLayout::SetFixedSize);
 	this->layout_->addWidget(this->exchangeButton_);
+
+	this->layout_->setAlignment(this->exchangeButton_, Qt::AlignHCenter);
 
 	this->rscrollarea_->setWidget(r_);
 	this->lscrollarea_->setWidget(l_);
-
+	
 	this->GElayout_->addWidget(this->lscrollarea_);
 	this->GElayout_->addWidget(this->rscrollarea_);
+	
+	
 	this->GElayout_->setSizeConstraint(QLayout::SetFixedSize);
-	//this->GElayout_->addWidget(this->l_);
-	//this->GElayout_->addWidget(this->r_);
 
 	this->layout_->addLayout(this->GElayout_);
 }
@@ -90,10 +94,7 @@ GraphicsEquipment::GraphicsEquipment(EquipmentCarrier *eq, int span, QWidget *pa
 	this->layout_->setHorizontalSpacing(0);
 	this->layout_->setVerticalSpacing(0);
 	this->layout_->setSizeConstraint(QLayout::SetFixedSize);
-//	this->addLayout(this->layout_);
-//	this->setSizePolicy(QLayout::SetMinAndMaxSize);
-//	this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
-//	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+	
 	for (auto i : eq->itemList()) {
 		this->addSlot(GraphicsFactory::get(i));
 	}
@@ -260,4 +261,13 @@ void SlotButton::paintEvent(QPaintEvent *)
 	painter.setPen(pen);
 	painter.setFont(font);
 	painter.drawText(rect(), Qt::AlignCenter, text());
+}
+
+EquipmentScrollArea::EquipmentScrollArea(QWidget * parent) :
+	QScrollArea(parent)
+{
+
+	this->QAbstractScrollArea::setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	this->QAbstractScrollArea::setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+//	this->QAbstractScrollArea::setViewportMargins(-10,-10,-20,-10);
 }

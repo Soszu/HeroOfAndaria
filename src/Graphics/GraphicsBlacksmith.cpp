@@ -17,4 +17,18 @@ GraphicsBlacksmith::GraphicsBlacksmith(Blacksmith *blacksmith, QWidget *parent) 
 
 
 	this->layout()->addWidget(this->eqWidget_);
+
+	this->layout()->setAlignment(this->eqWidget_, Qt::AlignHCenter);
+	this->backgroundImage_ = DataManager::pixmap(Data::ImagePath::BlacksmithBackground);
 }
+
+void GraphicsBlacksmith::paintEvent(QPaintEvent *event)
+{
+	QPainter painter(this);
+
+	painter.drawPixmap(rect(), *(this->backgroundImage_));
+
+	this->QWidget::paintEvent(event);
+}
+
+
