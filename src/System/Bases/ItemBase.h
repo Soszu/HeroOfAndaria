@@ -4,9 +4,9 @@
 #define ITEMBASE_H
 
 #include <QtWidgets>
-#include "System/Uid.h"
 #include "System/CommonStrings.h"
 #include "System/Models/ItemModel.h"
+#include "System/Utils/Uid.h"
 
 namespace HOA {
 	enum ItemType : quint8 {
@@ -25,6 +25,8 @@ namespace HOA {
 
 	enum EffectType : quint8 {
 		//TODO names & content check
+		None,
+
 		MaxHitPointsBonus,
 		StrengthBonus,
 		AgilityBonus,
@@ -32,10 +34,18 @@ namespace HOA {
 		EnduranceBonus,
 		DamageResistanceBonus,
 		ArmorBonus,
-		HitRatioBonus
+		HitRatioBonus,
+
+		PerformingAction,
+		Immobilised,
+		Freezed,
+		Recoiling,
+		CannotAttack,  //TODO something else
 	};
 
 	const QMap <HOA::EffectType, QString> EffectTypeLabels = {
+		{HOA::EffectType::None,                  HOA::Strings::EffectTypeNone},
+
 		{HOA::EffectType::MaxHitPointsBonus,     HOA::Strings::EffectTypeMaxHitPointsBonus},
 		{HOA::EffectType::StrengthBonus,         HOA::Strings::EffectTypeStrengthBonus},
 		{HOA::EffectType::AgilityBonus,          HOA::Strings::EffectTypeAgilityBonus},
@@ -43,20 +53,36 @@ namespace HOA {
 		{HOA::EffectType::EnduranceBonus,        HOA::Strings::EffectTypeEnduranceBonus},
 		{HOA::EffectType::DamageResistanceBonus, HOA::Strings::EffectTypeDamageResistanceBonus},
 		{HOA::EffectType::ArmorBonus,            HOA::Strings::EffectTypeArmorBonus},
-		{HOA::EffectType::HitRatioBonus,         HOA::Strings::EffectTypeHitRatioBonus}
+		{HOA::EffectType::HitRatioBonus,         HOA::Strings::EffectTypeHitRatioBonus},
+
+		{HOA::EffectType::PerformingAction,      HOA::Strings::EffectTypePerformingAction},
+		{HOA::EffectType::Immobilised,           HOA::Strings::EffectTypeImmobilised},
+		{HOA::EffectType::Freezed,               HOA::Strings::EffectTypeFreezed},
+		{HOA::EffectType::Recoiling,             HOA::Strings::EffectTypeRecoiling},
+		{HOA::EffectType::CannotAttack,          HOA::Strings::EffectTypeCannotAttack},
 	};
 
 	struct Effect {
-		Effect() : type(HOA::EffectType::MaxHitPointsBonus), duration(0), magnitude(0)
+		Effect(HOA::EffectType type = HOA::EffectType::None, int duration = PERMANENT, int magnitude = DEFAULT) :
+			type(type), duration(duration), magnitude(magnitude)
 		{}
 
+		QString toString() const;
+
 		bool operator==(const Effect &effect) const;
+
+		QString description();
+		bool isValid() const;
 
 		EffectType type;
 		int duration;
 		int magnitude;
 
-		QString description();
+		/** Magnitude */
+		static const int INACTIVE  =  0;
+		static const int DEFAULT   =  1;
+		/** Duration */
+		static const int PERMANENT = -1;
 	};
 
 	QDataStream & operator << (QDataStream &out, const HOA::Effect &effect);

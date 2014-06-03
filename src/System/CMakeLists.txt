@@ -9,6 +9,7 @@ set (HOASystem_SRCS
 	Character.cpp
 	Creature.cpp
 	DataManager.cpp
+	EffectCarrier.cpp
 	EquipmentCarrier.cpp
 	GlobalMap.cpp
 	Grid.cpp

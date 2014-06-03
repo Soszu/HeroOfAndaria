@@ -44,10 +44,13 @@ void FollowerAI::detectPlayer()
 	//TODO load ray from creature base
 	QVector <Object *> objects = visibilityManager_->objectsInCircle(creature_->position(), 500);
 
+	seesPlayer = false;
 	for (Object *object : objects)  {
 		if (object->objectType() == HOA::ObjectType::Human) {
-			seesPlayer = true;
-			playerPos = object->position();
+			if (((Creature *)object)->hitPoints() > 0) {
+				seesPlayer = true;
+				playerPos = object->position();
+			}
 		}
 	}
 }

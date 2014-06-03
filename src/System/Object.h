@@ -3,9 +3,10 @@
 
 #include <QtCore>
 #include "System/Bases/ItemBase.h"
+#include "System/EffectCarrier.h"
 
 namespace HOA {
-	//TODO more when the time comes
+
 	enum class ObjectType : quint8 {
 		Creature,
 		Monster,
@@ -32,7 +33,7 @@ namespace HOA {
 class Attack;
 class AttackManager;
 
-class Object : public QObject
+class Object : public QObject, public EffectCarrier
 {
 Q_OBJECT;
 
@@ -58,13 +59,6 @@ public:
 	QPointF rotation() const;
 	void setRotation(const QPointF &rotation);
 
-	/** Effects */
-
-	const QVector <HOA::Effect> effects();
-	void addEffect(const HOA::Effect &effect);
-	void removeEffect(const HOA::Effect &effect);
-	void removeEffect(const HOA::EffectType effectType);
-
 public slots:
 	virtual void advance();
 
@@ -74,8 +68,6 @@ protected:
 
 	static AttackManager *attackManager_;
 	QVector <int> registeredAttacks_; //TODO with global timer remove attacks some time ago in advance()
-
-	QVector <HOA::Effect> effects_;
 
 signals:
 	void positionSet();

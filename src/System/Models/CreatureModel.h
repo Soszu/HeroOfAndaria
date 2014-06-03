@@ -2,9 +2,9 @@
 #define CREATUREMODEL_H
 
 #include <QtWidgets>
-#include "System/Uid.h"
-#include "System/CommonStrings.h"
 #include "System/Bases/CreatureBase.h"
+#include "System/CommonStrings.h"
+#include "System/Utils/Uid.h"
 
 class CreatureBase;
 

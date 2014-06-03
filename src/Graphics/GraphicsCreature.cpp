@@ -5,6 +5,9 @@ GraphicsCreature::GraphicsCreature(Creature *creature) :
 	GraphicsObject((Object *)creature)
 {
 	initRenderer();
+	setZValue(HOA::ZValue::LowLevel);
+
+	connect(creature, &Creature::died, this, &GraphicsCreature::onDied);
 }
 
 QPainterPath GraphicsCreature::weaponShape() const
@@ -87,6 +90,11 @@ QPointF GraphicsCreature::pointZero() const
 	return {qreal(-creatureWidth() / 2), qreal(-creatureHeight() / 2)};
 }
 
+Creature * GraphicsCreature::creature()
+{
+	return dynamic_cast<Creature *>(object_);
+}
+
 QPointF GraphicsCreature::weaponAttachPoint() const
 {
 	return {widthScale() * 8.0, heightScale() * 22.0};
@@ -94,7 +102,7 @@ QPointF GraphicsCreature::weaponAttachPoint() const
 
 void GraphicsCreature::paintFigure(QPainter *painter)
 {
-	if (((Creature *)object_)->hitPoints() > 0)
+	if (creature()->hitPoints() > 0)
 		renderer_->render(painter, QRectF(pointZero().x(), pointZero().y(), creatureWidth(), creatureHeight()));
 	else
 		rendererDead_->render(painter, QRectF(pointZero().x(), pointZero().y(), creatureWidth(), creatureHeight()));
@@ -120,8 +128,8 @@ void GraphicsCreature::paintHealth(QPainter *painter)
 	painter->save();
 
 	painter->rotate(-rotation());
-	qreal lifePercent = qreal(((Creature *)object())->hitPoints())
-	                  / qreal(((Creature *)object())->fullHitPoints());
+	qreal lifePercent = qreal(creature()->hitPoints())
+	                  / qreal(creature()->fullHitPoints());
 
 	QPen pen;
 	pen.setWidth(3);
@@ -153,11 +161,11 @@ QRectF GraphicsCreature::boundingRect() const
 
 void GraphicsCreature::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-	if (GraphicsCreature::healthVisibilityEnabled())
+	if (GraphicsCreature::healthVisibilityEnabled() && creature()->hitPoints() > 0)
 		paintHealth(painter);
 	if (GraphicsCreature::boundingBoxesVisibilityEnabled())
 		paintBoundingBoxes(painter);
-	if (((Creature *)object())->hitPoints() > 0)
+	if (creature()->hitPoints() > 0)
 		paintWeapon(painter);
 	paintFigure(painter);
 }
@@ -165,4 +173,9 @@ void GraphicsCreature::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 void GraphicsCreature::advance()
 {
 	GraphicsObject::advance();
+}
+
+void GraphicsCreature::onDied()
+{
+	setZValue(HOA::ZValue::Ground);
 }

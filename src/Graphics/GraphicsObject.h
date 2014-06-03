@@ -4,7 +4,19 @@
 #include <QtWidgets>
 #include "System/Object.h"
 
-//TODO along with functions from Movable take all math-like ones and put into one file
+namespace HOA {
+	namespace ZValue {
+		enum Value {
+			Background = 0,
+			Ground     = 1,
+			LowLevel   = 2,
+			HighLevel  = 3,
+			Building   = 4,
+			Tree       = 5,
+			Clouds     = 6,
+		};
+	}
+}
 
 class GraphicsObject : public QGraphicsObject
 {
@@ -20,8 +32,6 @@ public:
 	virtual QPainterPath shape() const;
 
 	QVector <GraphicsObject *> collisions(const QPointF &vector = QPointF(0.0, 0.0), qreal angle = 0.0);
-
-	static qreal vectorAngle(const QPointF &middle, const QPointF &vector);
 
 signals:
 	void collided();

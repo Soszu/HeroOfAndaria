@@ -22,6 +22,7 @@ QString Data::path(ImagePath name)
 
 	static const QString BottomPanelBackground  = ImgPreffix + "/bottomPanel.png";
 	static const QString SidePanelBackground    = ImgPreffix + "/sidePanel.png";
+	static const QString GameOverBackground     = ImgPreffix + "/gameOver.png";
 	static const QString PanelCloseButtonNormal = ImgPreffix + "/panelCloseButtonNormal.png";
 	static const QString PanelCloseButtonDark   = ImgPreffix + "/panelCloseButtonDark.png";
 	static const QString SkillsButtonNormal     = ImgPreffix + "/skillsButtonNormal.png";
@@ -85,6 +86,7 @@ QString Data::path(ImagePath name)
 
 		case ImagePath::BottomPanelBackground:  return BottomPanelBackground;
 		case ImagePath::SidePanelBackground:    return SidePanelBackground;
+		case ImagePath::GameOverBackground:     return GameOverBackground;
 		case ImagePath::PanelCloseButtonNormal: return PanelCloseButtonNormal;
 		case ImagePath::PanelCloseButtonDark:   return PanelCloseButtonDark;
 		case ImagePath::SkillsButtonNormal:     return SkillsButtonNormal;

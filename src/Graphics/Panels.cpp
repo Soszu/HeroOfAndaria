@@ -60,6 +60,18 @@ BottomPanel::BottomPanel(Character *player, QWidget *parent) :
 	setGeometry(30, screen.height() - mySize.height() - 30, mySize.width(), mySize.height());
 }
 
+/* -------------------- GameOverPanel class ----------------- */
+GameOverPanel::GameOverPanel(QWidget *parent) :
+	Panel(parent)
+{
+	backgroundImage = DataManager::pixmap(Data::ImagePath::GameOverBackground);
+	// positioning on screen
+	QRect screen = QApplication::desktop()->rect();
+	QSize mySize = sizeHint();
+	setGeometry((screen.width() - mySize.width()) / 2, (screen.height() - mySize.height()) / 2,  mySize.width(), mySize.height());
+	hide();
+}
+
 /* -------------------- SidePanel class ----------------- */
 
 SidePanel::SidePanel(QWidget *parent) :
@@ -166,9 +178,6 @@ HPBar::HPBar(Creature *owner, QWidget *parent):
 	barImage        = DataManager::pixmap(Data::ImagePath::HpBar);
 
 	connect(owner, &Creature::hitPointsChanged, this, static_cast<void (QWidget::*)()>(&QWidget::repaint));
-
-	//TODO connect owner hitPointsChanged signal with this repaint slot, Creature is not QObject yet
-	// u're joking, right, pal? QObject->Object->Movable->Creature
 }
 
 double HPBar::getValue() const

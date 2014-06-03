@@ -14,15 +14,14 @@ void Monster::advance()
 	if (hitPoints() > 0) {
 		AI *ai = AIFactory::ai(this);
 		QVector <AI::Behaviour> behaviours = ai->act();
-		stop();
 		for (AI::Behaviour b : behaviours) {
-			if (b.behaviour == HOA::AIBehaviour::Walk || b.behaviour == HOA::AIBehaviour::Run) {
-				if (!freezed_)
-					move(HOA::Direction::Front);
-			}
-			if (b.behaviour == HOA::AIBehaviour::Rotate) {
-				if (!freezed_) //TODO Fynx: not here
-					rotate({(qreal)b.first, (qreal)b.second});
+			if (b.behaviour == HOA::AIBehaviour::Walk || b.behaviour == HOA::AIBehaviour::Run)
+				move(HOA::Direction::Front);
+			if (b.behaviour == HOA::AIBehaviour::Rotate)
+				rotate({(qreal)b.first, (qreal)b.second});
+			if (b.behaviour == HOA::AIBehaviour::PrimaryAttack) {
+				attack(Attack(HOA::AttackType::Melee));
+				stop();
 			}
 		}
 	}

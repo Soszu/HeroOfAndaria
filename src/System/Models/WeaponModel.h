@@ -2,10 +2,10 @@
 #define WEAPONMODEL_H
 
 #include <QtWidgets>
-#include "System/Uid.h"
-#include "System/CommonStrings.h"
 #include "System/Bases/WeaponBase.h"
+#include "System/CommonStrings.h"
 #include "System/Models/ItemModel.h"
+#include "System/Utils/Uid.h"
 
 class WeaponBase;
 

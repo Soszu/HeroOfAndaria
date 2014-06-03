@@ -39,6 +39,9 @@ public:
 
 	qreal rotationSpeed() const;
 
+	virtual bool canMove() const;
+	virtual bool canRotate() const;
+
 	void move(HOA::Direction direction);
 	void stop();
 
@@ -60,11 +63,13 @@ private:
  * \enum HOA::CollisionType
  */
 namespace HOA {
-	enum CollisionType : quint8 {
-		None   = 0x00,
-		Attack = 0x01,
-		Simple = 0x02,
-	};
+	namespace Collision {
+		enum Type : quint8 {
+			None   = 0x00,
+			Attack = 0x01,
+			Simple = 0x02,
+		};
+	}
 }
 
 /**

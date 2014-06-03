@@ -1,4 +1,4 @@
-#include "WeaponBase.h"
+#include "System/Bases/WeaponBase.h"
 
 WeaponBase::WeaponBase() : WeaponBase(MinUid)
 {}

@@ -4,6 +4,11 @@
  * \struct HOA::Effect
  */
 
+QString HOA::Effect::toString() const
+{
+	return HOA::EffectTypeLabels[type];
+}
+
 bool HOA::Effect::operator==(const Effect &effect) const
 {
 	return this->type      == effect.type
@@ -13,9 +18,14 @@ bool HOA::Effect::operator==(const Effect &effect) const
 
 QString HOA::Effect::description()
 {
-	return EffectTypeLabels[type] +
-	QString("(M: ") + QString::number(magnitude) +
-	QString("; D: ") + QString::number(duration) + QString(")");
+	return toString() +
+		QString("(M: ") + QString::number(magnitude) +
+		QString("; D: ") + QString::number(duration) + QString(")");
+}
+
+bool HOA::Effect::isValid() const
+{
+	return type != HOA::EffectType::None && duration != 0 && magnitude != 0;
 }
 
 QDataStream & HOA::operator << (QDataStream &out, const HOA::Effect &effect)
